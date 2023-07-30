@@ -1,4 +1,4 @@
-"use clint"
+"use client"
 
 import TopNav from "@/components/dashboard/TopNAv";
 import { Inter } from "next/font/google";
