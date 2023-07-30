@@ -40,7 +40,7 @@ const SearchBarOnHeroSection = ({ onSearch, isSticky }) => {
     <form className="w-full flex items-center justify-center">
       <div
         className={`relative flex items-center ${
-          isSticky ? "w-full" : "w-3/5"
+          isSticky ? "w-full" : "w-4/5"
         }  bg-white shadow-lg rounded-full overflow-hidden backdrop-blur-lg bg-opacity-40`}
       >
         <AiOutlineSearch className="p-2 text-gray-400" />
