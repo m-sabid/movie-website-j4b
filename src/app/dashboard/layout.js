@@ -16,7 +16,8 @@ export default function DashboardLayout({ children }) {
       {/* <ReactQueryProviders>
         <AllMoviesProvider> */}
       <body className={inter.className}>
-        <SidebarNav>{children}</SidebarNav>
+        <SidebarNav />
+        {children}
       </body>
       {/* </AllMoviesProvider>
       </ReactQueryProviders> */}
