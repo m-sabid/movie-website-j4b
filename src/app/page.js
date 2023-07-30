@@ -47,12 +47,12 @@ export default function Home() {
 
   let moviesToShow;
   if (searchResults.length > 0) {
-    moviesToShow = searchResults?.slice(startIdx, endIdx);
+    moviesToShow = searchResults.slice(startIdx, endIdx);
   } else {
-    moviesToShow = movieData?.slice(startIdx, endIdx);
+    moviesToShow = movieData.slice(startIdx, endIdx);
   }
 
-  const totalMovies = searchResults.length || movieData?.length;
+  const totalMovies = searchResults.length || movieData.length;
   const totalPages = Math.ceil(totalMovies / itemsPerPage);
   const pageNumbers = Array.from(
     { length: totalPages },
