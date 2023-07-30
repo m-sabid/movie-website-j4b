@@ -26,7 +26,7 @@ const menus = [
   },
 ];
 
-const SidebarLayout = ({ children }) => {
+const SidebarNav = ({ children }) => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = () => {
@@ -123,4 +123,4 @@ const SidebarLayout = ({ children }) => {
   );
 };
 
-export default SidebarLayout;
+export default SidebarNav;

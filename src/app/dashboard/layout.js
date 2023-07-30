@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 // import ReactQueryProviders from "@/providers/ReactQuerySetup/ReactQueryProviders";
 // import AllMoviesProvider from "@/providers/data/AllMoviesData";
-import SidebarLayout from "@/components/dashboard/SidebarLayout";
+import SidebarNav from "@/components/dashboard/SidebarNav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,10 +15,10 @@ export default function DashboardLayout({ children }) {
     <html lang="en">
       {/* <ReactQueryProviders>
         <AllMoviesProvider> */}
-          <SidebarLayout>
-            <body className={inter.className}>{children}</body>
-          </SidebarLayout>
-        {/* </AllMoviesProvider>
+      <body className={inter.className}>
+        <SidebarNav>{children}</SidebarNav>
+      </body>
+      {/* </AllMoviesProvider>
       </ReactQueryProviders> */}
     </html>
   );
