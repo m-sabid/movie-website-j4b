@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { FaBell, FaChartBar, FaHome } from "react-icons/fa";
 
@@ -24,10 +25,10 @@ const menus = [
 
 const SidebarNav = ({ children }) => {
   return (
-    <div className="absolute">
-      <div className="drawer lg:drawer-open">
+    <div>
+      <div className="drawer lg:drawer-open ">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content flex flex-col items-center justify-center">
+        <div className="drawer-content flex flex-col">
           {/* Page content here */}
           <div className="p-8">{children}</div>
           <label
@@ -39,10 +40,12 @@ const SidebarNav = ({ children }) => {
         </div>
         <div className="drawer-side">
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-          <ul className="menu p-4 w-80 h-full bg-base-200 text-base-content">
+          <ul className="menu p-4 w-80 h-full bg-gray-600 text-white">
             {/* Sidebar content here */}
             {menus.map((menu, index) => (
-              <li key={index}>{menu.name}</li>
+              <li key={index}>
+                <Link href={menu.path}>{menu.name}</Link>
+              </li>
             ))}
           </ul>
         </div>
