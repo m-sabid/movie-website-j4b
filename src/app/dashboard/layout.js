@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
-import ReactQueryProviders from "@/providers/ReactQuerySetup/ReactQueryProviders";
-import AllMoviesProvider from "@/providers/data/AllMoviesData";
-import SidebarLayout from "@/components/dashboard/SidebarLayout";
+// import ReactQueryProviders from "@/providers/ReactQuerySetup/ReactQueryProviders";
+// import AllMoviesProvider from "@/providers/data/AllMoviesData";
+// import SidebarLayout from "@/components/dashboard/SidebarLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,13 +13,13 @@ export const metadata = {
 export default function DashboardLayout({ children }) {
   return (
     <html lang="en">
-      <ReactQueryProviders>
-        <AllMoviesProvider>
-          <SidebarLayout>
+      {/* <ReactQueryProviders>
+        <AllMoviesProvider> */}
+          {/* <SidebarLayout> */}
             <body className={inter.className}>{children}</body>
-          </SidebarLayout>
-        </AllMoviesProvider>
-      </ReactQueryProviders>
+          {/* </SidebarLayout> */}
+        {/* </AllMoviesProvider>
+      </ReactQueryProviders> */}
     </html>
   );
 }
