@@ -87,9 +87,9 @@ const SidebarLayout = ({ children }) => {
             </div>
           </div>
 
-          <div className="w-full hidden lg:block">
+          {/* <div className="w-full hidden lg:block">
             <TopNav />
-          </div>
+          </div> */}
 
           <div className="p-2 lg:p-10">{children}</div>
         </div>
