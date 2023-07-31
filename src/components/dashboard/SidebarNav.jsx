@@ -67,10 +67,9 @@ const SidebarNav = ({ children }) => {
 
             {/*  */}
             {/*  */}
-
-            {/* Page content here */}
-            <div className="p-8">{children}</div>
           </div>
+          {/* Page content here */}
+          <div className="p-1 lg:p-8">{children}</div>
         </div>
         <div className="drawer-side">
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
