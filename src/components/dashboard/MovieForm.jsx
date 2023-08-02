@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 const MovieForm = () => {
   const { register, handleSubmit, errors } = useForm();
   const [selectedLanguages, setSelectedLanguages] = useState([]);
+  const [selectedGenres, setSelectedGenres] = useState([]);
 
   const handleLanguageSelect = (e) => {
     const selectedLanguage = e.target.value;
@@ -12,13 +14,70 @@ const MovieForm = () => {
     }
   };
 
+  const handleGenreSelect = (e) => {
+    const selectedGenre = e.target.value;
+    if (!selectedGenres.includes(selectedGenre)) {
+      setSelectedGenres([...selectedGenres, selectedGenre]);
+    }
+  };
+
   const handleTagRemove = (language) => {
     setSelectedLanguages(selectedLanguages.filter((lang) => lang !== language));
   };
 
-  const onSubmit = (data) => {
+  const handleGenreRemove = (genre) => {
+    setSelectedGenres(selectedGenres.filter((gen) => gen !== genre));
+  };
+
+  const onSubmit = async (data) => {
     // Handle form submission here
+
     console.log(data);
+
+    // TODO: Must Send on .env file
+    const imageUploadToken = "01f1da67b6a17d75237a16f95e14bfed";
+    const imageHostingUrl = `https://api.imgbb.com/1/upload?expiration=600&key=${imageUploadToken}`;
+
+    try {
+      // Upload the first image (poster)
+      const posterResponse = await axios.post(imageHostingUrl, {
+        image: data.poster[0], // Assuming data.poster is the file object from the form
+      });
+
+
+      console.log(posterResponse, "posterResponseposterResponse")
+
+      const posterUrl = posterResponse.data.data.url;
+
+      console.log(posterUrl, "posterUrlposterUrl")
+
+
+      // Upload the second image (screenShort)
+      const screenShortResponse = await axios.post(imageHostingUrl, {
+        image: data.screenShort[0], // Assuming data.screenShort is the file object from the form
+      });
+
+      const screenShortUrl = screenShortResponse.data.data.url;
+
+      // Combine the image URLs with the rest of the form data
+      const formDataWithImages = {
+        ...data,
+        poster: posterUrl,
+        screenShort: screenShortUrl,
+      };
+
+      // Send the form data to the API endpoint using axios
+      const response = await axios.post(
+        "http://localhost:5000/movies",
+        formDataWithImages
+      );
+      console.log("API Response:", response.data);
+
+      // Perform any additional actions after the form submission, if required
+    } catch (error) {
+      // Handle errors if the API call fails or image upload fails
+      console.error("Error sending data:", error);
+    }
   };
 
   return (
@@ -58,15 +117,26 @@ const MovieForm = () => {
         </div>
 
         <div className="mb-4 col-span-2 md:col-span-1">
-          <label htmlFor="releaseDate" className="block text-white font-bold">
-            Release Date
+          <label htmlFor="releaseYear" className="block text-white font-bold">
+            Release Year
           </label>
-          <input
-            type="date"
-            {...register("releaseDate", { required: true })}
-            className="input input-bordered input-accent w-full"
-          />
-          {errors?.releaseDate && (
+          <select
+            {...register("releaseYear", { required: true })}
+            className="input input-bordered w-full"
+          >
+            <option value="">Select the release year</option>
+            {Array.from(
+              { length: 50 },
+              (_, i) => new Date().getFullYear() - i
+            ).map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+            {/* This example provides options for the last 50 years.
+                You can customize it to show a different range. */}
+          </select>
+          {errors?.releaseYear && (
             <span className="text-red-500">This field is required</span>
           )}
         </div>
@@ -108,6 +178,47 @@ const MovieForm = () => {
             ))}
           </div>
         </div>
+        {/* Genre */}
+
+        <div className="mb-4 col-span-2 md:col-span-1">
+          <label htmlFor="genre" className="block text-white font-bold">
+            Genre
+          </label>
+          <select
+            {...register("genre", { required: true })}
+            onChange={handleGenreSelect}
+            className="input input-bordered w-full"
+          >
+            <option value="">Select a genre</option>
+            <option value="action">Action</option>
+            <option value="comedy">Comedy</option>
+            <option value="drama">Drama</option>
+            {/* Add more genre options as needed */}
+          </select>
+          {errors?.genre && (
+            <span className="text-red-600">This field is required</span>
+          )}
+
+          <div className="mt-2">
+            {selectedGenres.map((genre) => (
+              <div
+                key={genre}
+                className="inline-flex items-center bg-blue-500 text-white px-3 py-1 rounded-full text-sm mr-2 mt-2"
+              >
+                {genre}
+                <button
+                  type="button"
+                  className="ml-2"
+                  onClick={() => handleGenreRemove(genre)}
+                >
+                  &#10005;
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Genre */}
 
         <div className="mb-4 col-span-2 md:col-span-1">
           <label htmlFor="industry" className="block text-white font-bold">
@@ -230,7 +341,6 @@ const MovieForm = () => {
             <span className="text-red-500">This field is required</span>
           )}
         </div>
-
       </div>
 
       <input type="submit" value="Submit" className="btn btn-primary w-full" />

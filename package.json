@@ -13,6 +13,7 @@
     "@tanstack/react-query-devtools": "^4.32.0",
     "@tanstack/react-query-next-experimental": "^5.0.0-alpha.80",
     "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
     "daisyui": "^3.5.0",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
