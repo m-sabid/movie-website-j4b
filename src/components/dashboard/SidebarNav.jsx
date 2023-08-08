@@ -12,12 +12,12 @@ const menus = [
   },
   {
     name: "Add industry",
-    path: "dashboard/add_industry",
+    path: "add_industry",
     icon: <FaFilm width={18} className="text-white" />,
   },
   {
     name: "Add cinemas",
-    path: "dashboard/add_cinemas",
+    path: "add_cinemas",
     icon: <FaFolderPlus width={18} className="text-white" />,
   },
 ];

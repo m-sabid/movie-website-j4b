@@ -30,47 +30,41 @@ const MovieForm = () => {
   };
 
   const onSubmit = async (data) => {
-    // Handle form submission here
-
-    console.log(data);
-
-    // TODO: Must Send on .env file
-    const imageUploadToken = "01f1da67b6a17d75237a16f95e14bfed";
-    const imageHostingUrl = `https://api.imgbb.com/1/upload?expiration=600&key=${imageUploadToken}`;
+    // ... (other form submission code)
 
     try {
-      // Upload the first image (poster)
-      const posterResponse = await axios.post(imageHostingUrl, {
-        image: data.poster[0], // Assuming data.poster is the file object from the form
-      });
+      const imageUploadToken = "01f1da67b6a17d75237a16f95e14bfed"; // Replace with your ImageBB API key
+      const imageHostingUrl = `https://api.imgbb.com/1/upload?expiration=600&key=${imageUploadToken}`;
 
+      // Upload the poster image to ImageBB
+      const posterImage = data.poster[0]; // Assuming data.poster is the file object from the form
+      const posterFormData = new FormData();
+      posterFormData.append('image', posterImage);
 
-      console.log(posterResponse, "posterResponseposterResponse")
+      const posterResponse = await axios.post(imageHostingUrl, posterFormData);
+      const posterImageUrl = posterResponse.data.data.url;
 
-      const posterUrl = posterResponse.data.data.url;
+      // Upload the screenShort image to ImageBB
+      const screenShortImage = data.screenShort[0]; // Assuming data.screenShort is the file object from the form
+      const screenShortFormData = new FormData();
+      screenShortFormData.append('image', screenShortImage);
 
-      console.log(posterUrl, "posterUrlposterUrl")
-
-
-      // Upload the second image (screenShort)
-      const screenShortResponse = await axios.post(imageHostingUrl, {
-        image: data.screenShort[0], // Assuming data.screenShort is the file object from the form
-      });
-
-      const screenShortUrl = screenShortResponse.data.data.url;
+      const screenShortResponse = await axios.post(imageHostingUrl, screenShortFormData);
+      const screenShortImageUrl = screenShortResponse.data.data.url;
 
       // Combine the image URLs with the rest of the form data
       const formDataWithImages = {
         ...data,
-        poster: posterUrl,
-        screenShort: screenShortUrl,
+        poster: posterImageUrl,
+        screenShort: screenShortImageUrl,
       };
 
       // Send the form data to the API endpoint using axios
       const response = await axios.post(
-        "http://localhost:5000/movies",
+        "http://localhost:5000/movies", // Replace with your API endpoint URL
         formDataWithImages
       );
+
       console.log("API Response:", response.data);
 
       // Perform any additional actions after the form submission, if required
@@ -79,6 +73,8 @@ const MovieForm = () => {
       console.error("Error sending data:", error);
     }
   };
+  
+  
 
   return (
     <form
