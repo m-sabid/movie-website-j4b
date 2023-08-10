@@ -1,24 +1,39 @@
 "use client";
-
 import Link from "next/link";
-import React from "react";
-import { FaFilm, FaFolderPlus, FaHome } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import {
+  FaFileMedical,
+  FaFilm,
+  FaHome,
+  FaHospital,
+  FaIcons,
+} from "react-icons/fa";
 
 const menus = [
   {
     name: "Home",
-    path: "",
+    path: "home",
     icon: <FaHome width={18} className="text-white" />,
+  },
+  {
+    name: "Add genre",
+    path: "add_genre",
+    icon: <FaIcons width={18} className="text-white" />,
   },
   {
     name: "Add industry",
     path: "add_industry",
-    icon: <FaFilm width={18} className="text-white" />,
+    icon: <FaHospital width={18} className="text-white" />,
+  },
+  {
+    name: "Add language",
+    path: "add_language",
+    icon: <FaFileMedical width={18} className="text-white" />,
   },
   {
     name: "Add cinemas",
     path: "add_cinemas",
-    icon: <FaFolderPlus width={18} className="text-white" />,
+    icon: <FaFilm width={18} className="text-white" />,
   },
 ];
 

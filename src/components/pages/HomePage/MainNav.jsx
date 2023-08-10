@@ -86,7 +86,7 @@ const MainNav = () => {
           </Link>
         </div>
         <div className="flex-none">
-          <Link href={"/dashboard"} className="btn btn-square btn-ghost">
+          <Link href={"/dashboard/home"} className="btn btn-square btn-ghost">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

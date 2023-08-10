@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import base_url from "@/providers/links/BASE_URL";
 
-const MovieForm = () => {
+const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
   const { register, handleSubmit, errors } = useForm();
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -39,7 +40,7 @@ const MovieForm = () => {
       // Upload the poster image to ImageBB
       const posterImage = data.poster[0]; // Assuming data.poster is the file object from the form
       const posterFormData = new FormData();
-      posterFormData.append('image', posterImage);
+      posterFormData.append("image", posterImage);
 
       const posterResponse = await axios.post(imageHostingUrl, posterFormData);
       const posterImageUrl = posterResponse.data.data.url;
@@ -47,9 +48,12 @@ const MovieForm = () => {
       // Upload the screenShort image to ImageBB
       const screenShortImage = data.screenShort[0]; // Assuming data.screenShort is the file object from the form
       const screenShortFormData = new FormData();
-      screenShortFormData.append('image', screenShortImage);
+      screenShortFormData.append("image", screenShortImage);
 
-      const screenShortResponse = await axios.post(imageHostingUrl, screenShortFormData);
+      const screenShortResponse = await axios.post(
+        imageHostingUrl,
+        screenShortFormData
+      );
       const screenShortImageUrl = screenShortResponse.data.data.url;
 
       // Combine the image URLs with the rest of the form data
@@ -61,7 +65,7 @@ const MovieForm = () => {
 
       // Send the form data to the API endpoint using axios
       const response = await axios.post(
-        "http://localhost:5000/movies", // Replace with your API endpoint URL
+        `${base_url}/movies`, // Replace with your API endpoint URL
         formDataWithImages
       );
 
@@ -73,8 +77,6 @@ const MovieForm = () => {
       console.error("Error sending data:", error);
     }
   };
-  
-  
 
   return (
     <form
@@ -185,11 +187,14 @@ const MovieForm = () => {
             onChange={handleGenreSelect}
             className="input input-bordered w-full"
           >
-            <option value="">Select a genre</option>
-            <option value="action">Action</option>
-            <option value="comedy">Comedy</option>
-            <option value="drama">Drama</option>
-            {/* Add more genre options as needed */}
+            <option disabled>Select a genre</option>
+            {allGenre?.map((genre) => {
+              return (
+                <option key={genre._id} value={genre.genreName}>
+                  {genre.genreName}
+                </option>
+              );
+            })}
           </select>
           {errors?.genre && (
             <span className="text-red-600">This field is required</span>
@@ -201,7 +206,7 @@ const MovieForm = () => {
                 key={genre}
                 className="inline-flex items-center bg-blue-500 text-white px-3 py-1 rounded-full text-sm mr-2 mt-2"
               >
-                {genre}
+                <span className="capitalize">{genre}</span>
                 <button
                   type="button"
                   className="ml-2"
