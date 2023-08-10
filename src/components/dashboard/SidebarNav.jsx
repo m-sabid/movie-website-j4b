@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import {
   FaFileMedical,
   FaFilm,
+  FaFolderPlus,
   FaHome,
   FaHospital,
   FaIcons,
@@ -13,27 +14,32 @@ const menus = [
   {
     name: "Home",
     path: "home",
-    icon: <FaHome width={18} className="text-white" />,
-  },
-  {
-    name: "Add genre",
-    path: "add_genre",
-    icon: <FaIcons width={18} className="text-white" />,
-  },
-  {
-    name: "Add industry",
-    path: "add_industry",
-    icon: <FaHospital width={18} className="text-white" />,
-  },
-  {
-    name: "Add language",
-    path: "add_language",
-    icon: <FaFileMedical width={18} className="text-white" />,
+    icon: <FaHome className="text-white" />,
   },
   {
     name: "Add cinemas",
     path: "add_cinemas",
-    icon: <FaFilm width={18} className="text-white" />,
+    icon: <FaFolderPlus className="text-white" />,
+  },
+  {
+    name: "All cinemas",
+    path: "all_cinemas",
+    icon: <FaFilm className="text-white" />,
+  },
+  {
+    name: "Add genre",
+    path: "add_genre",
+    icon: <FaIcons className="text-white" />,
+  },
+  {
+    name: "Add industry",
+    path: "add_industry",
+    icon: <FaHospital className="text-white" />,
+  },
+  {
+    name: "Add language",
+    path: "add_language",
+    icon: <FaFileMedical className="text-white" />,
   },
 ];
 
@@ -95,9 +101,9 @@ const SidebarNav = ({ children }) => {
             <div className="divider hidden lg:flex"></div>
             {/* Sidebar content here */}
             {menus.map((menu, index) => (
-              <li key={index}>
+              <li key={index} className="border-b-2 border-gray-700 rounded-lg my-2 shadow-lg">
                 <Link href={menu.path}>
-                  {menu.icon}
+                  <span className="text-xl">{menu.icon}</span>
                   {menu.name}
                 </Link>
               </li>

@@ -122,7 +122,9 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
             {...register("releaseYear", { required: true })}
             className="input input-bordered w-full"
           >
-            <option value="">Select the release year</option>
+            <option disabled selected>
+              Select the release year
+            </option>
             {Array.from(
               { length: 50 },
               (_, i) => new Date().getFullYear() - i
@@ -148,10 +150,16 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
             onChange={handleLanguageSelect}
             className="input input-bordered w-full"
           >
-            <option value="">Select a language</option>
-            <option value="english">English</option>
-            <option value="spanish">Spanish</option>
-            <option value="french">French</option>
+            <option disabled selected>
+              Select a language
+            </option>
+            {allLanguage?.map((language) => {
+              return (
+                <option key={language._id} value={language.languageName}>
+                  {language.languageName}
+                </option>
+              );
+            })}
             {/* Add more language options as needed */}
           </select>
           {errors?.language && (
@@ -187,7 +195,9 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
             onChange={handleGenreSelect}
             className="input input-bordered w-full"
           >
-            <option disabled>Select a genre</option>
+            <option disabled selected>
+              Select a genre
+            </option>
             {allGenre?.map((genre) => {
               return (
                 <option key={genre._id} value={genre.genreName}>
@@ -229,10 +239,16 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
             {...register("industry", { required: true })}
             className="input input-bordered w-full"
           >
-            <option value="">Select an industry</option>
-            <option value="english">English</option>
-            <option value="spanish">Spanish</option>
-            <option value="french">French</option>
+            <option disabled selected>
+              Select an industry
+            </option>
+            {allIndustry?.map((industry) => {
+              return (
+                <option key={industry._id} value={industry.industryName}>
+                  {industry.industryName}
+                </option>
+              );
+            })}
             {/* Add more industry options as needed */}
           </select>
           {errors?.industry && (
