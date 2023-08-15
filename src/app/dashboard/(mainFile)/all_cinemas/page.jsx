@@ -8,14 +8,16 @@ import Swal from "sweetalert2";
 
 const AllCinemas = () => {
   const [movieData, setMovieData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
   useEffect(() => {
     const fetchCinemas = async () => {
       try {
         const response = await axios.get(`${base_url}/movies`);
-        setMovieData(response.data); // Assuming response.data is the array of Cinemas
+        setMovieData(response.data); // Assuming response.data is the array of Movies
       } catch (error) {
-        console.error("Error fetching Cinemas:", error);
+        console.error("Error fetching Movies:", error);
       }
     };
 
@@ -47,15 +49,19 @@ const AllCinemas = () => {
     }
   };
 
+  const lastIndex = currentPage * itemsPerPage;
+  const firstIndex = lastIndex - itemsPerPage;
+  const currentMovies = movieData.slice(firstIndex, lastIndex);
+
   return (
     <div>
       <h2 className="bg-gray-500 rounded-md text-white text-center text-3xl font-bold border-b-2 p-4">
         All Cinemas - {movieData.length}
       </h2>
 
-      {movieData.length > 0 ? (
+      {currentMovies.length > 0 ? (
         <div className="bg-gray-500 grid grid-cols-1 md:grid-cols-4 gap-4 my-5 p-4 rounded-md">
-          {movieData?.map((movie, index) => (
+          {currentMovies.map((movie, index) => (
             <DashboardMovieCard
               key={index}
               movie={movie}
@@ -68,6 +74,26 @@ const AllCinemas = () => {
           <span className="loading loading-bars loading-lg"></span>
         </div>
       )}
+
+      <div className="flex justify-center mt-4">
+        <nav className="flex items-center space-x-2">
+          <button
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="btn btn-sm btn-accent"
+          >
+            Previous
+          </button>
+          <span>Page {currentPage}</span>
+          <button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentMovies.length < itemsPerPage}
+            className="btn btn-sm btn-accent"
+          >
+            Next
+          </button>
+        </nav>
+      </div>
     </div>
   );
 };
