@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import base_url from "@/providers/links/BASE_URL";
+import Swal from "sweetalert2";
 
 const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
   const { register, handleSubmit, errors } = useForm();
@@ -31,11 +32,9 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
   };
 
   const onSubmit = async (data) => {
-    // ... (other form submission code)
-
     try {
       const imageUploadToken = "01f1da67b6a17d75237a16f95e14bfed"; // Replace with your ImageBB API key
-      const imageHostingUrl = `https://api.imgbb.com/1/upload?expiration=600&key=${imageUploadToken}`;
+      const imageHostingUrl = `https://api.imgbb.com/1/upload?key=${imageUploadToken}`;
 
       // Upload the poster image to ImageBB
       const posterImage = data.poster[0]; // Assuming data.poster is the file object from the form
@@ -56,25 +55,43 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
       );
       const screenShortImageUrl = screenShortResponse.data.data.url;
 
+      // Get selected languages and genres from state
+      const selectedLanguagesArray = selectedLanguages;
+      const selectedGenresArray = selectedGenres;
+
       // Combine the image URLs with the rest of the form data
-      const formDataWithImages = {
+      const formDataWithImagesAndArrays = {
         ...data,
         poster: posterImageUrl,
         screenShort: screenShortImageUrl,
+        language: selectedLanguagesArray,
+        genre: selectedGenresArray,
       };
 
       // Send the form data to the API endpoint using axios
       const response = await axios.post(
-        `${base_url}/movies`, // Replace with your API endpoint URL
-        formDataWithImages
+        `${base_url}/movies`,
+        formDataWithImagesAndArrays
       );
 
       console.log("API Response:", response.data);
 
-      // Perform any additional actions after the form submission, if required
+      // Show success alert
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "Movie created successfully.",
+      });
     } catch (error) {
       // Handle errors if the API call fails or image upload fails
       console.error("Error sending data:", error);
+
+      // Show error alert
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: { error },
+      });
     }
   };
 
