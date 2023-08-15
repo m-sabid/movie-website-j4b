@@ -5,7 +5,7 @@ import base_url from "@/providers/links/BASE_URL";
 import Swal from "sweetalert2";
 
 const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, reset, errors } = useForm();
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
 
@@ -74,14 +74,19 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
         formDataWithImagesAndArrays
       );
 
-      console.log("API Response:", response.data);
+      // console.log("API Response:", response.data.success);
 
-      // Show success alert
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "Movie created successfully.",
-      });
+      if (response.data.success) {
+        reset();
+        setSelectedLanguages([]);
+        setSelectedGenres([]);
+        // Show success alert
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Movie created successfully.",
+        });
+      }
     } catch (error) {
       // Handle errors if the API call fails or image upload fails
       console.error("Error sending data:", error);
@@ -138,8 +143,9 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
           <select
             {...register("releaseYear", { required: true })}
             className="input input-bordered w-full"
+            defaultValue=""
           >
-            <option disabled selected>
+            <option disabled value="">
               Select the release year
             </option>
             {Array.from(
@@ -166,8 +172,9 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
             {...register("language", { required: true })}
             onChange={handleLanguageSelect}
             className="input input-bordered w-full"
+            defaultValue=""
           >
-            <option disabled selected>
+            <option disabled value="">
               Select a language
             </option>
             {allLanguage?.map((language) => {
@@ -211,8 +218,9 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
             {...register("genre", { required: true })}
             onChange={handleGenreSelect}
             className="input input-bordered w-full"
+            defaultValue=""
           >
-            <option disabled selected>
+            <option disabled value="">
               Select a genre
             </option>
             {allGenre?.map((genre) => {
@@ -255,8 +263,9 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
           <select
             {...register("industry", { required: true })}
             className="input input-bordered w-full"
+            defaultValue=""
           >
-            <option disabled selected>
+            <option disabled value="">
               Select an industry
             </option>
             {allIndustry?.map((industry) => {
