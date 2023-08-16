@@ -5,14 +5,24 @@ import base_url from "@/providers/links/BASE_URL";
 import Swal from "sweetalert2";
 
 const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
-  const { register, handleSubmit, reset, errors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    trigger,
+    setValue,
+  } = useForm();
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
+  const [isDisable, setIsDisable] = useState(false);
 
   const handleLanguageSelect = (e) => {
     const selectedLanguage = e.target.value;
     if (!selectedLanguages.includes(selectedLanguage)) {
       setSelectedLanguages([...selectedLanguages, selectedLanguage]);
+      setValue("language", selectedLanguage);
+      trigger("language");
     }
   };
 
@@ -20,6 +30,8 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
     const selectedGenre = e.target.value;
     if (!selectedGenres.includes(selectedGenre)) {
       setSelectedGenres([...selectedGenres, selectedGenre]);
+      setValue("genre", selectedGenre);
+      trigger("genre");
     }
   };
 
@@ -32,6 +44,7 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
   };
 
   const onSubmit = async (data) => {
+    setIsDisable(true);
     try {
       const imageUploadToken = "01f1da67b6a17d75237a16f95e14bfed"; // Replace with your ImageBB API key
       const imageHostingUrl = `https://api.imgbb.com/1/upload?key=${imageUploadToken}`;
@@ -86,6 +99,7 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
           title: "Success!",
           text: "Movie created successfully.",
         });
+        setIsDisable(false);
       }
     } catch (error) {
       // Handle errors if the API call fails or image upload fails
@@ -209,7 +223,6 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
           </div>
         </div>
         {/* Genre */}
-
         <div className="mb-4 col-span-2 md:col-span-1">
           <label htmlFor="genre" className="block text-white font-bold">
             Genre
@@ -253,7 +266,6 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
             ))}
           </div>
         </div>
-
         {/* Genre */}
 
         <div className="mb-4 col-span-2 md:col-span-1">
@@ -319,12 +331,30 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
           <input
             type="number"
             step="0.1"
-            {...register("imdbRating", { required: true })}
+            {...register("imdbRating", {
+              required: true,
+              min: 0,
+              max: 10,
+              pattern: /^(?:[0-9](?:\.\d{1,2})?|10)$/,
+            })}
+            onBlur={() => trigger("imdbRating")}
             placeholder="IMDB Rating"
             className="input input-bordered input-accent w-full"
           />
-          {errors?.imdbRating && (
-            <span className="text-red-500">This field is required</span>
+          {errors?.imdbRating?.type === "required" && (
+            <p className="text-red-500">This field is required</p>
+          )}
+          {errors?.imdbRating?.type === "min" && (
+            <p className="text-red-500">IMDB Rating must be more than 0</p>
+          )}
+          {errors?.imdbRating?.type === "max" && (
+            <p className="text-red-500">IMDB Rating must be less than 10</p>
+          )}
+          {errors?.imdbRating?.type === "pattern" && (
+            <p className="text-red-500">
+              IMDB Rating must be between 0 and 10 (inclusive) with at most two
+              decimal places
+            </p>
           )}
         </div>
 
@@ -386,7 +416,12 @@ const MovieForm = ({ allGenre, allLanguage, allIndustry }) => {
         </div>
       </div>
 
-      <input type="submit" value="Submit" className="btn btn-primary w-full" />
+      <input
+        type="submit"
+        value="Submit"
+        className="btn btn-primary w-full"
+        disabled={isDisable}
+      />
     </form>
   );
 };
