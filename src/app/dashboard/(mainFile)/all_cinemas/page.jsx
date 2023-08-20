@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 const AllCinemas = () => {
   const [movieData, setMovieData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const fetchCinemas = async () => {
@@ -24,6 +24,7 @@ const AllCinemas = () => {
     fetchCinemas();
   }, []);
 
+  // Delete movie
   const handleDeleteMovie = async (movieId) => {
     const confirmationResult = await Swal.fire({
       title: "Are you sure?",
@@ -60,12 +61,13 @@ const AllCinemas = () => {
       </h2>
 
       {currentMovies.length > 0 ? (
-        <div className="bg-gray-500 grid grid-cols-1 md:grid-cols-4 gap-4 my-5 p-4 rounded-md">
+        <div className="bg-gray-500 grid grid-cols-1 gap-4 my-5 p-4 rounded-md">
           {currentMovies.map((movie, index) => (
             <DashboardMovieCard
               key={index}
               movie={movie}
               onDelete={() => handleDeleteMovie(movie._id)}
+              onEdit={() => handelEdit(movie._id)}
             />
           ))}
         </div>
