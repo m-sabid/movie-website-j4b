@@ -4,9 +4,14 @@ import axios from "axios";
 import base_url from "@/providers/links/BASE_URL";
 import Swal from "sweetalert2";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 
 const MovieEditForm = ({ moByID, allLanguage, allGenre, allIndustry }) => {
   const movie = moByID;
+  const router = useRouter();
+
+
   const {
     register,
     handleSubmit,
@@ -16,7 +21,7 @@ const MovieEditForm = ({ moByID, allLanguage, allGenre, allIndustry }) => {
 
   //
   //
-  console.log("movie.language:", movie.language);
+  console.log("movie.language:", movie.industry);
 
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -119,7 +124,7 @@ const MovieEditForm = ({ moByID, allLanguage, allGenre, allIndustry }) => {
           title: "Success!",
           text: "Movie updated successfully.",
         });
-        // setIsDisable(false);
+        router.push("/dashboard/all_cinemas");
       }
     } catch (error) {
       // Handle errors if the API call fails or image upload fails
@@ -278,7 +283,7 @@ const MovieEditForm = ({ moByID, allLanguage, allGenre, allIndustry }) => {
           <select
             {...register("industry")}
             className="input input-bordered w-full"
-            defaultValue=""
+            defaultValue={movie?.industry}
           >
             <option disabled value="">
               Select an industry
@@ -291,6 +296,7 @@ const MovieEditForm = ({ moByID, allLanguage, allGenre, allIndustry }) => {
               );
             })}
           </select>
+          <span>{movie?.industry}</span>
         </div>
 
         <div className="mb-4 col-span-2 md:col-span-1">

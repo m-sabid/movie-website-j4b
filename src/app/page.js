@@ -11,6 +11,7 @@ import JoinTelegram from "@/components/shared/JoinTelegram";
 import MovieCategoryHeader from "@/components/shared/MovieCategoryHeader";
 import { AllMoviesContext } from "@/providers/data/AllMoviesData";
 import MainNav from "@/components/pages/HomePage/MainNav";
+import AnimatedSkeleton from "@/components/shared/AnimatedSkeleton";
 
 export default function Home() {
   const { movieData, filmIndustries } = useContext(AllMoviesContext);
@@ -36,7 +37,7 @@ export default function Home() {
   const handleSearch = (searchValue) => {
     const results = searchValue
       ? movieData.filter((movie) =>
-          movie.title.toLowerCase().includes(searchValue.toLowerCase())
+          movie.movieName.toLowerCase().includes(searchValue.toLowerCase())
         )
       : [];
 
@@ -74,60 +75,76 @@ export default function Home() {
           <div className="hidden md:flex">
             <SocialLinksForHeroSection />
           </div>
-          <SecondaryNav onSearch={handleSearch} />          
+          <SecondaryNav onSearch={handleSearch} />
         </div>
       </div>
 
-      <div className="container bg-gray-200 mx-auto min-h-screen pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-5 p-2 md:p-8">
-          <div className="md:col-span-3 h-[50vh] md:h-[50vh] overflow-hidden">
-            <RecentMovieSlider />
-          </div>
-          <div className="md:col-span-1 h-[50vh] md:h-[50vh] overflow-hidden">
-            <HowToDownload />
-          </div>
-        </div>
-
-        {filmIndustries?.map((industry, index) => (
-          <div key={index}>
-            <MovieCategoryHeader
-              title={industry}
-              className="col-span-1 md:col-span-5"
-            />
-            <div className="md:px-5 px-2 grid grid-cols-1 md:grid-cols-5 gap-4">
-              {showNoResults ? (
-                <p>No movie found.</p>
-              ) : (
-                moviesToShow.map((movie, index) => (
-                  <div className="rounded-md" key={index}>
-                    {isLoading ? (
-                      <p>Loading...</p>
-                    ) : (
-                      <AllMovies movie={movie} searchResults={searchResults} />
-                    )}
-                  </div>
-                ))
-              )}
+      <div className="bg-gray-500 mx-auto min-h-screen pb-8 mt-[-20px]">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-5 p-2 md:p-8">
+            <div className="md:col-span-3 h-[50vh] rounded-lg md:h-[50vh] overflow-hidden">
+              <RecentMovieSlider />
             </div>
-            {totalPages > 1 && (
-              <div className="flex w-full justify-center my-3">
-                <div className="join">
-                  {pageNumbers.map((pageNumber) => (
-                    <button
-                      key={pageNumber}
-                      className={`join-item btn ${
-                        pageNumber === currentPage ? "btn-black" : ""
-                      }`}
-                      onClick={() => handlePageClick(pageNumber)}
-                    >
-                      {pageNumber}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+            <div className="md:col-span-1 h-[50vh] md:h-[50vh] overflow-hidden">
+              <HowToDownload />
+            </div>
           </div>
-        ))}
+
+          {filmIndustries?.length > 0 ? (
+            filmIndustries?.map((industry) => (
+              <div key={industry._id}>
+                <MovieCategoryHeader
+                  title={industry.industryName}
+                  className="col-span-1 md:col-span-5"
+                />
+                <div className="md:px-5 px-2 grid grid-cols-1 md:grid-cols-5 gap-4">
+                  {showNoResults ? (
+                    <p>No movie found.</p>
+                  ) : (
+                    // Filter movies based on the industry and then map through them
+                    movieData
+                      .filter(
+                        (movie) => movie.industry === industry.industryName
+                      )
+                      .map((movie, index) => (
+                        <div className="rounded-md" key={index}>
+                          {isLoading ? (
+                            <AnimatedSkeleton count={1} />
+                          ) : (
+                            <AllMovies
+                              movie={movie}
+                              searchResults={searchResults}
+                            />
+                          )}
+                        </div>
+                      ))
+                  )}
+                </div>
+                {totalPages > 1 && (
+                  <div className="flex w-full justify-center my-3">
+                    <div className="join">
+                      {pageNumbers.map((pageNumber) => (
+                        <button
+                          key={pageNumber}
+                          className={`join-item btn ${
+                            pageNumber === currentPage ? "btn-black" : ""
+                          }`}
+                          onClick={() => handlePageClick(pageNumber)}
+                        >
+                          {pageNumber}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            <div>
+              <AnimatedSkeleton count={10} />
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

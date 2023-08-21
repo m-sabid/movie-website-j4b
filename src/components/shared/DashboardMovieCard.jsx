@@ -5,8 +5,7 @@ import React from "react";
 const DashboardMovieCard = ({ movie, onDelete, onEdit }) => {
   console.log(movie);
   return (
-    <Link
-      href=""
+    <div
       className="rounded-md p-3 bg-gray-600 text-white border-3 border-gray-700 hover:scale-[102%] transform transition-all duration-300"
     >
       <h4 className="text-xl">
@@ -97,7 +96,7 @@ const DashboardMovieCard = ({ movie, onDelete, onEdit }) => {
     starCast
  
 } */}
-    </Link>
+    </div>
   );
 };
 

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState, createContext } from "react";
+import base_url from "../links/BASE_URL";
+import axios from "axios";
 
 // Create the context
 export const AllMoviesContext = createContext([]);
@@ -12,34 +14,55 @@ const AllMoviesProvider = ({ children }) => {
 
   // Trending Movies Data
   useEffect(() => {
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYTBjOGY3OTQzOGNkZTdmMGU4ZTg3OGUwZGVjNGI1MCIsInN1YiI6IjY0YjQyZDY2MGJiMDc2MDBjYWY5MThkOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Of8UeBjQUXHKvcYcq9cjoeM-zzrSJrab1wW-ZZ1SeI8",
-      },
+    
+
+    // Fetch all movies
+    const fetchMovies = async () => {
+      try {
+        const response = await axios.get(`${base_url}/movies`);
+        setMovieData(response.data);
+
+        console.log(response.data)
+
+      } catch (error) {
+        console.error("Error fetching Movies:", error);
+      }
     };
+    fetchMovies();
 
-    fetch("https://api.themoviedb.org/3/trending/movie/day", options)
-      .then((response) => response.json())
-      .then((response) => {
-        setMovieData(response.results);
-      })
 
-      .catch((err) => console.error(err));
+
+    // const options = {
+    //   method: "GET",
+    //   headers: {
+    //     accept: "application/json",
+    //     Authorization:
+    //       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYTBjOGY3OTQzOGNkZTdmMGU4ZTg3OGUwZGVjNGI1MCIsInN1YiI6IjY0YjQyZDY2MGJiMDc2MDBjYWY5MThkOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Of8UeBjQUXHKvcYcq9cjoeM-zzrSJrab1wW-ZZ1SeI8",
+    //   },
+    // };
+
+    // fetch("https://api.themoviedb.org/3/trending/movie/day", options)
+    //   .then((response) => response.json())
+    //   .then((response) => {
+    //     setMovieData(response.results);
+    //   })
+
+    //   .catch((err) => console.error(err));
   }, []);
 
-  //   film Industries
-  useEffect(() => {
-    fetch("/filmIndustries.json")
-      .then((response) => response.json())
-      .then((response) => {
-        setFilmIndustries(response.cinemas);
-      })
 
-      .catch((err) => console.error(err));
-  }, []);
+  // Fetch Language
+  const fetchLanguage = async () => {
+    try {
+      const response = await axios.get(`${base_url}/industry`);
+      setFilmIndustries(response.data);
+    } catch (error) {
+      console.error("Error fetching Language:", error);
+    }
+  };
+  fetchLanguage();
+
+
 
   //   Favorite Movies
   useEffect(() => {
@@ -56,10 +79,12 @@ const AllMoviesProvider = ({ children }) => {
       .then((response) => response.json())
       .then((response) => {
         setFavoriteMovieData(response.results);
-        console.log(response, "_____response_____");
       })
       .catch((err) => console.error(err));
   }, []);
+
+
+
 
   // Exported Data
   const movieDataInfo = {

@@ -13,32 +13,32 @@ import {
 const menus = [
   {
     name: "Home",
-    path: "home",
+    path: "/dashboard/home",
     icon: <FaHome className="text-white" />,
   },
   {
     name: "Add cinemas",
-    path: "add_cinemas",
+    path: "/dashboard/add_cinemas",
     icon: <FaFolderPlus className="text-white" />,
   },
   {
     name: "All cinemas",
-    path: "all_cinemas",
+    path: "/dashboard/all_cinemas",
     icon: <FaFilm className="text-white" />,
   },
   {
     name: "Add genre",
-    path: "add_genre",
+    path: "/dashboard/add_genre",
     icon: <FaIcons className="text-white" />,
   },
   {
     name: "Add industry",
-    path: "add_industry",
+    path: "/dashboard/add_industry",
     icon: <FaHospital className="text-white" />,
   },
   {
     name: "Add language",
-    path: "add_language",
+    path: "/dashboard/add_language",
     icon: <FaFileMedical className="text-white" />,
   },
 ];

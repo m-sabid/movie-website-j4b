@@ -59,3 +59,18 @@
     transform: scale(1.5);
   }
 }
+
+/* animate-opacityAnimation */
+.animate-opacityAnimation {
+  animation: opacityAnimation 1.5s linear infinite;
+}
+
+@keyframes opacityAnimation {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
