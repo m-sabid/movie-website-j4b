@@ -104,7 +104,7 @@ const Page = ({ params }) => {
           </div>
           {/*  */}
           {/*  */}
-          <div className="w-full h-[200vh] col-span-1 md:col-span-2 relative my-2 rounded-md overflow-hidden">
+          <div className="w-full h-[150vh] md:h-[200vh] col-span-1 md:col-span-2 relative my-2 rounded-md overflow-hidden">
             <Image
               src={moByID.screenShort}
               alt={moByID.movieName}
