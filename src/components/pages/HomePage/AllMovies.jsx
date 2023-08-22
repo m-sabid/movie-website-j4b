@@ -15,7 +15,7 @@ const AllMovies = ({ movie }) => {
   };
 
   return (
-    <Link href={`/${movie._id}`}>
+    <Link href={`/movies/${movie._id}`}>
       <div
         className="min-h-[50vh] relative bg-gray-600 rounded-md overflow-hidden"
         onMouseEnter={handleHover}

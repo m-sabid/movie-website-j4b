@@ -2,8 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const DashboardMovieCard = ({ movie, onDelete, onEdit }) => {
-  console.log(movie);
+const DashboardMovieCard = ({ movie, onDelete }) => {
   return (
     <div
       className="rounded-md p-3 bg-gray-600 text-white border-3 border-gray-700 hover:scale-[102%] transform transition-all duration-300"

@@ -67,7 +67,6 @@ const AllCinemas = () => {
               key={index}
               movie={movie}
               onDelete={() => handleDeleteMovie(movie._id)}
-              onEdit={() => handelEdit(movie._id)}
             />
           ))}
         </div>

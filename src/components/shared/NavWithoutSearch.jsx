@@ -1,8 +1,8 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import SearchBarOnHeroSection from "./SearchBarOnHeroSection";
+import SearchBarOnHeroSection from "../pages/HomePage/SearchBarOnHeroSection";
 
-const SecondaryNav = ({ onSearch }) => {
+const NavWithoutSearch = () => {
   const [isSticky, setIsSticky] = useState(false);
 
   useEffect(() => {
@@ -69,13 +69,6 @@ const SecondaryNav = ({ onSearch }) => {
           <Link href="/" className="btn btn-ghost normal-case text-xl">
             J4B Movies
           </Link>
-          {isSticky ? (
-            <div className="hidden md:flex">
-              <SearchBarOnHeroSection onSearch={onSearch} isSticky={isSticky} />
-            </div>
-          ) : (
-            ""
-          )}
         </div>
         <div className="navbar-center hidden lg:flex">
           {/* <ul className="menu menu-horizontal px-1">
@@ -103,19 +96,9 @@ const SecondaryNav = ({ onSearch }) => {
         <div className="navbar-end">
           <a className="btn bg-red-300">Login</a>
         </div>
-        {isSticky ? (
-          <div className="md:hidden fixed top-16">
-            <SearchBarOnHeroSection
-              onSearch={onSearch}
-              isSticky={isSticky}
-            />
-          </div>
-        ) : (
-          ""
-        )}
       </div>
     </>
   );
 };
 
-export default SecondaryNav;
+export default NavWithoutSearch;
