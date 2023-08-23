@@ -21,9 +21,6 @@ const AllMoviesProvider = ({ children }) => {
       try {
         const response = await axios.get(`${base_url}/movies`);
         setMovieData(response.data);
-
-        console.log(response.data)
-
       } catch (error) {
         console.error("Error fetching Movies:", error);
       }

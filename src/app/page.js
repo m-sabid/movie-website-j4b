@@ -21,9 +21,7 @@ export default function Home() {
   const [searchResults, setSearchResults] = useState([]);
   const [showNoResults, setShowNoResults] = useState(false); // New state to track if no results found
 
-  const startIdx = (currentPage - 1) * itemsPerPage;
-  const endIdx = startIdx + itemsPerPage;
-
+  
   useEffect(() => {
     setIsLoading(false);
   }, [movieData]);
@@ -38,13 +36,25 @@ export default function Home() {
     const results = searchValue
       ? movieData.filter((movie) =>
           movie.movieName.toLowerCase().includes(searchValue.toLowerCase())
-        )
+          )
       : [];
 
     setSearchResults(results);
     setCurrentPage(1);
     setShowNoResults(results.length === 0 && searchValue !== ""); // Set showNoResults based on the length of results and non-empty searchValue
   };
+
+  // Extract the industry values from movieData array
+  const movieIndustries = movieData.map(movie => movie.industry);
+
+  // Filter filmIndustries based on matching industryName values
+  const matchingIndustries = filmIndustries.filter(industry => {
+    return movieIndustries.some(movieIndustry => movieIndustry === industry.industryName);
+  });
+
+  // Pagination
+  const startIdx = (currentPage - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
 
   let moviesToShow;
   if (searchResults.length > 0) {
@@ -90,8 +100,8 @@ export default function Home() {
             </div>
           </div>
 
-          {filmIndustries?.length > 0 ? (
-            filmIndustries?.map((industry) => (
+          {matchingIndustries?.length > 0 ? (
+            matchingIndustries?.map((industry) => (
               <div key={industry._id}>
                 <MovieCategoryHeader
                   title={industry.industryName}
@@ -102,7 +112,7 @@ export default function Home() {
                     <p>No movie found.</p>
                   ) : (
                     // Filter movies based on the industry and then map through them
-                    movieData
+                    moviesToShow
                       .filter(
                         (movie) => movie.industry === industry.industryName
                       )

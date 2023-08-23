@@ -101,14 +101,13 @@ const SecondaryNav = ({ onSearch }) => {
           </ul> */}
         </div>
         <div className="navbar-end">
-          <a className="btn bg-red-300">Login</a>
+          <Link href={"/signup"} className="btn bg-red-300">
+            Login
+          </Link>
         </div>
         {isSticky ? (
           <div className="md:hidden fixed top-16">
-            <SearchBarOnHeroSection
-              onSearch={onSearch}
-              isSticky={isSticky}
-            />
+            <SearchBarOnHeroSection onSearch={onSearch} isSticky={isSticky} />
           </div>
         ) : (
           ""
