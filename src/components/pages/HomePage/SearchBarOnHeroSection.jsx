@@ -1,43 +1,54 @@
 import { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FiMic } from "react-icons/fi";
+import { useRouter } from "next/navigation";
 
 const SearchBarOnHeroSection = ({ onSearch, isSticky }) => {
   const [searchValue, setSearchValue] = useState("");
   const [isListening, setIsListening] = useState(false);
+  const router = useRouter();
 
-  const handleSearchChange = (e) => {
-    const searchValue = e.target.value;
-    setSearchValue(searchValue);
-    onSearch(searchValue);
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchValue) {
+      onSearch(searchValue);
+      router.push("#all_movies"); // Use router.push to navigate
+    }
   };
 
   const handleVoiceSearch = (e) => {
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault();
 
-    const recognition = new window.webkitSpeechRecognition(); // Create an instance of SpeechRecognition
-    recognition.lang = "en-US"; // Set the language for voice recognition
+    const recognition = new window.webkitSpeechRecognition();
+    recognition.lang = "en-US";
 
-    // Event handler for speech recognition result
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
       setSearchValue(transcript);
       onSearch(transcript);
+      router.push("#all_movies"); // Use router.push to navigate
     };
 
-    setIsListening(true); // Update the listening state
-
-    // Start listening for speech input
+    setIsListening(true);
     recognition.start();
 
-    // Event handler for speech recognition end
     recognition.onend = () => {
-      setIsListening(false); // Update the listening state
+      setIsListening(false);
     };
   };
 
+  
+  const handleInputChange = (e) => {
+    const newValue = e.target.value;
+    setSearchValue(newValue);
+    onSearch(newValue); 
+  };
+
   return (
-    <form className="w-full flex items-center justify-center">
+    <form
+      className="w-full flex items-center justify-center"
+      onSubmit={handleSearchSubmit}
+    >
       <div
         className={`relative flex items-center ${
           isSticky ? "w-full" : "w-4/5"
@@ -49,14 +60,14 @@ const SearchBarOnHeroSection = ({ onSearch, isSticky }) => {
           type="text"
           placeholder="Search..."
           value={searchValue}
-          onChange={handleSearchChange}
+          onChange={handleInputChange}
         />
-        <button
-          className="p-2 mx-3 rounded-full bg-blue-200 text-gray-600 hover:bg-blue-400 focus:outline-none"
-          onClick={handleVoiceSearch} // Handle voice search button click
+        <span
+          className="p-2 mx-3 rounded-full bg-blue-200 text-gray-600 cursor-pointer hover:bg-blue-400 focus:outline-none"
+          onClick={handleVoiceSearch}
         >
           {isListening ? "Listening..." : <FiMic className="h-5 w-5" />}
-        </button>
+        </span>
         <button
           className={`p-3 rounded-full bg-blue-500 hover:bg-blue-600 text-white ${
             searchValue ? "cursor-pointer" : "cursor-not-allowed"

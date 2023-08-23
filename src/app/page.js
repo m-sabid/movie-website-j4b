@@ -37,7 +37,7 @@ export default function Home() {
       ? movieData.filter((movie) =>
           movie.movieName.toLowerCase().includes(searchValue.toLowerCase())
           )
-      : [];
+      : movieData;
 
     setSearchResults(results);
     setCurrentPage(1);
@@ -117,7 +117,7 @@ export default function Home() {
                         (movie) => movie.industry === industry.industryName
                       )
                       .map((movie, index) => (
-                        <div className="rounded-md" key={index}>
+                        <div className="rounded-md" id="all_movies" key={index}>
                           {isLoading ? (
                             <AnimatedSkeleton count={1} />
                           ) : (
