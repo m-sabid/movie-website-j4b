@@ -91,7 +91,7 @@ const SidebarNav = ({ children }) => {
         </div>
         <div className="drawer-side">
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-          <ul className="menu p-4 w-80 h-full bg-gray-600 text-white">
+          <ul className="menu p-4 md:w-80 w-fit h-full bg-gray-600 text-white">
             <Link
               href={"/"}
               className="text-2xl hidden lg:flex justify-center items-center"
@@ -101,7 +101,10 @@ const SidebarNav = ({ children }) => {
             <div className="divider hidden lg:flex"></div>
             {/* Sidebar content here */}
             {menus.map((menu, index) => (
-              <li key={index} className="border-b-2 border-gray-700 rounded-lg my-2 shadow-lg">
+              <li
+                key={index}
+                className="border-b-2 border-gray-700 rounded-lg my-2 shadow-lg"
+              >
                 <Link href={menu.path}>
                   <span className="text-xl">{menu.icon}</span>
                   {menu.name}

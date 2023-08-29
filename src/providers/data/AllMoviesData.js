@@ -14,20 +14,20 @@ const AllMoviesProvider = ({ children }) => {
 
   // Trending Movies Data
   useEffect(() => {
-    
-
     // Fetch all movies
     const fetchMovies = async () => {
       try {
         const response = await axios.get(`${base_url}/movies`);
-        setMovieData(response.data);
+
+        // Reverse the order of the response data array
+        const reversedMovies = response.data.reverse();
+
+        setMovieData(reversedMovies);
       } catch (error) {
         console.error("Error fetching Movies:", error);
       }
     };
     fetchMovies();
-
-
 
     // const options = {
     //   method: "GET",
@@ -47,19 +47,18 @@ const AllMoviesProvider = ({ children }) => {
     //   .catch((err) => console.error(err));
   }, []);
 
-
-  // Fetch Language
-  const fetchLanguage = async () => {
-    try {
-      const response = await axios.get(`${base_url}/industry`);
-      setFilmIndustries(response.data);
-    } catch (error) {
-      console.error("Error fetching Language:", error);
-    }
-  };
-  fetchLanguage();
-
-
+  // Fetch Industry
+  useEffect(() => {
+    const fetchIndustry = async () => {
+      try {
+        const response = await axios.get(`${base_url}/industry`);
+        setFilmIndustries(response.data);
+      } catch (error) {
+        console.error("Error fetching Industry:", error);
+      }
+    };
+    fetchIndustry();
+  }, []);
 
   //   Favorite Movies
   useEffect(() => {
@@ -79,9 +78,6 @@ const AllMoviesProvider = ({ children }) => {
       })
       .catch((err) => console.error(err));
   }, []);
-
-
-
 
   // Exported Data
   const movieDataInfo = {

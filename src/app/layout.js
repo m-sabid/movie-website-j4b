@@ -6,6 +6,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import ReactQueryProviders from "@/providers/ReactQuerySetup/ReactQueryProviders";
 import AllMoviesProvider from "@/providers/data/AllMoviesData";
+import AuthProvider from "@/providers/firebase/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,11 +18,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <ReactQueryProviders>
-        <AllMoviesProvider>
-          <body className={inter.className}>{children}</body>
-        </AllMoviesProvider>
-      </ReactQueryProviders>
+      <AuthProvider>
+        <ReactQueryProviders>
+          <AllMoviesProvider>
+            <body className={inter.className}>{children}</body>
+          </AllMoviesProvider>
+        </ReactQueryProviders>
+      </AuthProvider>
     </html>
   );
 }

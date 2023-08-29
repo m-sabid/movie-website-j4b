@@ -94,7 +94,7 @@ const NavWithoutSearch = () => {
           </ul> */}
         </div>
         <div className="navbar-end">
-          <a className="btn bg-red-300">Login</a>
+          <Link href={"/signup"} className="btn bg-red-300">Login</Link>
         </div>
       </div>
     </>
