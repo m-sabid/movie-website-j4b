@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FiMic } from "react-icons/fi";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,8 @@ const SearchBarOnHeroSection = ({ onSearch, isSticky }) => {
     e.preventDefault();
     if (searchValue) {
       onSearch(searchValue);
+      // Store the input value in local storage
+      sessionStorage.setItem("searchValue", searchValue);
       router.push("#all_movies"); // Use router.push to navigate
     }
   };
@@ -26,6 +28,10 @@ const SearchBarOnHeroSection = ({ onSearch, isSticky }) => {
       const transcript = event.results[0][0].transcript;
       setSearchValue(transcript);
       onSearch(transcript);
+
+      // Store the input value in local storage
+      sessionStorage.setItem("searchValue", transcript);
+
       router.push("#all_movies"); // Use router.push to navigate
     };
 
@@ -37,11 +43,22 @@ const SearchBarOnHeroSection = ({ onSearch, isSticky }) => {
     };
   };
 
-  
+  useEffect(() => {
+    // Fetch the stored value from local storage
+    const storedValue = sessionStorage.getItem("searchValue");
+    if (storedValue) {
+      setSearchValue(storedValue);
+      onSearch(storedValue);
+    }
+  }, [onSearch]);
+
   const handleInputChange = (e) => {
     const newValue = e.target.value;
     setSearchValue(newValue);
-    onSearch(newValue); 
+    onSearch(newValue);
+
+    // Store the input value in local storage
+    sessionStorage.setItem("searchValue", newValue);
   };
 
   return (

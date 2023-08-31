@@ -13,7 +13,6 @@ const IndividualIndustry = ({ industry, movieData, isLoading }) => {
   );
 
   if (industryMovies.length === 0) {
-    // If there are no movies for this industry, return null (don't render anything)
     return null;
   }
 
