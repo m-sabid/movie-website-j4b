@@ -4,7 +4,6 @@ import SearchBarOnHeroSection from "./SearchBarOnHeroSection";
 
 const SecondaryNav = ({ onSearch }) => {
   const [isSticky, setIsSticky] = useState(false);
-
   useEffect(() => {
     const handleScroll = () => {
       setIsSticky(window.pageYOffset >= window.innerHeight);
@@ -69,12 +68,10 @@ const SecondaryNav = ({ onSearch }) => {
           <Link href="/" className="btn btn-ghost normal-case text-xl">
             J4B Movies
           </Link>
-          {isSticky ? (
+          {isSticky && (
             <div className="hidden md:flex">
               <SearchBarOnHeroSection onSearch={onSearch} isSticky={isSticky} />
             </div>
-          ) : (
-            ""
           )}
         </div>
         <div className="navbar-center hidden lg:flex">
@@ -105,12 +102,10 @@ const SecondaryNav = ({ onSearch }) => {
             Login
           </Link>
         </div>
-        {isSticky ? (
+        {isSticky && (
           <div className="md:hidden fixed top-16">
             <SearchBarOnHeroSection onSearch={onSearch} isSticky={isSticky} />
           </div>
-        ) : (
-          ""
         )}
       </div>
     </>
