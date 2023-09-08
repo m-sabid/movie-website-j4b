@@ -6,7 +6,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 const Page = ({ params }) => {
-  console.log(params.movie);
   const [moByID, setMoByID] = useState([]);
   const [allLanguage, setAllLanguage] = useState([]);
   const [allGenre, setAllGenre] = useState([]);

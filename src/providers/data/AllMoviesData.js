@@ -79,10 +79,13 @@ const AllMoviesProvider = ({ children }) => {
       .catch((err) => console.error(err));
   }, []);
 
+  
+
   // Exported Data
   const movieDataInfo = {
     movieData,
     filmIndustries,
+    setMovieData,
   };
 
   return (

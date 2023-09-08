@@ -1,28 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import DashboardMovieCard from "@/components/shared/DashboardMovieCard";
 import base_url from "@/providers/links/BASE_URL";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { AllMoviesContext } from "@/providers/data/AllMoviesData";
 
 const AllCinemas = () => {
-  const [movieData, setMovieData] = useState([]);
+  const { movieData, setMovieData } = useContext(AllMoviesContext);
+
+  // const [movieData, setMovieData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-
-  useEffect(() => {
-    const fetchCinemas = async () => {
-      try {
-        const response = await axios.get(`${base_url}/movies`);
-        setMovieData(response.data); // Assuming response.data is the array of Movies
-      } catch (error) {
-        console.error("Error fetching Movies:", error);
-      }
-    };
-
-    fetchCinemas();
-  }, []);
 
   // Delete movie
   const handleDeleteMovie = async (movieId) => {
