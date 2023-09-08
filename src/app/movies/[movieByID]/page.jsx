@@ -26,6 +26,7 @@ const Page = ({ params }) => {
     fetchMovies();
   }, [params.movieByID]);
 
+  
   return (
     <div>
       <NavWithoutSearch />
@@ -83,6 +84,9 @@ const Page = ({ params }) => {
                           {dt}
                         </span>
                       ))}
+                    </li>
+                    <li className="bg-gray-700 mb-1 py-2 px-1 rounded-md">
+                      <b>Star Cast:</b> {moByID.starCast}
                     </li>
                     <li className="bg-gray-700 mb-1 py-2 px-1 rounded-md">
                       <b>IMDB Rating:</b> {moByID.imdbRating}
