@@ -31,16 +31,16 @@ const AllMovies = ({ movie }) => {
           />
         </div>
         <div
-          className={`p-2 absolute w-full bg-gray-800 text-white ${
+          className={`p-2 absolute w-full bg-gray-800 bg-opacity-90 text-white ${
             hovered
               ? "transform bottom-0 transition-all duration-500"
-              : "transform translate-y-full bottom-12 transition-all duration-300"
+              : "transform translate-y-full bottom-16 transition-all duration-300"
           }`}
         >
           <h3 className="font-semibold text-center py-2">
             {movie.movieName.length <= 80
               ? movie.movieName
-              : `${movie.movieName.substring(0, 80)}...`}
+              : `${movie.movieName.substring(0, 60)}...`}
           </h3>
           <hr />
           {movie.genre.map((dt, index) => (

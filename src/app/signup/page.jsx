@@ -89,8 +89,6 @@ const Page = () => {
       const photoResponse = await axios.post(imageHostingUrl, profileFormData);
       const profilePicture = photoResponse.data.data.url;
 
-      await createUser(email, password, name, profilePicture);
-
       const saveUser = {
         name,
         email,
@@ -103,8 +101,9 @@ const Page = () => {
       }
 
       console.log(saveUser, "___saveUser");
+      await axios.post(`${base_url}/users`, saveUser);
 
-      await axios.post(`http://localhost:5000/users`, saveUser);
+      await createUser(email, password, name, profilePicture);
 
       // reset();
       Swal.fire({
@@ -113,7 +112,7 @@ const Page = () => {
         icon: "success",
         confirmButtonText: "OK",
       }).then(() => {
-        // router.push("/");
+        router.push("/");
       });
     } catch (error) {
       console.error("Error sending user data to server:", error);
@@ -162,7 +161,7 @@ const Page = () => {
   return (
     <>
       <div className="relative min-h-[100vh] flex flex-col items-center justify-center">
-        <div className="fixed top-0 w-full">
+        <div className="fixed top-0 w-full z-50">
           <SecondaryNav />
         </div>
         <div
@@ -175,7 +174,7 @@ const Page = () => {
             minHeight: "100vh",
           }}
         >
-          <div className="relative z-10 min-h-screen bg-black bg-opacity-70"></div>
+          <div className="fixed z-10 min-h-screen w-full bg-black bg-opacity-70"></div>
         </div>
 
         <div className="container mx-auto mt-20">
