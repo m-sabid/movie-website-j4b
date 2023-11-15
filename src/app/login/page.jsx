@@ -4,11 +4,9 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaGoogle } from "react-icons/fa";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
-import Swal from "sweetalert2";
 import { AuthContext } from "@/providers/firebase/AuthProvider";
 import Link from "next/link";
 import SecondaryNav from "@/components/pages/HomePage/SecondaryNav";
-import axios from "axios";
 
 const Login = () => {
   const [passwordError, setPasswordError] = useState("");
@@ -152,8 +150,11 @@ const Login = () => {
                   </button>
                 </div>
                 <div className="text-white my-4">
-                  Don't have an account?{" "}
-                  <Link href="/signup" className="text-blue-500 hover:underline">
+                  Don&apos;t have an account?{" "}
+                  <Link
+                    href="/signup"
+                    className="text-blue-500 hover:underline"
+                  >
                     Sign Up
                   </Link>
                 </div>
