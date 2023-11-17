@@ -1,8 +1,13 @@
+import { AuthContext } from "@/providers/firebase/AuthProvider";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SearchBarOnHeroSection from "../pages/HomePage/SearchBarOnHeroSection";
+import Image from "next/image";
 
 const NavWithoutSearch = () => {
+  const { user } = useContext(AuthContext);
+  console.log(user, "user");
+
   const [isSticky, setIsSticky] = useState(false);
 
   useEffect(() => {
@@ -94,7 +99,41 @@ const NavWithoutSearch = () => {
           </ul> */}
         </div>
         <div className="navbar-end">
-          <Link href={"/signup"} className="btn bg-red-300">Login</Link>
+           {user?.email ? (
+              <div className="dropdown dropdown-end bg-gray-800">
+              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                <div className="w-10 rounded-full">
+                  <Image
+                    alt="Tailwind CSS Navbar component"
+                    src={user?.profilePicture}
+                    width={100}
+                    height={100}
+                  />
+                </div>
+              </label>
+              <ul
+                tabIndex={0}
+                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content rounded-box w-52 bg-gray-800"
+              >
+                <li>
+                  <a className="justify-between">
+                    Profile
+                    <span className="badge">New</span>
+                  </a>
+                </li>
+                <li>
+                  <a>Settings</a>
+                </li>
+                <li>
+                  <a>Logout</a>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <Link href={"/login"} className="btn bg-red-300">
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </>

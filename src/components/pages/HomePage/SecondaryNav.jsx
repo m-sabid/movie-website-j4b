@@ -1,9 +1,15 @@
+import { AuthContext } from "@/providers/firebase/AuthProvider";
+import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SearchBarOnHeroSection from "./SearchBarOnHeroSection";
 
 const SecondaryNav = ({ onSearch }) => {
+  const { user } = useContext(AuthContext);
   const [isSticky, setIsSticky] = useState(false);
+
+  const { logout } = useContext(AuthContext);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsSticky(window.pageYOffset >= window.innerHeight);
@@ -98,9 +104,41 @@ const SecondaryNav = ({ onSearch }) => {
           </ul> */}
         </div>
         <div className="navbar-end">
-          <Link href={"/signup"} className="btn bg-red-300">
-            Login
-          </Link>
+          {user?.email ? (
+            <div className="dropdown dropdown-end">
+              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                <div className="w-10 rounded-full">
+                  <Image
+                    alt="Tailwind CSS Navbar component"
+                    src={user?.profilePicture}
+                    width={100}
+                    height={100}
+                  />
+                </div>
+              </label>
+              <ul
+                tabIndex={0}
+                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 bg-gray-800"
+              >
+                <li>
+                  <a className="justify-between">
+                    Profile
+                    <span className="badge">New</span>
+                  </a>
+                </li>
+                <li>
+                  <a>Settings</a>
+                </li>
+                <li>
+                  <button onClick={logout}>Logout</button>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <Link href={"/login"} className="btn bg-red-300">
+              Login
+            </Link>
+          )}
         </div>
         {isSticky && (
           <div className="md:hidden fixed top-16">
