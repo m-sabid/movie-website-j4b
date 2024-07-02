@@ -17,11 +17,11 @@ const AllMovies = ({ movie }) => {
   return (
     <Link href={`/movies/${movie._id}`}>
       <div
-        className="min-h-[50vh] relative bg-gray-600 rounded-md overflow-hidden"
+        className="min-h-[40vh] relative bg-gray-600 rounded-md overflow-hidden"
         onMouseEnter={handleHover}
         onMouseLeave={handleHoverOut}
       >
-        <div className="w-full min-h-[50vh] relative">
+        <div className="w-full min-h-[40vh] relative">
           <Image
             src={movie.poster}
             alt="Description of the image"
@@ -38,27 +38,32 @@ const AllMovies = ({ movie }) => {
           }`}
         >
           <h3 className="font-semibold text-center py-2">
-            {movie.movieName.length <= 80
+            {movie.movieName.length <= 40
               ? movie.movieName
-              : `${movie.movieName.substring(0, 60)}...`}
+              : `${movie.movieName.substring(0, 40)}...`}
           </h3>
           <hr />
-          {movie.genre.map((dt, index) => (
-            <span
-              key={index}
-              className="bg-gray-700 rounded-sm mr-1 uppercase text-sm text-white"
-            >
-              {dt},
-            </span>
-          ))}
-          <br />
-          <b>Country:</b> {movie.country}
-          <br />
-          <b>Directed By:</b> {movie.directedBy}
-          <br />
-          <b>IMDB Rating:</b> {movie.imdbRating}
-          <br />
-          <b>Industry:</b> {movie.industry}
+          <div className="uppercase text-xs text-white flex flex-wrap">
+            {movie.genre.map((dt, index) => (
+              <span key={index} className="bg-gray-700 rounded-sm mr-1 my-[2px] px-1">
+                {dt},
+              </span>
+            ))}
+          </div>
+          <ul className="text-xs">
+            <li>
+              <b>Country:</b> {movie.country}
+            </li>
+            <li>
+              <b>Directed By:</b> {movie.directedBy}
+            </li>
+            <li>
+              <b>IMDB Rating:</b> {movie.imdbRating}
+            </li>
+            <li>
+              <b>Industry:</b> {movie.industry}
+            </li>
+          </ul>
         </div>
         {/*  */}
       </div>

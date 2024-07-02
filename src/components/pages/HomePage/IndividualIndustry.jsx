@@ -4,7 +4,7 @@ import MovieCategoryHeader from "@/components/shared/MovieCategoryHeader";
 import AnimatedSkeleton from "@/components/shared/AnimatedSkeleton";
 
 const IndividualIndustry = ({ industry, movieData, isLoading }) => {
-  const itemsPerPage = 10;
+  const itemsPerPage = 12;
   const [industryPage, setIndustryPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
@@ -64,11 +64,11 @@ const IndividualIndustry = ({ industry, movieData, isLoading }) => {
         title={industry.industryName}
         className="col-span-1 md:col-span-5"
       />
-      <div className="md:px-5 px-2 grid grid-cols-1 md:grid-cols-5 gap-4">
+      <div className="md:px-5 px-2 grid grid-cols-2 md:grid-cols-6 gap-4">
         {loading
           ? Array.from({ length: itemsPerPage }).map((_, index) => (
               <div className="rounded-md" key={index}>
-                <AnimatedSkeleton count={3} />
+                <AnimatedSkeleton count={2} />
               </div>
             ))
           : industryMovies
