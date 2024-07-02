@@ -54,7 +54,7 @@ export default function Home() {
           <div className="md:pb-0 pb-24">
             <JoinTelegram />
           </div>
-          <div className="hidden md:flex">
+          <div className="md:flex">
             <SocialLinksForHeroSection />
           </div>
           <SecondaryNav onSearch={handleSearch} />

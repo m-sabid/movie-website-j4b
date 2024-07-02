@@ -4,9 +4,9 @@ import { FaTelegram } from "react-icons/fa";
 const JoinTelegram = () => {
   return (
     <div>
-      <div className="flex flex-col justify-center items-center mb-20 text-white">
-        <h4 className="text-xl bg-gray-100 bg-opacity-30 p-2 rounded-full my-2">
-          For any movie request
+      <div className="flex flex-col justify-center items-center mb-10 text-white">
+        <h4 className="text-xl bg-gray-100 backdrop-blur-lg bg-opacity-40 p-2 rounded-md m-2 font-serif">
+          For any movie 👇 request
         </h4>
         <Link
           href="https://t.me/movies_ruquest_ars"

@@ -32,11 +32,11 @@ const SocialLinksForHeroSection = () => {
       {SocialMediaData.map((item, index) => (
         <Link href="/" key={index} className="flex flex-wrap flex-col items-center md:mx-2 hover:bg-gray-100 hover:bg-opacity-25 hover:rounded-md md:p-4">
           <p
-            className="bg-blue-300 p-2 rounded-md text-center inline-block"
+            className="bg-blue-300 text-black p-2 rounded-md text-center inline-block"
           >
             {item.icon}
           </p>
-          <p className="text-white">{item.name}</p>
+          <p className="hidden md:block text-white">{item.name}</p>
         </Link>
       ))}
     </div>
