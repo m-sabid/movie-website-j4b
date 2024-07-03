@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AllMovies from "@/components/pages/HomePage/AllMovies";
 import MovieCategoryHeader from "@/components/shared/MovieCategoryHeader";
 import AnimatedSkeleton from "@/components/shared/AnimatedSkeleton";

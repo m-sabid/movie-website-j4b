@@ -12,6 +12,8 @@ import { AllMoviesContext } from "@/providers/data/AllMoviesData";
 import MainNav from "@/components/pages/HomePage/MainNav";
 import IndividualIndustry from "@/components/pages/HomePage/IndividualIndustry";
 import AnimatedSkeleton from "@/components/shared/AnimatedSkeleton";
+import MostWatchedSlider from "@/components/pages/HomePage/MostWatchedSlider";
+import ForYouSlider from "@/components/pages/HomePage/ForYouSlider";
 
 export default function Home() {
   const { movieData, filmIndustries } = useContext(AllMoviesContext);
@@ -63,11 +65,17 @@ export default function Home() {
 
       <div className="bg-gray-500 mx-auto min-h-screen pb-8 mt-[-20px]">
         <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-5 p-2 md:p-8">
-            <div className="md:col-span-3 h-[50vh] rounded-lg md:h-[50vh] overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 my-5 p-2 md:p-8">
+            <div className="md:col-span-3 h-[60vh] rounded-lg md:h-[60vh] overflow-hidden">
               <RecentMovieSlider />
             </div>
-            <div className="md:col-span-1 h-[50vh] md:h-[50vh] overflow-hidden">
+            <div className="md:col-span-3 h-[60vh] rounded-lg md:h-[60vh] overflow-hidden">
+              <MostWatchedSlider />
+            </div>
+            <div className="md:col-span-3 h-[60vh] rounded-lg md:h-[60vh] overflow-hidden">
+              <ForYouSlider />
+            </div>
+            <div className="md:col-span-3 h-[60vh] rounded-lg md:h-[60vh] overflow-hidden">
               <HowToDownload />
             </div>
           </div>

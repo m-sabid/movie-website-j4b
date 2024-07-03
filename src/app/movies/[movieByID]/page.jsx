@@ -26,7 +26,6 @@ const Page = ({ params }) => {
     fetchMovies();
   }, [params.movieByID]);
 
-  
   return (
     <div>
       <NavWithoutSearch />
@@ -45,17 +44,17 @@ const Page = ({ params }) => {
                 </sup>
               </div>
               <hr />
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+              <div className="grid grid-cols-1 md:grid-cols-6 gap-2">
                 <div className="w-full h-[80vh] col-span-1 md:col-span-2 relative my-2 rounded-md overflow-hidden">
                   <Image
                     src={moByID.poster}
                     alt={moByID.movieName}
                     layout="fill"
                     objectFit="cover"
-                    objectPosition="top"
+                    objectPosition="center"
                   />
                 </div>
-                <div className="col-span-1 md:col-span-2">
+                <div className="col-span-1 md:col-span-4">
                   <ul className="flex flex-col flex-wrap gap-2 my-2">
                     <li className="bg-gray-700 mb-1 py-2 px-1 rounded-md">
                       <b>Country:</b> {moByID.country}
@@ -110,7 +109,7 @@ const Page = ({ params }) => {
                   </div>
                 </div>
               </div>
-              <div className="w-full h-[100vh] md:h-[200vh] col-span-1 md:col-span-2 relative my-2 rounded-md overflow-hidden">
+              <div className="w-full h-[100vh] md:h-[450vh] col-span-1 md:col-span-2 relative my-2 rounded-md overflow-hidden">
                 <Image
                   src={moByID.screenShort}
                   alt={moByID.movieName}

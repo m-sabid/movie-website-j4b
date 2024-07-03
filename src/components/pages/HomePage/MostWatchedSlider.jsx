@@ -6,17 +6,16 @@ import { AllMoviesContext } from "@/providers/data/AllMoviesData";
 import { FiPlayCircle } from "react-icons/fi";
 import Link from "next/link";
 
-const RecentMovieSlider = () => {
+const MostWatchedSlider = () => {
   const { movieData } = useContext(AllMoviesContext);
 
-  // Get the current year
-  const currentYear = new Date().getFullYear();
+  // Function to shuffle the array
+  const shuffleArray = (array) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
 
-  // Filter the movies to get the ones released in the last 5 years
-  const recentMovies = movieData
-    .filter((movie) => movie.releaseYear >= currentYear - 5)
-    .sort((a, b) => b.releaseYear - a.releaseYear)
-    .slice(0, 5);
+  // Shuffle the movie data and take the first 5 elements
+  const randomMovies = shuffleArray(movieData).slice(0, 5);
 
   return (
     <div className="swiper-container relative" style={{ width: "100%", height: "100%" }}>
@@ -24,7 +23,7 @@ const RecentMovieSlider = () => {
         className="absolute top-0 left-0 w-full text-white text-2xl font-bold p-2 z-10"
         style={{ background: "rgba(0, 0, 0, 0.5)" }}
       >
-        <h3 className="border-b-2">Most Recent</h3>
+        <h3 className="border-b-2">Most Watched</h3>
       </div>
       <Swiper
         spaceBetween={30}
@@ -41,7 +40,7 @@ const RecentMovieSlider = () => {
         className="swiper-wrapper"
         style={{ width: "100%", height: "100%" }}
       >
-        {recentMovies.map((movie, index) => (
+        {randomMovies.map((movie, index) => (
           <SwiperSlide
             key={index}
             className="swiper-slide"
@@ -77,4 +76,4 @@ const RecentMovieSlider = () => {
   );
 };
 
-export default RecentMovieSlider;
+export default MostWatchedSlider;
