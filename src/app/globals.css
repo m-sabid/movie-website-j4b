@@ -74,3 +74,19 @@
     opacity: 1;
   }
 }
+
+/* Scrollbar css */
+::-webkit-scrollbar {
+  background-color: #000000;
+  width: 10px;
+}
+
+/* ::-webkit-scrollbar-track {
+  background-color: blue;
+} */
+
+::-webkit-scrollbar-thumb {
+  background-color: blue;
+  height: 20px;
+  width: 20px;
+}

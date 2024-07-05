@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useState, useEffect, useContext } from "react";
 import SearchBarOnHeroSection from "./SearchBarOnHeroSection";
 
-const SecondaryNav = ({ onSearch }) => {
+const SecondaryNav = ({ onSearch, filmIndustries, releaseYear, genres }) => {
   const { user } = useContext(AuthContext);
   const [isSticky, setIsSticky] = useState(false);
 
@@ -32,7 +32,7 @@ const SecondaryNav = ({ onSearch }) => {
       >
         <div className="navbar-start">
           <div className="dropdown">
-            <label tabIndex={0} className="btn btn-ghost lg:hidden">
+            <label tabIndex={0} className="btn btn-ghost">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -48,28 +48,49 @@ const SecondaryNav = ({ onSearch }) => {
                 />
               </svg>
             </label>
-            {/* <ul
+            {/* manus */}
+
+            <ul
               tabIndex={0}
-              className="menu bg-gray-800 menu-sm dropdown-content mt-3 z-[100] p-2 shadow rounded-box w-52"
+              className="block menu rounded-sm bg-gray-800 menu-sm dropdown-content mt-3 z-[100] p-2 shadow w-52 h-[80vh] overflow-y-scroll"
             >
               <li>
-                <a>Item 1</a>
+                <details close>
+                  <summary>Industry</summary>
+                  <ul>
+                    {filmIndustries.map((dt, index) => (
+                      <li key={index} className="capitalize">
+                        <a>{dt.industryName}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
               </li>
               <li>
-                <a>Parent</a>
-                <ul className="p-2">
-                  <li>
-                    <a>Submenu 1</a>
-                  </li>
-                  <li>
-                    <a>Submenu 2</a>
-                  </li>
-                </ul>
+              <details close>
+                  <summary>Release Year</summary>
+                  <ul>
+                    {releaseYear.map((dt, index) => (
+                      <li key={index} className="capitalize">
+                        <a>{dt}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+                {/* 3 */}
+              <details close>
+                  <summary>Release Year</summary>
+                  <ul>
+                    {genres.map((dt, index) => (
+                      <li key={index} className="capitalize">
+                        <a>{dt}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
               </li>
-              <li>
-                <a>Item 3</a>
-              </li>
-            </ul> */}
+            </ul>
+            {/* manus end */}
           </div>
           <Link href="/" className="btn btn-ghost normal-case text-xl">
             J4B Movies

@@ -23,7 +23,7 @@ const ForYouSlider = () => {
         className="absolute top-0 left-0 w-full text-white text-2xl font-bold p-2 z-10"
         style={{ background: "rgba(0, 0, 0, 0.5)" }}
       >
-        <h3 className="border-b-2">Most Watched</h3>
+        <h3 className="border-b-2">Suggested Movies</h3>
       </div>
       <Swiper
         spaceBetween={30}

@@ -36,7 +36,11 @@ export default function Home() {
     setShowNoResults(results.length === 0 && searchValue !== "");
   };
 
+  // movie info
   const movieIndustries = movieData.map((movie) => movie.industry);
+  const releaseYear = Array.from(new Set(movieData.map((movie) => movie.releaseYear))).sort((a, b) => b - a);
+  const genre = Array.from(new Set(movieData.flatMap((movie) => movie.genre))).sort();
+  
 
   const matchingIndustries = filmIndustries.filter((industry) => {
     return movieIndustries.some(
@@ -59,7 +63,11 @@ export default function Home() {
           <div className="md:flex">
             <SocialLinksForHeroSection />
           </div>
-          <SecondaryNav onSearch={handleSearch} />
+          <SecondaryNav
+            filmIndustries={filmIndustries}
+            releaseYear={releaseYear}
+            genres={genre}
+          />
         </div>
       </div>
 

@@ -82,7 +82,7 @@ const MainNav = () => {
         </div>
         <div className="flex-1">
           <Link href={"/"} className="btn btn-ghost normal-case text-xl">
-            J4B MOVIES <sup className="badge badge-primary">Beta v0.1</sup>
+            J4B MOVIES <sup className="badge badge-primary">Beta v0.2.0</sup>
           </Link>
         </div>
         <div className="flex-none">
