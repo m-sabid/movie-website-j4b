@@ -38,8 +38,6 @@ export default function Home() {
 
   // movie info
   const movieIndustries = movieData.map((movie) => movie.industry);
-  const releaseYear = Array.from(new Set(movieData.map((movie) => movie.releaseYear))).sort((a, b) => b - a);
-  const genre = Array.from(new Set(movieData.flatMap((movie) => movie.genre))).sort();
   
 
   const matchingIndustries = filmIndustries.filter((industry) => {
@@ -63,11 +61,7 @@ export default function Home() {
           <div className="md:flex">
             <SocialLinksForHeroSection />
           </div>
-          <SecondaryNav
-            filmIndustries={filmIndustries}
-            releaseYear={releaseYear}
-            genres={genre}
-          />
+          <SecondaryNav />
         </div>
       </div>
 

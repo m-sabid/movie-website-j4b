@@ -97,11 +97,11 @@ const Page = () => {
         profilePicture,
         gender,
         password,
-        confirmPassword
-      }
+        confirmPassword,
+      };
 
       console.log(saveUser, "___saveUser");
-      await axios.post(`${base_url}/users`, saveUser);
+      await axios.post(`${base_url}/users/sing_up`, saveUser);
 
       await createUser(email, password, name, profilePicture);
 
@@ -123,15 +123,17 @@ const Page = () => {
   const handleGoogleSignup = async () => {
     try {
       const result = await googleSignIn();
+      
+      console.log(result, "result___---")
 
       // Access the user's name and email from the Google sign-in result
-      const { displayName, email, profilePicture } = result.user;
+      const { displayName, email, photoURL } = result.user;
 
       // Save the user's name and email to the server or wherever necessary
-      const saveUser = { name: displayName, email, profilePicture };
+      const saveUser = { name: displayName, email, profilePicture: photoURL };
 
       // Send user data to the server
-      fetch(`${base_url}/users`, {
+      fetch(`${base_url}/users/singUp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -154,7 +156,7 @@ const Page = () => {
           console.error("Error sending user data to server:", error);
         });
     } catch (error) {
-      console.error("Error signing up with Google:", error);
+      console.log("Error signing up with Google:", error);
     }
   };
 

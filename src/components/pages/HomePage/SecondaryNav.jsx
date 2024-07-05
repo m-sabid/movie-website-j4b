@@ -3,12 +3,23 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect, useContext } from "react";
 import SearchBarOnHeroSection from "./SearchBarOnHeroSection";
+import { AllMoviesContext } from "@/providers/data/AllMoviesData";
 
-const SecondaryNav = ({ onSearch, filmIndustries, releaseYear, genres }) => {
-  const { user } = useContext(AuthContext);
+const SecondaryNav = ({ onSearch }) => {
+  const { user, movieData, filmIndustries } = useContext(AllMoviesContext);
   const [isSticky, setIsSticky] = useState(false);
-
   const { logout } = useContext(AuthContext);
+
+  // movies data
+  const releaseYear = Array.from(
+    new Set(movieData.map((movie) => movie.releaseYear))
+  ).sort((a, b) => b - a);
+  const genres = Array.from(
+    new Set(movieData.flatMap((movie) => movie.genre))
+  ).sort();
+  const movieIndustries = Array.from(
+    new Set(filmIndustries.flatMap((movie) => movie.industryName))
+  ).sort();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,16 +69,16 @@ const SecondaryNav = ({ onSearch, filmIndustries, releaseYear, genres }) => {
                 <details close>
                   <summary>Industry</summary>
                   <ul>
-                    {filmIndustries.map((dt, index) => (
+                    {movieIndustries.map((dt, index) => (
                       <li key={index} className="capitalize">
-                        <a>{dt.industryName}</a>
+                        <a>{dt}</a>
                       </li>
                     ))}
                   </ul>
                 </details>
               </li>
               <li>
-              <details close>
+                <details close>
                   <summary>Release Year</summary>
                   <ul>
                     {releaseYear.map((dt, index) => (
@@ -78,7 +89,7 @@ const SecondaryNav = ({ onSearch, filmIndustries, releaseYear, genres }) => {
                   </ul>
                 </details>
                 {/* 3 */}
-              <details close>
+                <details close>
                   <summary>Release Year</summary>
                   <ul>
                     {genres.map((dt, index) => (
