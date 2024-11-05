@@ -9,7 +9,7 @@ const JoinTelegram = () => {
           For any movie 👇 request
         </h4>
         <Link
-          href="https://t.me/movies_ruquest_ars"
+          href="https://t.me/j4b_movie_request"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center w-fit justify-center bg-blue-500  text-center py-2 px-4 rounded-md hover:bg-blue-600"

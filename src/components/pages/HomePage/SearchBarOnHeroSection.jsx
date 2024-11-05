@@ -50,7 +50,7 @@ const SearchBarOnHeroSection = ({ onSearch, isSticky }) => {
       setSearchValue(storedValue);
       onSearch(storedValue);
     }
-  }, [onSearch]);
+  }, []);
 
   const handleInputChange = (e) => {
     const newValue = e.target.value;

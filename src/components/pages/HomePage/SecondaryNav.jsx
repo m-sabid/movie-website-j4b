@@ -90,7 +90,7 @@ const SecondaryNav = ({ onSearch }) => {
                 </details>
                 {/* 3 */}
                 <details close>
-                  <summary>Release Year</summary>
+                  <summary>Genre</summary>
                   <ul>
                     {genres.map((dt, index) => (
                       <li key={index} className="capitalize">

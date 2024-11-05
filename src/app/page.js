@@ -38,7 +38,6 @@ export default function Home() {
 
   // movie info
   const movieIndustries = movieData.map((movie) => movie.industry);
-  
 
   const matchingIndustries = filmIndustries.filter((industry) => {
     return movieIndustries.some(
@@ -61,7 +60,7 @@ export default function Home() {
           <div className="md:flex">
             <SocialLinksForHeroSection />
           </div>
-          <SecondaryNav />
+          <SecondaryNav onSearch={handleSearch} />
         </div>
       </div>
 

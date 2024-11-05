@@ -81,7 +81,7 @@ const IndividualIndustry = ({ industry, movieData, isLoading }) => {
                   {isLoading ? (
                     <AnimatedSkeleton count={1} />
                   ) : (
-                    <AllMovies movie={movie} />
+                    <AllMovies movie={movie} /> 
                   )}
                 </div>
               ))}
