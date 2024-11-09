@@ -27,47 +27,48 @@ const MovieCategoryHeader = ({ title }) => {
               />
             </svg>
           </label>
-      
-          <ul
-            tabIndex={0}
-            className="block menu rounded-sm bg-gray-800 menu-sm dropdown-content dropdown-end mt-3 z-[100] p-2 shadow w-52 h-[80vh] overflow-y-scroll"
-          >
-            <li>
-              <details close>
-                <summary>Industry</summary>
-                {/* <ul>
+          <div className="dropdown dropdown-end">
+            <ul
+              tabIndex={0}
+              className="block menu rounded-sm bg-gray-800 menu-sm dropdown-content dropdown-end mt-3 z-[100] p-2 shadow w-52 h-[80vh] overflow-y-scroll"
+            >
+              <li>
+                <details close>
+                  <summary>Industry</summary>
+                  {/* <ul>
                     {movieIndustries.map((dt, index) => (
                       <li key={index} className="capitalize">
-                        <a>{dt}</a>
+                      <a>{dt}</a>
                       </li>
-                    ))}
+                      ))}
                   </ul> */}
-              </details>
-            </li>
-            <li>
-              <details close>
-                <summary>Release Year</summary>
-                {/* <ul>
+                </details>
+              </li>
+              <li>
+                <details close>
+                  <summary>Release Year</summary>
+                  {/* <ul>
                     {releaseYear.map((dt, index) => (
                       <li key={index} className="capitalize">
-                        <a>{dt}</a>
+                      <a>{dt}</a>
                       </li>
-                    ))}
-                  </ul> */}
-              </details>
-              {/* 3 */}
-              <details close>
-                <summary>Genre</summary>
-                <ul>
-                  {/* {genres.map((dt, index) => (
+                      ))}
+                      </ul> */}
+                </details>
+                {/* 3 */}
+                <details close>
+                  <summary>Genre</summary>
+                  <ul>
+                    {/* {genres.map((dt, index) => (
                       <li key={index} className="capitalize">
-                        <a>{dt}</a>
+                      <a>{dt}</a>
                       </li>
-                    ))} */}
-                </ul>
-              </details>
-            </li>
-          </ul>
+                      ))} */}
+                  </ul>
+                </details>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       <div className="divider"></div>
