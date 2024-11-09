@@ -7,6 +7,7 @@ import "swiper/css/navigation";
 import ReactQueryProviders from "@/providers/ReactQuerySetup/ReactQueryProviders";
 import AllMoviesProvider from "@/providers/data/AllMoviesData";
 import AuthProvider from "@/providers/firebase/AuthProvider";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,12 @@ export default function RootLayout({ children }) {
           </AllMoviesProvider>
         </ReactQueryProviders>
       </AuthProvider>
+
+      <Script
+        type="text/javascript"
+        src="//pl22803240.profitablecpmrate.com/13/b3/09/13b3090dd569b3e171dbf3572aedaa00.js"
+        strategy="afterInteractive" // Ensures the script runs after the page is loaded
+      />
     </html>
   );
 }

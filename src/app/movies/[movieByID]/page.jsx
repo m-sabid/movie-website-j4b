@@ -9,9 +9,10 @@ import { useEffect, useState } from "react";
 
 const Page = ({ params }) => {
   const [moByID, setMoByID] = useState([]);
+  const [adCounter, setAdCounter] = useState(0); // To track the number of times ads are shown
 
   useEffect(() => {
-    //  Fetch Movie by ID
+    // Fetch Movie by ID
     const fetchMovies = async () => {
       try {
         const response = await axios.get(
@@ -24,18 +25,41 @@ const Page = ({ params }) => {
     };
 
     fetchMovies();
-  }, [params.movieByID]);
+
+    // Function to load the ad script
+    const loadAdScript = () => {
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "//pl24956270.profitablecpmrate.com/1c/f8/0e/1cf80e212b0d05010f6799de00162585.js";
+      document.body.appendChild(script);
+
+      // Cleanup: Remove the script when the component is unmounted
+      return () => {
+        document.body.removeChild(script);
+      };
+    };
+
+    // Increment adCounter every time an ad is shown
+    const interval = setInterval(() => {
+      if (adCounter < 5) {
+        setAdCounter((prevCount) => prevCount + 1);
+        loadAdScript();
+      } else {
+        clearInterval(interval); // Stop after 5 ads have been shown
+      }
+    }, 5000); // Set the interval for ad calls (e.g., every 5 seconds)
+
+    return () => clearInterval(interval); // Cleanup the interval on unmount
+  }, [adCounter, params.movieByID]);
 
   return (
     <div>
       <NavWithoutSearch />
       <div className="bg-gray-600 min-h-[100vh] md:p-0 p-2">
-        <div className="container mx-auto text-white">
-          {/*  */}
-          {/*  */}
+        <div className="md:w-[90%] mx-auto text-white">
           {moByID?.movieName ? (
             <>
-              <div className="flex gap-2 items-center justify-center">
+              <div className="flex flex-col gap-2 items-center justify-center">
                 <h4 className="text-4xl text-center text-white font-bold py-2">
                   {moByID.movieName}
                 </h4>
@@ -100,9 +124,28 @@ const Page = ({ params }) => {
 
                   <div className="flex mt-5">
                     <a
-                      href={moByID.downloadLink}
-                      target="_blank"
-                      className="bg-green-500 text-gray-600 font-bold px-2 py-3 w-full text-center uppercase rounded-md hover:bg-green-800 hover:text-white transition-all duration-300"
+                      onClick={(e) => {
+                        e.preventDefault(); // Prevent default behavior
+
+                        // Check if the user has clicked the download button before
+                        const hasClickedBefore =
+                          localStorage.getItem("downloadClicked");
+
+                        if (!hasClickedBefore) {
+                          // If not clicked before, open the ad link in a new tab
+                          window.open(
+                            "https://www.profitablecpmrate.com/wvas51y8ux?key=7ad6354dcd2ff79e0080feadcb8fb636",
+                            "_blank"
+                          );
+
+                          // Mark that the user clicked the download button once
+                          localStorage.setItem("downloadClicked", "true");
+                        } else {
+                          // If clicked before, open the download link in a new tab
+                          window.open(moByID.downloadLink, "_blank");
+                        }
+                      }}
+                      className="bg-green-500 text-gray-600 font-bold px-2 py-3 w-full text-center uppercase rounded-md hover:bg-green-800 hover:text-white transition-all duration-300 cursor-pointer"
                     >
                       Download
                     </a>
@@ -123,8 +166,6 @@ const Page = ({ params }) => {
               <AnimatedSkeleton count={1} />
             </div>
           )}
-          {/*  */}
-          {/*  */}
         </div>
       </div>
     </div>
