@@ -9,7 +9,7 @@ import Link from "next/link";
 import SecondaryNav from "@/components/pages/HomePage/SecondaryNav";
 import { ThemeContext } from "@/providers/colors/GlobalColors";
 
-const page = () => {
+const Login = () => {
   const { colors } = useContext(ThemeContext);
   const { login, googleSignIn } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
@@ -27,8 +27,10 @@ const page = () => {
   const validatePassword = (value) => {
     let error = "";
     if (value.length < 6) error = "Password must be at least 6 characters long";
-    else if (!/[A-Z]/.test(value)) error = "Password must contain a capital letter";
-    else if (!/[!@#$%^&*]/.test(value)) error = "Password must contain a special character";
+    else if (!/[A-Z]/.test(value))
+      error = "Password must contain a capital letter";
+    else if (!/[!@#$%^&*]/.test(value))
+      error = "Password must contain a special character";
 
     setPasswordError(error);
     return !error; // Returns true if no error, false otherwise
@@ -67,23 +69,31 @@ const page = () => {
           >
             {/* Email */}
             <div className="mb-4">
-              <label htmlFor="email" className="block text-white font-bold">Email</label>
+              <label htmlFor="email" className="block text-white font-bold">
+                Email
+              </label>
               <input
                 type="email"
                 {...register("email", { required: "Email is required" })}
                 placeholder="Email"
                 className="input input-bordered input-accent w-full"
               />
-              {errors.email && <span className="text-red-500">{errors.email.message}</span>}
+              {errors.email && (
+                <span className="text-red-500">{errors.email.message}</span>
+              )}
             </div>
 
             {/* Password */}
             <div className="mb-4 w-full">
-              <label htmlFor="password" className="block text-white font-bold">Password</label>
+              <label htmlFor="password" className="block text-white font-bold">
+                Password
+              </label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  {...register("password", { required: "Password is required" })}
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
                   className="input input-bordered w-full pr-10"
                   onChange={(e) => validatePassword(e.target.value)}
                   placeholder="Password"
@@ -93,16 +103,28 @@ const page = () => {
                   className="absolute top-1/2 right-2 transform -translate-y-1/2"
                   onClick={togglePasswordVisibility}
                 >
-                  {showPassword ? <BsEyeSlashFill className="text-gray-500" /> : <BsEyeFill className="text-gray-500" />}
+                  {showPassword ? (
+                    <BsEyeSlashFill className="text-gray-500" />
+                  ) : (
+                    <BsEyeFill className="text-gray-500" />
+                  )}
                 </button>
               </div>
-              {passwordError && <span className="text-red-500">{passwordError}</span>}
-              {errors.password && <span className="text-red-500">{errors.password.message}</span>}
+              {passwordError && (
+                <span className="text-red-500">{passwordError}</span>
+              )}
+              {errors.password && (
+                <span className="text-red-500">{errors.password.message}</span>
+              )}
             </div>
 
             {/* Submit Button */}
             <div className="mb-4">
-              <input type="submit" value="Login" className="btn btn-primary w-full" />
+              <input
+                type="submit"
+                value="Login"
+                className="btn btn-primary w-full"
+              />
             </div>
 
             {/* Google Login */}
@@ -119,7 +141,10 @@ const page = () => {
               </div>
               <div className="text-center mt-4">
                 {"Don't have an account?"}
-                <Link href="/signup" className="text-blue-500 hover:underline ml-2">
+                <Link
+                  href="/signup"
+                  className="text-blue-500 hover:underline ml-2"
+                >
                   Sign Up
                 </Link>
               </div>
@@ -131,4 +156,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Login;
