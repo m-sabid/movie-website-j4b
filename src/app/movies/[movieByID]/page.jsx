@@ -2,12 +2,15 @@
 
 import AnimatedSkeleton from "@/components/shared/AnimatedSkeleton";
 import NavWithoutSearch from "@/components/shared/NavWithoutSearch";
+import { ThemeContext } from "@/providers/colors/GlobalColors";
 import base_url from "@/providers/links/BASE_URL";
 import axios from "axios";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const Page = ({ params }) => {
+  const { colors } = useContext(ThemeContext);
+
   const [moByID, setMoByID] = useState([]);
   const [adCounter, setAdCounter] = useState(0); // To track the number of times ads are shown
 
@@ -30,7 +33,8 @@ const Page = ({ params }) => {
     const loadAdScript = () => {
       const script = document.createElement("script");
       script.type = "text/javascript";
-      script.src = "//pl24956270.profitablecpmrate.com/1c/f8/0e/1cf80e212b0d05010f6799de00162585.js";
+      script.src =
+        "//pl24956270.profitablecpmrate.com/1c/f8/0e/1cf80e212b0d05010f6799de00162585.js";
       document.body.appendChild(script);
 
       // Cleanup: Remove the script when the component is unmounted
@@ -55,7 +59,10 @@ const Page = ({ params }) => {
   return (
     <div>
       <NavWithoutSearch />
-      <div className="bg-gray-600 min-h-[100vh] md:p-0 p-2">
+      <div
+        className="min-h-[100vh] md:p-0 p-2"
+        style={{ backgroundColor: colors.mo_db_primary }}
+      >
         <div className="md:w-[90%] mx-auto text-white">
           {moByID?.movieName ? (
             <>
@@ -63,7 +70,10 @@ const Page = ({ params }) => {
                 <h4 className="text-4xl text-center text-white font-bold py-2">
                   {moByID.movieName}
                 </h4>
-                <sup className="bg-blue-500 rounded-full px-2 text-sm">
+                <sup
+                  className="rounded-full px-2 text-sm"
+                  style={{ backgroundColor: colors.mo_badges_primary }}
+                >
                   {moByID.releaseYear}
                 </sup>
               </div>
@@ -80,44 +90,74 @@ const Page = ({ params }) => {
                 </div>
                 <div className="col-span-1 md:col-span-4">
                   <ul className="flex flex-col flex-wrap gap-2 my-2">
-                    <li className="bg-gray-700 mb-1 py-2 px-1 rounded-md">
+                    <li
+                      className="mb-1 py-2 px-1 rounded-md"
+                      style={{ backgroundColor: colors.mo_secondary }}
+                    >
                       <b>Country:</b> {moByID.country}
                     </li>
-                    <li className="bg-gray-700 mb-1 py-2 px-1 rounded-md">
+                    <li
+                      className="mb-1 py-2 px-1 rounded-md"
+                      style={{ backgroundColor: colors.mo_secondary }}
+                    >
                       <b>Directed By:</b> {moByID.directedBy}
                     </li>
-                    <li className="bg-gray-700 mb-1 py-2 px-1 rounded-md flex flex-wrap gap-2">
+                    <li
+                      className="mb-1 py-2 px-1 rounded-md flex flex-wrap gap-2"
+                      style={{ backgroundColor: colors.mo_secondary }}
+                    >
                       <b>Genre:</b>
                       {moByID.genre?.map((dt, index) => (
                         <span
                           key={index}
-                          className="bg-gray-300 px-2 rounded-full text-gray-600"
+                          className="px-2 rounded-full text-gray-600"
+                          style={{
+                            backgroundColor: colors.mo_badges_secondary,
+                          }}
                         >
                           {dt}
                         </span>
                       ))}
                     </li>
-                    <li className="bg-gray-700 mb-1 py-2 px-1 rounded-md flex flex-wrap gap-2">
+                    <li
+                      className="mb-1 py-2 px-1 rounded-md flex flex-wrap gap-2"
+                      style={{ backgroundColor: colors.mo_secondary }}
+                    >
                       <b>Language:</b>
                       {moByID.language?.map((dt, index) => (
                         <span
                           key={index}
-                          className="bg-gray-300 px-2 rounded-full text-gray-600"
+                          className="px-2 rounded-full text-gray-600"
+                          style={{
+                            backgroundColor: colors.mo_badges_secondary,
+                          }}
                         >
                           {dt}
                         </span>
                       ))}
                     </li>
-                    <li className="bg-gray-700 mb-1 py-2 px-1 rounded-md">
+                    <li
+                      className="mb-1 py-2 px-1 rounded-md"
+                      style={{ backgroundColor: colors.mo_secondary }}
+                    >
                       <b>Star Cast:</b> {moByID.starCast}
                     </li>
-                    <li className="bg-gray-700 mb-1 py-2 px-1 rounded-md">
+                    <li
+                      className="mb-1 py-2 px-1 rounded-md"
+                      style={{ backgroundColor: colors.mo_secondary }}
+                    >
                       <b>IMDB Rating:</b> {moByID.imdbRating}
                     </li>
-                    <li className="bg-gray-700 mb-1 py-2 px-1 rounded-md">
+                    <li
+                      className="mb-1 py-2 px-1 rounded-md"
+                      style={{ backgroundColor: colors.mo_secondary }}
+                    >
                       <b>Industry:</b> {moByID.industry}
                     </li>
-                    <li className="bg-gray-700 mb-1 py-2 px-1 rounded-md">
+                    <li
+                      className="mb-1 py-2 px-1 rounded-md"
+                      style={{ backgroundColor: colors.mo_secondary }}
+                    >
                       <b>Plot:</b> {moByID.plot}
                     </li>
                   </ul>

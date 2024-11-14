@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaGoogle } from "react-icons/fa";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
@@ -27,353 +27,223 @@ const Page = () => {
     handleSubmit,
     formState: { errors },
     watch,
-    reset,
   } = useForm();
-
   const lastMovie = movieData[0];
   const bgImage = lastMovie?.poster;
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(
-      (prevShowConfirmPassword) => !prevShowConfirmPassword
-    );
-  };
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const toggleConfirmPasswordVisibility = () =>
+    setShowConfirmPassword(!showConfirmPassword);
 
   const validatePassword = (value) => {
-    let error = "";
-
-    if (value.length < 6) {
-      error = "Password must be at least 6 characters long";
-    } else if (!/[A-Z]/.test(value)) {
-      error = "Password must contain a capital letter";
-    } else if (!/[!@#$%^&*]/.test(value)) {
-      error = "Password must contain a special character";
-    }
-
-    setPasswordError(error);
+    if (value.length < 6) return "Password must be at least 6 characters long";
+    if (!/[A-Z]/.test(value)) return "Password must contain a capital letter";
+    if (!/[!@#$%^&*]/.test(value))
+      return "Password must contain a special character";
+    return "";
   };
 
-  //
   const onSubmit = async (data) => {
+    const { name, email, password, confirmPassword, profile } = data;
+    const error = validatePassword(password);
+
+    if (error || password !== confirmPassword) return;
+
     try {
-      const {
-        name,
-        email,
-        password,
-        age,
-        confirmPassword,
-        photo,
-        gender,
-        mobileNumber,
-      } = data;
+      const profileImage = profile[0];
+      const formData = new FormData();
+      formData.append("image", profileImage);
 
-      validatePassword(password);
+      const imageUploadToken = "01f1da67b6a17d75237a16f95e14bfed";
+      const response = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${imageUploadToken}`,
+        formData
+      );
+      const profilePicture = response.data.data.url;
 
-      if (passwordError || password !== confirmPassword) {
-        // Display an error message for password mismatch
-        return;
-      }
-
-      const imageUploadToken = "01f1da67b6a17d75237a16f95e14bfed"; // Replace with your ImageBB API key
-      const imageHostingUrl = `https://api.imgbb.com/1/upload?key=${imageUploadToken}`;
-
-      // Upload the profile image to ImageBB
-      const profileImage = data.profile[0];
-      const profileFormData = new FormData();
-      profileFormData.append("image", profileImage);
-
-      const photoResponse = await axios.post(imageHostingUrl, profileFormData);
-      const profilePicture = photoResponse.data.data.url;
-
-      const saveUser = {
-        name,
-        email,
-        mobileNumber,
-        age,
-        profilePicture,
-        gender,
-        password,
-        confirmPassword,
-      };
-
-      console.log(saveUser, "___saveUser");
-      await axios.post(`${base_url}/users/sing_up`, saveUser);
-
+      const userData = { name, email, password, profilePicture };
+      await axios.post(`${base_url}/users/sing_up`, userData);
       await createUser(email, password, name, profilePicture);
 
-      // reset();
       Swal.fire({
         title: "Success!",
         text: "User created successfully.",
         icon: "success",
         confirmButtonText: "OK",
-      }).then(() => {
-        router.push("/");
-      });
+      }).then(() => router.push("/"));
     } catch (error) {
-      console.error("Error sending user data to server:", error);
+      console.error("Error during user creation:", error);
     }
   };
 
-  // Google Signup
   const handleGoogleSignup = async () => {
     try {
-      const result = await googleSignIn();
-      
-      console.log(result, "result___---")
-
-      // Access the user's name and email from the Google sign-in result
-      const { displayName, email, photoURL } = result.user;
-
-      // Save the user's name and email to the server or wherever necessary
-      const saveUser = { name: displayName, email, profilePicture: photoURL };
-
-      // Send user data to the server
-      fetch(`${base_url}/users/singUp`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(saveUser),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          reset();
-          Swal.fire({
-            title: "Success!",
-            text: "User created successfully.",
-            icon: "success",
-            confirmButtonText: "OK",
-          }).then(() => {
-            router.push("/");
-          });
-        })
-        .catch((error) => {
-          console.error("Error sending user data to server:", error);
-        });
+      await googleSignIn();
     } catch (error) {
-      console.log("Error signing up with Google:", error);
+      console.error("Google signup error:", error);
     }
   };
 
   return (
-    <>
-      <div className="relative min-h-[100vh] flex flex-col items-center justify-center">
-        <div className="fixed top-0 w-full z-50">
-          <SecondaryNav />
-        </div>
-        <div
-          className="absolute inset-0 z-[-1]"
-          style={{
-            backgroundImage: `url(${bgImage})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundAttachment: "fixed",
-            minHeight: "100vh",
-          }}
-        >
-          <div className="fixed z-10 min-h-screen w-full bg-black bg-opacity-70"></div>
-        </div>
-
-        <div className="container mx-auto mt-20">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="bg-gray-500 w-full md:w-3/5 mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-2 rounded-md bg-opacity-50 backdrop-blur-md"
-          >
-            {/* Name */}
-            <div className="mb-4 col-span-1">
-              <label htmlFor="name" className="block text-white font-bold">
-                Name
-              </label>
-              <input
-                type="text"
-                {...register("name", { required: true })}
-                placeholder="Name"
-                className="input input-bordered input-accent w-full"
-              />
-              {errors?.name && (
-                <span className="text-red-500">This field is required</span>
-              )}
-            </div>
-
-            {/* Email */}
-            <div className="mb-4 col-span-1">
-              <label htmlFor="email" className="block text-white font-bold">
-                Email
-              </label>
-              <input
-                type="email"
-                {...register("email", { required: true })}
-                placeholder="Email"
-                className="input input-bordered input-accent w-full"
-              />
-              {errors?.email && (
-                <span className="text-red-500">This field is required</span>
-              )}
-            </div>
-
-            {/* Mobile Number */}
-            <div className="mb-4 col-span-1">
-              <label
-                htmlFor="mobileNumber"
-                className="block text-white font-bold"
-              >
-                Mobile Number
-              </label>
-              <input
-                type="text"
-                {...register("mobileNumber")}
-                placeholder="Mobile Number"
-                className="input input-bordered input-accent w-full"
-              />
-            </div>
-
-            {/* Age */}
-            <div className="mb-4 col-span-1">
-              <label htmlFor="age" className="block text-white font-bold">
-                Birth Date
-              </label>
-              <input
-                type="date"
-                {...register("age")}
-                placeholder="Age"
-                className="input input-bordered input-accent w-full"
-              />
-            </div>
-
-            {/* Profile Picture */}
-            <div className="mb-4 col-span-1">
-              <label htmlFor="profile" className="block text-white font-bold">
-                Profile Picture
-              </label>
-              <input
-                type="file"
-                {...register("profile")}
-                className="file-input file-input-bordered file-input-accent w-full"
-              />
-            </div>
-
-            {/* Gender */}
-            <div className="mb-4 col-span-1">
-              <label htmlFor="gender" className="block text-white font-bold">
-                Gender
-              </label>
-              <select
-                {...register("gender")}
-                className="select select-accent w-full"
-              >
-                <option disabled selected>
-                  Select Your Gender
-                </option>
-                <option value="female">female</option>
-                <option value="male">male</option>
-                <option value="other">other</option>
-              </select>
-            </div>
-
-            {/* Password */}
-            <div className="mb-4 col-span-1 w-full">
-              <label htmlFor="password" className="block text-white font-bold">
-                Password
-              </label>
-              <div className="relative bg-white rounded-lg">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  {...register("password", { required: true })}
-                  className="input input-bordered w-full max-w-xs pr-10"
-                  onChange={(e) => validatePassword(e.target.value)}
-                />
-                <button
-                  type="button"
-                  className="absolute top-1/2 right-2 transform -translate-y-1/2"
-                  onClick={togglePasswordVisibility}
-                >
-                  {showPassword ? (
-                    <BsEyeSlashFill className="text-gray-500" />
-                  ) : (
-                    <BsEyeFill className="text-gray-500" />
-                  )}
-                </button>
-              </div>
-              {errors.password && (
-                <span className="text-red-500">Password is required</span>
-              )}
-            </div>
-
-            {/* Confirm Password */}
-            <div className="mb-4 col-span-1 w-full">
-              <label
-                htmlFor="confirmPassword"
-                className="block text-white font-bold"
-              >
-                Confirm Password
-              </label>
-              <div className="relative bg-white rounded-lg">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  id="confirmPassword"
-                  {...register("confirmPassword", {
-                    required: true,
-                    validate: (value) => value === watch("password"),
-                  })}
-                  className="input input-bordered w-full max-w-xs pr-10"
-                />
-                <button
-                  type="button"
-                  className="absolute top-1/2 right-2 transform -translate-y-1/2"
-                  onClick={toggleConfirmPasswordVisibility}
-                >
-                  {showConfirmPassword ? (
-                    <BsEyeSlashFill className="text-gray-500" />
-                  ) : (
-                    <BsEyeFill className="text-gray-500" />
-                  )}
-                </button>
-              </div>
-              {errors.confirmPassword && (
-                <span className="text-red-500">Passwords do not match</span>
-              )}
-            </div>
-
-            {/* Submit Button */}
-            <div className="mb-4 col-span-2">
-              <input
-                type="submit"
-                value="Submit"
-                className="btn btn-primary w-full"
-              />
-            </div>
-            {/*  */}
-            <div className="col-span-1 md:col-span-2 text-white">
-              <div className="divider">OR</div>
-              <div className="flex flex-col justify-center text-center">
-                <div className="col-span-2 mx-auto">
-                  <button
-                    type="button"
-                    className="bg-red-500 text-white rounded py-2 px-4 flex items-center justify-center gap-4 hover:bg-red-600 mt-2"
-                    onClick={handleGoogleSignup}
-                  >
-                    <FaGoogle /> Sign Up with Google
-                  </button>
-                </div>
-                <div className="text-white my-4">
-                  Already have an account?{" "}
-                  <Link href="/login" className="text-blue-500 hover:underline">
-                    Go to login
-                  </Link>
-                </div>
-              </div>
-            </div>
-            {/*  */}
-          </form>
-        </div>
+    <div className="relative min-h-[100vh] flex flex-col items-center justify-center">
+      <div className="fixed top-0 w-full z-50">
+        <SecondaryNav />
       </div>
-    </>
+      <div
+        className="absolute inset-0 z-[-1]"
+        style={{
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+          minHeight: "100vh",
+        }}
+      >
+        <div className="fixed z-10 min-h-screen w-full bg-black bg-opacity-70"></div>
+      </div>
+
+      <div className="container mx-auto mt-20">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="bg-gray-500 w-full md:w-3/5 mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-4 rounded-md bg-opacity-50 backdrop-blur-md"
+        >
+          {/* Name */}
+          <div className="mb-4 col-span-2">
+            <label htmlFor="name" className="block text-white font-bold">
+              Name
+            </label>
+            <input
+              type="text"
+              {...register("name", { required: true })}
+              placeholder="Name"
+              className="input input-bordered input-accent w-full"
+            />
+            {errors?.name && (
+              <span className="text-red-500">This field is required</span>
+            )}
+          </div>
+
+          {/* Email */}
+          <div className="mb-4 col-span-2">
+            <label htmlFor="email" className="block text-white font-bold">
+              Email
+            </label>
+            <input
+              type="email"
+              {...register("email", { required: true })}
+              placeholder="Email"
+              className="input input-bordered input-accent w-full"
+            />
+            {errors?.email && (
+              <span className="text-red-500">This field is required</span>
+            )}
+          </div>
+
+          {/* Profile Picture */}
+          <div className="mb-4 col-span-2">
+            <label htmlFor="profile" className="block text-white font-bold">
+              Profile Picture
+            </label>
+            <input
+              type="file"
+              {...register("profile")}
+              className="file-input file-input-bordered file-input-accent w-full"
+            />
+          </div>
+
+          {/* Password */}
+          <div className="mb-4 w-full col-span-2">
+            <label htmlFor="password" className="block text-white font-bold">
+              Password
+            </label>
+            <div className="relative bg-white rounded-lg">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                {...register("password", { required: true })}
+                className="input input-bordered w-full pr-10"
+              />
+              <button
+                type="button"
+                className="absolute top-1/2 right-2 transform -translate-y-1/2"
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? (
+                  <BsEyeSlashFill className="text-gray-500" />
+                ) : (
+                  <BsEyeFill className="text-gray-500" />
+                )}
+              </button>
+            </div>
+            {errors.password && (
+              <span className="text-red-500">Password is required</span>
+            )}
+          </div>
+
+          {/* Confirm Password */}
+          <div className="mb-4 w-full col-span-2">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-white font-bold"
+            >
+              Confirm Password
+            </label>
+            <div className="relative bg-white rounded-lg">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                {...register("confirmPassword", {
+                  required: true,
+                  validate: (value) => value === watch("password"),
+                })}
+                className="input input-bordered w-full pr-10"
+              />
+              <button
+                type="button"
+                className="absolute top-1/2 right-2 transform -translate-y-1/2"
+                onClick={toggleConfirmPasswordVisibility}
+              >
+                {showConfirmPassword ? (
+                  <BsEyeSlashFill className="text-gray-500" />
+                ) : (
+                  <BsEyeFill className="text-gray-500" />
+                )}
+              </button>
+            </div>
+            {errors.confirmPassword && (
+              <span className="text-red-500">Passwords do not match</span>
+            )}
+          </div>
+
+          {/* Submit Button */}
+          <div className="mb-4 col-span-2">
+            <input
+              type="submit"
+              value="Submit"
+              className="btn btn-primary w-full"
+            />
+          </div>
+
+          {/* Google Signup */}
+          <div className="col-span-2 text-white text-center">
+            <div className="divider">OR</div>
+            <button
+              type="button"
+              className="bg-red-500 text-white rounded py-2 px-4 flex items-center justify-center gap-4 hover:bg-red-600 mt-2"
+              onClick={handleGoogleSignup}
+            >
+              <FaGoogle /> Sign Up with Google
+            </button>
+            <div className="my-4">
+              Already have an account?{" "}
+              <Link href="/login" className="text-blue-500 hover:underline">
+                Go to login
+              </Link>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 

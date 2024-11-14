@@ -1,6 +1,7 @@
 "use client";
+import { ThemeContext } from "@/providers/colors/GlobalColors";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   FaFileMedical,
   FaFilm,
@@ -8,6 +9,7 @@ import {
   FaHome,
   FaHospital,
   FaIcons,
+  FaWhmcs,
 } from "react-icons/fa";
 
 const menus = [
@@ -41,9 +43,15 @@ const menus = [
     path: "/dashboard/add_language",
     icon: <FaFileMedical className="text-white" />,
   },
+  {
+    name: "Settings",
+    path: "/dashboard/settings",
+    icon: <FaWhmcs className="text-white" />,
+  },
 ];
 
 const SidebarNav = ({ children }) => {
+  const { colors } = useContext(ThemeContext);
   return (
     <div>
       <div className="drawer lg:drawer-open ">
@@ -52,12 +60,16 @@ const SidebarNav = ({ children }) => {
           {/*  */}
           {/*  */}
           <div className="lg:hidden">
-            <div className="navbar bg-gray-500 text-white">
+            <div
+              className="navbar text-white"
+              style={{ backgroundColor: colors.mo_primary }}
+            >
               <div className="flex-none">
                 <button className="btn  btn-square btn-ghost">
                   <label
                     htmlFor="my-drawer-2"
-                    className="btn bg-gray-500 text-white drawer-button lg:hidden"
+                    className="btn text-white drawer-button lg:hidden"
+                    style={{ backgroundColor: colors.mo_primary }}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -91,7 +103,10 @@ const SidebarNav = ({ children }) => {
         </div>
         <div className="drawer-side">
           <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-          <ul className="menu p-4 md:w-80 w-fit h-full bg-gray-600 text-white">
+          <ul
+            className="menu p-4 md:w-80 w-fit h-full text-white"
+            style={{ backgroundColor: colors.mo_db_primary }}
+          >
             <Link
               href={"/"}
               className="text-2xl hidden lg:flex justify-center items-center"

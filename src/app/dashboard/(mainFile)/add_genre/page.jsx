@@ -1,20 +1,28 @@
 "use client";
-import base_url from "@/providers/links/BASE_URL";
-import axios from "axios";
+
+import ContentHeader from "@/components/dashboard/shared/ContentHeader";
+import DashboardHeader from "@/components/dashboard/shared/DashboardHeader";
+import DataTable from "@/components/dashboard/shared/DataTable";
+import DynamicForm from "@/components/dashboard/shared/DynamicForm";
+import UpdateForm from "@/components/dashboard/shared/UpdateForm";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import base_url from "@/providers/links/BASE_URL";
+import axios from "axios";
 import Swal from "sweetalert2";
 
 const AddGenre = () => {
   const { register, reset, handleSubmit, errors } = useForm();
   const [totalGenre, setTotalGenre] = useState([]);
   const [editGenreData, setEditGenreData] = useState(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true); // Set to true once the component is mounted
     const fetchGenres = async () => {
       try {
         const response = await axios.get(`${base_url}/genre`);
+
         setTotalGenre(response.data); // Assuming response.data is the array of genres
       } catch (error) {
         console.error("Error fetching genres:", error);
@@ -42,6 +50,11 @@ const AddGenre = () => {
       if (response.data.success) {
         reset();
         window.my_modal_1.close();
+
+        const response = await axios.get(`${base_url}/genre`);
+
+        setTotalGenre(response.data); // Assuming response.data is the array of genres
+
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -59,7 +72,7 @@ const AddGenre = () => {
         position: "top-end",
         icon: "error",
         title: "Oops...",
-        text: error.response.data.message,
+        text: error?.response?.data?.message,
         // footer: '<a href="">Why do I have this issue?</a>',
       });
     }
@@ -71,42 +84,37 @@ const AddGenre = () => {
     window.my_edit_modal.showModal();
   };
 
-  const updateGenre = async () => {
-    window.my_modal_1.close();
+  const updateGenre = async (updatedData) => {
+    window.my_edit_modal.close();
     try {
-      if (editGenreData) {
-        const updatedGenre = {
-          ...editGenreData,
-          genreName: editGenreData.genreName.toLowerCase(), // Convert to lowercase
-        };
+      const updatedGenre = {
+        ...updatedData,
+        genreName: updatedData.genreName.toLowerCase(),
+      };
 
-        const response = await axios.patch(
-          `${base_url}/genre/${editGenreData._id}`,
-          updatedGenre
+      const response = await axios.patch(
+        `${base_url}/genre/${updatedData._id}`,
+        updatedGenre
+      );
+
+      if (response.data.message) {
+        setTotalGenre((prevGenres) =>
+          prevGenres.map((genre) =>
+            genre._id === updatedData._id ? updatedGenre : genre
+          )
         );
-
-        if (response.data.message) {
-          // Update the genre in the list
-          setTotalGenre((prevGenres) =>
-            prevGenres.map((genre) =>
-              genre._id === editGenreData._id ? updatedGenre : genre
-            )
-          );
-
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: response.data.message,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-
-        setEditGenreData(null);
-        window.my_edit_modal.close();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: response.data.message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
+
+      setEditGenreData(null);
+      window.my_edit_modal.close();
     } catch (error) {
-      console.error("Error updating genre:", error);
       Swal.fire({
         position: "top-end",
         icon: "error",
@@ -133,11 +141,9 @@ const AddGenre = () => {
         const response = await axios.delete(`${base_url}/genre/${genreId}`);
 
         if (response.data.message) {
-          // Genre deleted successfully, update the genre list
           setTotalGenre((prevGenres) =>
             prevGenres.filter((genre) => genre._id !== genreId)
           );
-
           Swal.fire({
             position: "top-end",
             icon: "success",
@@ -147,7 +153,6 @@ const AddGenre = () => {
           });
         }
       } catch (error) {
-        console.error("Error deleting genre:", error);
         Swal.fire({
           position: "top-end",
           icon: "error",
@@ -158,11 +163,20 @@ const AddGenre = () => {
     }
   };
 
+  const genreColumns = [{ header: "Genre Name", field: "genreName" }];
+
+  const fields = [
+    {
+      name: "genreName",
+      label: "Genre Name",
+      placeholder: "Enter Genre Name",
+      required: true,
+    },
+  ];
+
   return (
     <>
-      <h2 className="bg-gray-500 rounded-md text-white text-center text-3xl font-bold border-b-2 p-4">
-        All Genre - {totalGenre?.length}
-      </h2>
+      <DashboardHeader title={"All Genre"} count={totalGenre?.length} />
 
       <div className="flex my-5 justify-center">
         <button
@@ -173,147 +187,41 @@ const AddGenre = () => {
         </button>
       </div>
 
-      <h2 className="bg-gray-500 rounded-md text-white text-center text-2xl font-bold border-b-2 p-2">
-        See All Genre
-      </h2>
+      <ContentHeader title={"See All Genre"} />
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="table bg-gray-500 rounded-md text-white">
-          <thead>
-            <tr className="text-white">
-              <th>SN</th>
-              <th>Genre Name</th>
-              <th>Edit</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {totalGenre.length > 0 ? (
-              totalGenre.map((data, index) => (
-                <tr key={data._id}>
-                  <th className="text-xl">{index + 1}</th>
-                  <td className="capitalize text-xl">{data?.genreName}</td>
-                  <td className="text-xl cursor-pointer">
-                    <button
-                      className="bg-gray-400 py-2 px-4 rounded-md hover:bg-gray-600"
-                      onClick={() => editGenre(data._id)}
-                    >
-                      <FaEdit />
-                    </button>
-                  </td>
-                  <td className="text-xl cursor-pointer">
-                    <button
-                      className="bg-gray-400 py-2 px-4 rounded-md hover:bg-gray-600"
-                      onClick={() => deleteGenre(data._id)}
-                    >
-                      <FaTrashAlt />
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4" className="text-center">
-                  <span className="loading loading-bars loading-lg"></span>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-      {/* Table */}
+      <DataTable
+        data={totalGenre}
+        columns={genreColumns}
+        onEdit={editGenre}
+        onDelete={deleteGenre}
+      />
 
-      {/* Genre Form */}
+      {/* Add Genre Form */}
       <dialog id="my_modal_1" className="modal w-fit mx-auto">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="bg-gray-500 rounded-md w-full p-4"
-        >
-          <div className="grid grid-cols-2 gap-4">
-            <div className="mb-4 col-span-2 md:col-span-2">
-              <label htmlFor="genreName" className="block text-white font-bold">
-                Genre Name
-              </label>
-              <input
-                type="text"
-                {...register("genreName", { required: true })}
-                placeholder="Movie Name"
-                className="input input-bordered input-accent w-full"
-              />
-              {errors?.genreName && (
-                <span className="text-red-500">This field is required</span>
-              )}
-            </div>
-          </div>
-          <div className="modal-action">
-            <button
-              type="submit"
-              className="btn inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Create Genre
-            </button>
-            <button
-              onClick={() => {
-                window.my_modal_1.close();
-              }}
-              className="btn ml-3"
-            >
-              Close
-            </button>
-          </div>
-        </form>
+        <DynamicForm
+          fields={fields}
+          onSubmit={onSubmit}
+          buttonText="Create Genre"
+          onCancel={() => {
+            window.my_modal_1.close();
+          }}
+        />
       </dialog>
-      {/* Genre Form */}
 
       {/* Edit Genre Form */}
       <dialog id="my_edit_modal" className="modal w-fit mx-auto">
         {editGenreData && (
-          <form className="bg-gray-500 rounded-md w-full p-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="mb-4 col-span-2 md:col-span-2">
-                <label
-                  htmlFor="editedGenreName"
-                  className="block text-white font-bold"
-                >
-                  Edit Genre Name
-                </label>
-                <input
-                  type="text"
-                  id="editedGenreName"
-                  value={editGenreData.genreName}
-                  onChange={(e) =>
-                    setEditGenreData({
-                      ...editGenreData,
-                      genreName: e.target.value,
-                    })
-                  }
-                  className="input input-bordered input-accent w-full"
-                />
-              </div>
-            </div>
-            <div className="modal-action">
-              <button
-                type="button"
-                onClick={updateGenre}
-                className="btn inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Save Changes
-              </button>
-              <button
-                onClick={() => {
-                  setEditGenreData(null);
-                  window.my_edit_modal.close();
-                }}
-                className="btn ml-3"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
+          <UpdateForm
+            data={editGenreData}
+            fields={fields}
+            onSubmit={updateGenre}
+            onCancel={() => {
+              setEditGenreData(null);
+              window.my_edit_modal.close();
+            }}
+          />
         )}
       </dialog>
-      {/* Edit Genre Form */}
     </>
   );
 };

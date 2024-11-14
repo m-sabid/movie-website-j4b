@@ -1,10 +1,14 @@
 // AllMovies.js
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { ThemeContext } from "@/providers/colors/GlobalColors";
+import { FaDownload } from "react-icons/fa";
 
 const AllMovies = ({ movie }) => {
   const [hovered, setHovered] = useState(false);
+
+  const { colors } = useContext(ThemeContext);
 
   const handleHover = () => {
     setHovered(true);
@@ -31,13 +35,13 @@ const AllMovies = ({ movie }) => {
           />
         </div>
         <div
-          className={`p-2 absolute w-full bg-gray-800 bg-opacity-90 text-white ${
+          className={`pt-2 px-1 absolute w-full bg-gray-800 bg-opacity-90 text-white ${
             hovered
               ? "transform bottom-0 transition-all duration-500"
               : "transform translate-y-full bottom-16 transition-all duration-300"
           }`}
         >
-          <h3 className="font-semibold text-center py-2">
+          <h3 className="font-semibold text-center pb-2">
             {movie.movieName.length <= 40
               ? movie.movieName
               : `${movie.movieName.substring(0, 40)}...`}
@@ -45,7 +49,10 @@ const AllMovies = ({ movie }) => {
           <hr />
           <div className="uppercase text-xs text-white flex flex-wrap">
             {movie.genre.map((dt, index) => (
-              <span key={index} className="bg-gray-700 rounded-sm mr-1 my-[2px] px-1">
+              <span
+                key={index}
+                className="bg-gray-700 rounded-sm mr-1 my-[2px] px-1"
+              >
                 {dt},
               </span>
             ))}
@@ -64,6 +71,13 @@ const AllMovies = ({ movie }) => {
               <b>Industry:</b> {movie.industry}
             </li>
           </ul>
+
+          <button
+            className="btn hidden btn-sm my-1 mx-auto md:flex text-white"
+            style={{ backgroundColor: colors.mo_tertiary }}
+          >
+            Download <FaDownload />
+          </button>
         </div>
         {/*  */}
       </div>

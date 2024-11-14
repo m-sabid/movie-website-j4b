@@ -65,7 +65,6 @@ const Page = ({ params }) => {
 
   return (
     <div>
-      <h1>Hello </h1>
       <MovieEditForm
         moByID={moByID}
         allLanguage={allLanguage}

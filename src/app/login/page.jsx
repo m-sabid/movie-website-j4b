@@ -7,13 +7,13 @@ import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { AuthContext } from "@/providers/firebase/AuthProvider";
 import Link from "next/link";
 import SecondaryNav from "@/components/pages/HomePage/SecondaryNav";
+import { ThemeContext } from "@/providers/colors/GlobalColors";
 
-const Login = () => {
-  const [passwordError, setPasswordError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-
+const page = () => {
+  const { colors } = useContext(ThemeContext);
   const { login, googleSignIn } = useContext(AuthContext);
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
   const {
     register,
     handleSubmit,
@@ -21,50 +21,34 @@ const Login = () => {
   } = useForm();
 
   const togglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
+    setShowPassword((prev) => !prev);
   };
 
   const validatePassword = (value) => {
     let error = "";
-
-    if (value.length < 6) {
-      error = "Password must be at least 6 characters long";
-    } else if (!/[A-Z]/.test(value)) {
-      error = "Password must contain a capital letter";
-    } else if (!/[!@#$%^&*]/.test(value)) {
-      error = "Password must contain a special character";
-    }
+    if (value.length < 6) error = "Password must be at least 6 characters long";
+    else if (!/[A-Z]/.test(value)) error = "Password must contain a capital letter";
+    else if (!/[!@#$%^&*]/.test(value)) error = "Password must contain a special character";
 
     setPasswordError(error);
+    return !error; // Returns true if no error, false otherwise
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async ({ email, password }) => {
+    if (!validatePassword(password)) return; // Stops if password validation fails
+
     try {
-      const { email, password } = data;
-
-      validatePassword(password);
-
-      if (passwordError) {
-        // Display an error message for an invalid password
-        return;
-      }
-
-      // Call your login function with email and password
       await login(email, password);
     } catch (error) {
       console.error("Error logging in:", error);
     }
   };
 
-  // Google Login
   const handleGoogleLogin = async () => {
     try {
-      const result = await googleSignIn();
-
-      // Access the user's name and email from the Google sign-in result
-      const { displayName, email } = result.user;
+      await googleSignIn();
     } catch (error) {
-      console.error("Error logging in with Google:", error);
+      console.error("Error during Google login:", error);
     }
   };
 
@@ -78,34 +62,28 @@ const Login = () => {
         <div className="container mx-auto mt-20">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="bg-gray-500 w-full md:w-2/5 mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-2 rounded-md bg-opacity-50 backdrop-blur-md"
+            className="w-full md:w-2/5 mx-auto p-4 grid grid-cols-1 gap-2 rounded-md bg-opacity-50 backdrop-blur-md"
+            style={{ backgroundColor: colors.mo_primary }}
           >
             {/* Email */}
-            <div className="mb-4 col-span-2">
-              <label htmlFor="email" className="block text-white font-bold">
-                Email
-              </label>
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-white font-bold">Email</label>
               <input
                 type="email"
-                {...register("email", { required: true })}
+                {...register("email", { required: "Email is required" })}
                 placeholder="Email"
                 className="input input-bordered input-accent w-full"
               />
-              {errors?.email && (
-                <span className="text-red-500">This field is required</span>
-              )}
+              {errors.email && <span className="text-red-500">{errors.email.message}</span>}
             </div>
 
             {/* Password */}
-            <div className="mb-4 col-span-2 w-full">
-              <label htmlFor="password" className="block text-white font-bold">
-                Password
-              </label>
-              <div className="relative bg-white rounded-lg">
+            <div className="mb-4 w-full">
+              <label htmlFor="password" className="block text-white font-bold">Password</label>
+              <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  id="password"
-                  {...register("password", { required: true })}
+                  {...register("password", { required: "Password is required" })}
                   className="input input-bordered w-full pr-10"
                   onChange={(e) => validatePassword(e.target.value)}
                   placeholder="Password"
@@ -115,49 +93,35 @@ const Login = () => {
                   className="absolute top-1/2 right-2 transform -translate-y-1/2"
                   onClick={togglePasswordVisibility}
                 >
-                  {showPassword ? (
-                    <BsEyeSlashFill className="text-gray-500" />
-                  ) : (
-                    <BsEyeFill className="text-gray-500" />
-                  )}
+                  {showPassword ? <BsEyeSlashFill className="text-gray-500" /> : <BsEyeFill className="text-gray-500" />}
                 </button>
               </div>
-              {errors.password && (
-                <span className="text-red-500">Password is required</span>
-              )}
+              {passwordError && <span className="text-red-500">{passwordError}</span>}
+              {errors.password && <span className="text-red-500">{errors.password.message}</span>}
             </div>
 
             {/* Submit Button */}
-            <div className="mb-4 col-span-2">
-              <input
-                type="submit"
-                value="Login"
-                className="btn btn-primary w-full"
-              />
+            <div className="mb-4">
+              <input type="submit" value="Login" className="btn btn-primary w-full" />
             </div>
 
             {/* Google Login */}
-            <div className="col-span-1 md:col-span-2 text-white">
+            <div className="text-white">
               <div className="divider">OR</div>
-              <div className="flex flex-col justify-center text-center">
-                <div className="col-span-2 mx-auto">
-                  <button
-                    type="button"
-                    className="bg-red-500 text-white rounded py-2 px-4 flex items-center justify-center gap-4 hover:bg-red-600 mt-2"
-                    onClick={handleGoogleLogin}
-                  >
-                    <FaGoogle /> Login with Google
-                  </button>
-                </div>
-                <div className="text-white my-4">
-                  {"Don't have an account?"}
-                  <Link
-                    href="/signup"
-                    className="text-blue-500 hover:underline"
-                  >
-                    Sign Up
-                  </Link>
-                </div>
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  className="bg-red-500 text-white rounded py-2 px-4 flex items-center gap-4 hover:bg-red-600 mt-2"
+                  onClick={handleGoogleLogin}
+                >
+                  <FaGoogle /> Login with Google
+                </button>
+              </div>
+              <div className="text-center mt-4">
+                {"Don't have an account?"}
+                <Link href="/signup" className="text-blue-500 hover:underline ml-2">
+                  Sign Up
+                </Link>
               </div>
             </div>
           </form>
@@ -167,4 +131,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default page;

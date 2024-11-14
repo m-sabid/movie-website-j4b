@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import base_url from "@/providers/links/BASE_URL";
 import Swal from "sweetalert2";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { ThemeContext } from "@/providers/colors/GlobalColors";
 
 
 const MovieEditForm = ({ moByID, allLanguage, allGenre, allIndustry }) => {
   const movie = moByID;
   const router = useRouter();
 
+  const {colors} = useContext(ThemeContext)
 
   const {
     register,
@@ -142,7 +144,8 @@ const MovieEditForm = ({ moByID, allLanguage, allGenre, allIndustry }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-gray-500 rounded-md w-full p-4"
+      className="rounded-md w-full p-4"
+      style={{backgroundColor:colors.mo_primary}}
     >
       <div className="grid grid-cols-2 gap-4">
         <div className="mb-4 col-span-2 md:col-span-1">
@@ -220,7 +223,8 @@ const MovieEditForm = ({ moByID, allLanguage, allGenre, allIndustry }) => {
             {selectedLanguages?.map((language) => (
               <div
                 key={language}
-                className="inline-flex items-center bg-blue-500 text-white px-3 py-1 rounded-full text-sm mr-2 mt-2"
+                className="inline-flex items-center text-white px-3 py-1 rounded-full text-sm mr-2 mt-2"
+              style={{backgroundColor: colors.mo_badges_primary}}
               >
                 {language}
                 <button
@@ -261,7 +265,8 @@ const MovieEditForm = ({ moByID, allLanguage, allGenre, allIndustry }) => {
             {selectedGenres?.map((genre) => (
               <div
                 key={genre}
-                className="inline-flex items-center bg-blue-500 text-white px-3 py-1 rounded-full text-sm mr-2 mt-2"
+                className="inline-flex items-center text-white px-3 py-1 rounded-full text-sm mr-2 mt-2"
+                style={{backgroundColor: colors.mo_badges_primary}}
               >
                 <span className="capitalize">{genre}</span>
                 <button
