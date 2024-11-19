@@ -7,6 +7,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      animation: {
+        "zoom-in-out": "zoomInOut 2s ease-in-out infinite",
+      },
+      keyframes: {
+        zoomInOut: {
+          "0%, 100%": { transform: "scale(1)" },
+          '50%': { transform: 'scale(1.02)' },
+        },
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

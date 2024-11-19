@@ -3,26 +3,28 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect, useContext } from "react";
 import SearchBarOnHeroSection from "./SearchBarOnHeroSection";
-import { AllMoviesContext } from "@/providers/data/AllMoviesData";
 import { ThemeContext } from "@/providers/colors/GlobalColors";
+import { AllMoviesContext } from "@/providers/data/AllMoviesData";
+import Logo from "../../../../public/logo.png"
 
 const SecondaryNav = ({ onSearch }) => {
-  const { movieData, filmIndustries } = useContext(AllMoviesContext);
+  const { recentMovies,industries } = useContext(AllMoviesContext);
+
   const { user, logout } = useContext(AuthContext);
   const { colors } = useContext(ThemeContext);
 
   const [isSticky, setIsSticky] = useState(false);
 
   // Extract unique values for movie filters
-  const releaseYear = Array.from(
-    new Set(movieData.map((movie) => movie.releaseYear))
-  ).sort((a, b) => b - a);
-  const genres = Array.from(
-    new Set(movieData.flatMap((movie) => movie.genre))
-  ).sort();
-  const movieIndustries = Array.from(
-    new Set(filmIndustries.flatMap((movie) => movie.industryName))
-  ).sort();
+  // const releaseYear = Array.from(
+  //   new Set(recentMovies.map((movie) => movie.releaseYear))
+  // ).sort((a, b) => b - a);
+  // const genres = Array.from(
+  //   new Set(recentMovies.flatMap((movie) => movie.genre))
+  // ).sort();
+  // const movieIndustries = Array.from(
+  //   new Set(industries.flatMap((movie) => movie.industryName))
+  // ).sort();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,9 +59,9 @@ const SecondaryNav = ({ onSearch }) => {
               />
             </svg>
           </label>
-          <ul
+          {/* <ul
             tabIndex={0}
-            className="menu bg-gray-800 dropdown-content mt-3 z-[100] p-2 shadow w-52 h-[80vh] overflow-y-scroll"
+            className="menu bg-gray-800 dropdown-content mt-3 z-[100] p-2 shadow w-52 h-[100vh] overflow-y-scroll"
           >
             <li>
               <details close>
@@ -97,10 +99,10 @@ const SecondaryNav = ({ onSearch }) => {
                 </ul>
               </details>
             </li>
-          </ul>
+          </ul> */}
         </div>
         <Link href="/" className="btn btn-ghost normal-case text-xl">
-          J4B Movies
+          <Image src={Logo} width={40} height={40} alt="j4b movie" /> J4B Movies
         </Link>
         {isSticky && (
           <div className="hidden md:flex">

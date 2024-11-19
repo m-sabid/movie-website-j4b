@@ -1,122 +1,102 @@
-import React, { useState } from "react";
-import AllMovies from "@/components/pages/HomePage/AllMovies";
-import MovieCategoryHeader from "@/components/shared/MovieCategoryHeader";
+import React, { useContext, useState, useEffect } from "react";
+import { AllMoviesContext } from "@/providers/data/AllMoviesData";
 import AnimatedSkeleton from "@/components/shared/AnimatedSkeleton";
+import MovieCart from "@/components/shared/MovieCart";
 
-const IndividualIndustry = ({ industry, movieData, isLoading }) => {
-  const itemsPerPage = 12;
-  const [industryPage, setIndustryPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+const IndividualIndustry = ({ industry }) => {
+  const { movies, fetchMoviesByIndustry, loading } = useContext(AllMoviesContext);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const industryMovies = movieData.filter(
-    (movie) => movie.industry === industry.industryName
-  );
+  // Fetch movies and update pagination state
+  useEffect(() => {
+    const fetchData = async () => {
+      const pagination = await fetchMoviesByIndustry(industry, page);
 
-  if (industryMovies.length === 0) {
-    return null;
-  }
+      if (pagination) {
+        setTotalPages(pagination.totalPages); // Update totalPages from backend response
+      }
+    };
+    fetchData();
+  }, [industry, page]);
 
-  const totalPages = Math.ceil(industryMovies.length / itemsPerPage);
-  const pageNumbers = Array.from(
-    { length: totalPages },
-    (_, index) => index + 1
-  );
-
-  const handleIndustryPageClick = (pageNumber) => {
-    setLoading(true);
-    setTimeout(() => {
-      setIndustryPage(pageNumber);
-      setLoading(false);
-    }, 500); // simulate loading delay
+  // Handle page change (jump by 3 pages)
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setPage(newPage);
+    }
   };
 
-  const handlePreviousClick = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setIndustryPage((prevPage) => Math.max(prevPage - 5, 1));
-      setLoading(false);
-    }, 500); // simulate loading delay
-  };
-
-  const handleNextClick = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setIndustryPage((prevPage) => Math.min(prevPage + 5, totalPages));
-      setLoading(false);
-    }, 500); // simulate loading delay
-  };
-
-  const renderPageNumbers = () => {
-    const startPage = Math.max(1, industryPage - 2);
-    const endPage = Math.min(totalPages, industryPage + 2);
-    const visiblePages = [];
+  // Generate pagination buttons
+  const generatePagination = () => {
+    const buttons = [];
+    const startPage = Math.max(1, page - 2);
+    const endPage = Math.min(totalPages, page + 2);
 
     for (let i = startPage; i <= endPage; i++) {
-      visiblePages.push(i);
+      buttons.push(
+        <button
+          key={i}
+          onClick={() => handlePageChange(i)}
+          className={`md:px-3 px-2 py-1 border rounded ${
+            i === page
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 hover:bg-gray-300"
+          }`}
+        >
+          {i}
+        </button>
+      );
     }
-
-    return visiblePages;
+    return buttons;
   };
 
   return (
-    <div key={industry._id}>
-      <MovieCategoryHeader
-        title={industry.industryName}
-        className="col-span-1 md:col-span-5"
-      />
-      <div className="md:px-5 px-2 grid grid-cols-2 md:grid-cols-6 gap-4">
-        {loading
-          ? Array.from({ length: itemsPerPage }).map((_, index) => (
-              <div className="rounded-md" key={index}>
-                <AnimatedSkeleton count={2} />
-              </div>
-            ))
-          : industryMovies
-              .slice(
-                (industryPage - 1) * itemsPerPage,
-                industryPage * itemsPerPage
-              )
-              .map((movie, index) => (
-                <div className="rounded-md" id="all_movies" key={index}>
-                  {isLoading ? (
-                    <AnimatedSkeleton count={1} />
-                  ) : (
-                    <AllMovies movie={movie} /> 
-                  )}
-                </div>
-              ))}
-      </div>
-      {industryMovies.length > itemsPerPage && (
-        <div className="flex w-full justify-center my-3">
-          <div className="join">
-            <button
-              className="join-item btn"
-              onClick={handlePreviousClick}
-              disabled={industryPage === 1}
-            >
-              Previous
-            </button>
-            {renderPageNumbers().map((pageNumber) => (
-              <button
-                key={pageNumber}
-                className={`join-item btn ${
-                  pageNumber === industryPage ? "bg-white text-black" : ""
-                }`}
-                onClick={() => handleIndustryPageClick(pageNumber)}
-              >
-                {pageNumber}
-              </button>
-            ))}
-            <button
-              className="join-item btn"
-              onClick={handleNextClick}
-              disabled={industryPage === totalPages}
-            >
-              Next
-            </button>
+    <div className="py-10 border-b-2 border-gray-400">
+      <h2 className="text-2xl md:px-10 font-bold mb-4 uppercase">{industry}</h2>
+      {loading[industry] ? (
+        <AnimatedSkeleton count={10} />
+      ) : movies[industry]?.length > 0 ? (
+        <div className="grid md:px-10 mx-auto grid-cols-2 md:grid-cols-6 gap-4">
+          {movies[industry].map((movie) => (
+            <div key={movie._id} className="movie-card animate-zoom-in-out">
+            <MovieCart movie={movie} />
           </div>
+          
+          ))}
         </div>
+      ) : (
+        <p className="text-center text-gray-500 mt-4">No movies available.</p>
       )}
+
+      <div className="flex md:px-10 justify-between items-center mt-4">
+        {/* Previous button */}
+        <button
+          onClick={() => handlePageChange(page - 3)}
+          className={`px-4 py-2 rounded ${
+            page <= 1
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              : "bg-blue-500 text-white hover:bg-blue-600"
+          }`}
+        >
+          Previous
+        </button>
+
+        {/* Pagination buttons */}
+        <div className="flex gap-2">{generatePagination()}</div>
+
+        {/* Next button */}
+        <button
+          onClick={() => handlePageChange(page + 3)}
+          className={`px-4 py-2 rounded ${
+            page >= totalPages
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              : "bg-blue-500 text-white hover:bg-blue-600"
+          }`}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };

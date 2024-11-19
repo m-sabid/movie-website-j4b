@@ -2,24 +2,18 @@ import React, { useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import Image from "next/image";
-import { AllMoviesContext } from "@/providers/data/AllMoviesData";
 import { FiPlayCircle } from "react-icons/fi";
 import Link from "next/link";
+import { AllMoviesContext } from "@/providers/data/AllMoviesData";
 
 const RecentMovieSlider = () => {
-  const { movieData } = useContext(AllMoviesContext);
-
-  // Get the current year
-  const currentYear = new Date().getFullYear();
-
-  // Filter the movies to get the ones released in the last 5 years
-  const recentMovies = movieData
-    .filter((movie) => movie.releaseYear >= currentYear - 5)
-    .sort((a, b) => b.releaseYear - a.releaseYear)
-    .slice(0, 5);
+  const { recentMovies } = useContext(AllMoviesContext);
 
   return (
-    <div className="swiper-container relative" style={{ width: "100%", height: "100%" }}>
+    <div
+      className="swiper-container relative"
+      style={{ width: "100%", height: "100%" }}
+    >
       <div
         className="absolute top-0 left-0 w-full text-white text-2xl font-bold p-2 z-10"
         style={{ background: "rgba(0, 0, 0, 0.5)" }}
@@ -30,7 +24,7 @@ const RecentMovieSlider = () => {
         spaceBetween={30}
         centeredSlides={true}
         autoplay={{
-          delay: 5000,
+          delay: 6000,
           disableOnInteraction: false,
         }}
         pagination={{
@@ -54,6 +48,7 @@ const RecentMovieSlider = () => {
                 layout="fill"
                 objectFit="cover"
                 objectPosition="center"
+                loading="lazy" // Lazy load images
               />
               <div
                 className="absolute inset-0 bg-black opacity-50"

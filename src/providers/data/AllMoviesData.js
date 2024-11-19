@@ -1,95 +1,115 @@
 "use client";
 
-import { useEffect, useState, createContext } from "react";
-import base_url from "../links/BASE_URL";
+import { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import base_url from "../links/BASE_URL";
 
-// Create the context
-export const AllMoviesContext = createContext([]);
+export const AllMoviesContext = createContext();
 
 const AllMoviesProvider = ({ children }) => {
-  const [movieData, setMovieData] = useState([]);
-  const [favoriteMovieData, setFavoriteMovieData] = useState([]);
-  const [filmIndustries, setFilmIndustries] = useState([]);
+  const [industries, setIndustries] = useState([]);
+  const [movies, setMovies] = useState({});
+  const [loading, setLoading] = useState({}); // Track loading state per industry
+  const [recentMovies, setRecentMovies] = useState([]);
+  const [mostWatched, setMostWatched] = useState([]);
+  const [moviesForYou, setMoviesForYou] = useState([]);
 
-  // Trending Movies Data
-  useEffect(() => {
-    // Fetch all movies
-    const fetchMovies = async () => {
-      try {
-        const response = await axios.get(`${base_url}/movies`);
+  // **Search State**
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchValue, setSearchValue] = useState(""); // This is the search value
 
-        // Reverse the order of the response data array
-        const reversedMovies = response.data.reverse();
+  // Fetch all industries (unique names)
+  const fetchIndustries = async () => {
+    try {
+      const res = await axios.get(`${base_url}/movies/industries`);
+      const recentMoviesRequest = await axios.get(`${base_url}/movies/recent`);
+      const mostWatchedMovies = await axios.get(
+        `${base_url}/movies/most-watched`
+      );
+      const moviesForYouData = await axios.get(`${base_url}/movies/forYou`);
 
-        setMovieData(reversedMovies);
-      } catch (error) {
-        console.error("Error fetching Movies:", error);
-      }
-    };
-    fetchMovies();
-
-    // const options = {
-    //   method: "GET",
-    //   headers: {
-    //     accept: "application/json",
-    //     Authorization:
-    //       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYTBjOGY3OTQzOGNkZTdmMGU4ZTg3OGUwZGVjNGI1MCIsInN1YiI6IjY0YjQyZDY2MGJiMDc2MDBjYWY5MThkOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Of8UeBjQUXHKvcYcq9cjoeM-zzrSJrab1wW-ZZ1SeI8",
-    //   },
-    // };
-
-    // fetch("https://api.themoviedb.org/3/trending/movie/day", options)
-    //   .then((response) => response.json())
-    //   .then((response) => {
-    //     setMovieData(response.results);
-    //   })
-
-    //   .catch((err) => console.error(err));
-  }, []);
-
-  // Fetch Industry
-  useEffect(() => {
-    const fetchIndustry = async () => {
-      try {
-        const response = await axios.get(`${base_url}/industry`);
-        setFilmIndustries(response.data);
-      } catch (error) {
-        console.error("Error fetching Industry:", error);
-      }
-    };
-    fetchIndustry();
-  }, []);
-
-  //   Favorite Movies
-  useEffect(() => {
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYTBjOGY3OTQzOGNkZTdmMGU4ZTg3OGUwZGVjNGI1MCIsInN1YiI6IjY0YjQyZDY2MGJiMDc2MDBjYWY5MThkOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Of8UeBjQUXHKvcYcq9cjoeM-zzrSJrab1wW-ZZ1SeI8",
-      },
-    };
-
-    fetch("https://api.themoviedb.org/3/tv/changes", options)
-      .then((response) => response.json())
-      .then((response) => {
-        setFavoriteMovieData(response.results);
-      })
-      .catch((err) => console.error(err));
-  }, []);
-
-  
-
-  // Exported Data
-  const movieDataInfo = {
-    movieData,
-    filmIndustries,
-    setMovieData,
+      setIndustries(res.data.industries);
+      setMoviesForYou(moviesForYouData.data.movies.reverse());
+      setMostWatched(mostWatchedMovies.data.movies.reverse());
+      setRecentMovies(recentMoviesRequest.data.movies.reverse());
+    } catch (err) {
+      console.error("Error fetching industries:", err);
+    }
   };
 
+  // Fetch paginated movies with filters
+  const fetchMoviesByIndustry = async (industry, page = 1, filters = {}) => {
+    try {
+      setLoading((prev) => ({ ...prev, [industry]: true }));
+      const res = await axios.get(`${base_url}/movies`, {
+        params: { industry, page, ...filters },
+      });
+
+      setMovies((prev) => ({
+        ...prev,
+        [industry]: res.data.movies,
+      }));
+
+      return res.data.pagination;
+    } catch (err) {
+      console.error("Error fetching movies by industry:", err);
+      return null;
+    } finally {
+      setLoading((prev) => ({ ...prev, [industry]: false }));
+    }
+  };
+
+  // **Search Movies**
+  const fetchSearchResults = async (query) => {
+    if (!query || query.length < 3) {
+      setSearchResults([]); // Reset results to null for invalid or short query
+      setSearchValue(query); // Reset the search value too
+      return;
+    }
+
+    try {
+      setSearchLoading(true);
+      const res = await axios.get(`${base_url}/movies/search`, {
+        params: { movieName: query },
+      });
+      setSearchResults(res.data.movies || []); // Set results or empty array
+    } catch (err) {
+      console.error("Error fetching search results:", err);
+      setSearchResults([]); // Set to empty array on error
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const newValue = e.target.value;
+    setSearchValue(newValue); // Update the search value
+    fetchSearchResults(newValue); // Fetch search results based on the new value
+  };
+
+  useEffect(() => {
+    fetchIndustries();
+  }, []);
+
   return (
-    <AllMoviesContext.Provider value={movieDataInfo}>
+    <AllMoviesContext.Provider
+      value={{
+        industries,
+        movies,
+        fetchMoviesByIndustry,
+        loading,
+        recentMovies,
+        mostWatched,
+        moviesForYou,
+        searchResults,
+        searchValue, // Provide search value to components
+        setSearchValue, // Provide setSearchValue to components
+        handleInputChange, // Provide input change handler for search input
+        fetchSearchResults,
+        searchLoading,
+      }}
+    >
       {children}
     </AllMoviesContext.Provider>
   );

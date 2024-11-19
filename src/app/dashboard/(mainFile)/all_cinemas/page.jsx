@@ -10,7 +10,7 @@ import DashboardHeader from "@/components/dashboard/shared/DashboardHeader";
 import { ThemeContext } from "@/providers/colors/GlobalColors";
 
 const AllCinemas = () => {
-  const { movieData, setMovieData } = useContext(AllMoviesContext);
+  const { movies, fetchMoviesByIndustry, loading } = useContext(AllMoviesContext);
 
     const { colors } = useContext(ThemeContext);
 

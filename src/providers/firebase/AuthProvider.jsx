@@ -87,6 +87,7 @@ const AuthProvider = ({ children }) => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
+  
       const response = await fetch(`${base_url}/api/auth/googleLogin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -97,35 +98,39 @@ const AuthProvider = ({ children }) => {
           role: "user",
         }),
       });
+  
       const data = await response.json();
       const token = data.token;
       const decodedToken = jwtDecode(token);
-
+  
       // Store token and decoded role in localStorage and cookies
       localStorage.setItem("token", token);
       localStorage.setItem("tokenExpiration", decodedToken.exp);
       Cookies.set("token", token); // Store token in cookies
-
-      console.log("userRole", decodedToken);
-
       Cookies.set("userRole", decodedToken.role); // Store user role in cookies
-
+  
       setUser(decodedToken);
-
+  
       // Calculate expiration time and set auto-logout
       const expirationTime = decodedToken.exp * 1000;
       const currentTime = Date.now();
       const timeLeft = expirationTime - currentTime;
-
+  
       setTimeout(() => {
         logout();
       }, timeLeft);
+  
+      // Perform a hard reload to redirect to the home page
+      window.location.href = "/";
+      
     } catch (error) {
       console.error("Google Sign-In Error:", error);
     } finally {
       setLoading(false);
     }
   };
+  
+
 
   const logout = () => {
     setLoading(true);

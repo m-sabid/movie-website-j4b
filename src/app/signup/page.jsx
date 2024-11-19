@@ -20,7 +20,7 @@ const Page = () => {
 
   const router = useRouter();
   const { createUser, googleSignIn } = useContext(AuthContext);
-  const { movieData } = useContext(AllMoviesContext);
+  const { movies, fetchMoviesByIndustry, loading } = useContext(AllMoviesContext);
 
   const {
     register,

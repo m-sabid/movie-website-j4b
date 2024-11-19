@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ThemeContext } from "@/providers/colors/GlobalColors";
 import { FaDownload } from "react-icons/fa";
 
-const AllMovies = ({ movie }) => {
+const MovieCart = ({ movie }) => {
   const [hovered, setHovered] = useState(false);
 
   const { colors } = useContext(ThemeContext);
@@ -53,7 +53,7 @@ const AllMovies = ({ movie }) => {
                 key={index}
                 className="bg-gray-700 rounded-sm mr-1 my-[2px] px-1"
               >
-                {dt},
+                {dt}
               </span>
             ))}
           </div>
@@ -85,4 +85,4 @@ const AllMovies = ({ movie }) => {
   );
 };
 
-export default AllMovies;
+export default MovieCart;

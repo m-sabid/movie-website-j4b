@@ -11,7 +11,7 @@ import { ThemeContext } from "@/providers/colors/GlobalColors";
 
 const Login = () => {
   const { colors } = useContext(ThemeContext);
-  const { login, googleSignIn } = useContext(AuthContext);
+  const { login, googleSignIn, loading } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const {
@@ -53,6 +53,16 @@ const Login = () => {
       console.error("Error during Google login:", error);
     }
   };
+
+  if (loading) {
+    return (
+      <>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

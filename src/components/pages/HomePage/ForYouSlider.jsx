@@ -7,15 +7,16 @@ import { FiPlayCircle } from "react-icons/fi";
 import Link from "next/link";
 
 const ForYouSlider = () => {
-  const { movieData } = useContext(AllMoviesContext);
-
+ 
+  const { moviesForYou } = useContext(AllMoviesContext);
+  
   // Function to shuffle the array
   const shuffleArray = (array) => {
     return array.sort(() => Math.random() - 0.5);
   };
 
   // Shuffle the movie data and take the first 5 elements
-  const randomMovies = shuffleArray(movieData).slice(0, 5);
+  const randomMovies = shuffleArray(moviesForYou).slice(0, 5);
 
   return (
     <div className="swiper-container relative" style={{ width: "100%", height: "100%" }}>

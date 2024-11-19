@@ -5,10 +5,10 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import ReactQueryProviders from "@/providers/ReactQuerySetup/ReactQueryProviders";
-import AllMoviesProvider from "@/providers/data/AllMoviesData";
 import AuthProvider from "@/providers/firebase/AuthProvider";
 import Script from "next/script";
 import ThemeProvider from "@/providers/colors/GlobalColors";
+import AllMoviesProvider from "@/providers/data/AllMoviesData";
 
 const inter = Inter({ subsets: ["latin"] });
 

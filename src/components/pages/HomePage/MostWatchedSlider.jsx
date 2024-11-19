@@ -2,20 +2,19 @@ import React, { useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import Image from "next/image";
-import { AllMoviesContext } from "@/providers/data/AllMoviesData";
+import { AllMoviesContext, useAllMoviesContext } from "@/providers/data/AllMoviesData";
 import { FiPlayCircle } from "react-icons/fi";
 import Link from "next/link";
 
 const MostWatchedSlider = () => {
-  const { movieData } = useContext(AllMoviesContext);
-
+  const { mostWatched } = useContext(AllMoviesContext);
   // Function to shuffle the array
   const shuffleArray = (array) => {
     return array.sort(() => Math.random() - 0.5);
   };
 
   // Shuffle the movie data and take the first 5 elements
-  const randomMovies = shuffleArray(movieData).slice(0, 5);
+  const randomMovies = shuffleArray(mostWatched).slice(0, 5);
 
   return (
     <div className="swiper-container relative" style={{ width: "100%", height: "100%" }}>
@@ -29,7 +28,7 @@ const MostWatchedSlider = () => {
         spaceBetween={30}
         centeredSlides={true}
         autoplay={{
-          delay: 5000,
+          delay: 5500,
           disableOnInteraction: false,
         }}
         pagination={{
