@@ -21,14 +21,14 @@ const Page = () => {
   const router = useRouter();
   const { createUser, googleSignIn } = useContext(AuthContext);
   const { movies, fetchMoviesByIndustry, loading } = useContext(AllMoviesContext);
-
+  
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
   } = useForm();
-  const lastMovie = movieData[0];
+  const lastMovie = movies[0];
   const bgImage = lastMovie?.poster;
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
