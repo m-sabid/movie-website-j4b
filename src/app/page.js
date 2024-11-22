@@ -22,10 +22,6 @@ export default function Home() {
   const { colors } = useContext(ThemeContext);
   const { industries, searchResults, searchLoading } =
     useContext(AllMoviesContext);
-  console.log(
-    "first",
-    searchResults?.map((result, index) => result)
-  );
   return (
     <>
       <div className="min-h-screen max-w-full ">

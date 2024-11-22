@@ -17,8 +17,8 @@ const ThemeProvider = ({ children }) => {
     mo_heading: "#ffffff",
     mo_db_primary: "#4b5563",
     mo_badges_primary: "#3b82f6",
-    mo_badges_secondary: "#d1d5db"
-    
+    mo_badges_secondary: "#d1d5db",
+    mo_danger: "#ea1b40",
   });
 
   const [typography, setTypography] = useState({
@@ -37,7 +37,7 @@ const ThemeProvider = ({ children }) => {
         const response = await axios.get(`${base_url}/theme`);
 
         const themeData = response.data;
-        
+
         // Assuming API returns colors and typography in a structured format
         const colorData = themeData.colors.reduce((acc, color) => {
           acc[color.element] = color.colorValue;
@@ -51,8 +51,10 @@ const ThemeProvider = ({ children }) => {
 
         // Update the state with fetched color and typography data
         setColors((prevColors) => ({ ...prevColors, ...colorData }));
-        setTypography((prevTypography) => ({ ...prevTypography, ...typographyData }));
-
+        setTypography((prevTypography) => ({
+          ...prevTypography,
+          ...typographyData,
+        }));
       } catch (error) {
         console.error("Error fetching theme data:", error);
       }
