@@ -8,6 +8,7 @@ const IndividualIndustry = ({ industry }) => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+
   // Fetch movies and update pagination state
   useEffect(() => {
     const fetchData = async () => {
@@ -53,7 +54,7 @@ const IndividualIndustry = ({ industry }) => {
 
   return (
     <div className="py-10 border-b-2 border-gray-400">
-      <h2 className="text-2xl md:px-10 font-bold mb-4 uppercase">{industry}</h2>
+      <h2 className="text-2xl md:px-10 font-bold mb-4 uppercase" id={`${industry}_movie`}>{industry}</h2>
       {loading[industry] ? (
         <AnimatedSkeleton count={10} />
       ) : movies[industry]?.length > 0 ? (

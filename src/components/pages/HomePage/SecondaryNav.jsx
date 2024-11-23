@@ -4,27 +4,14 @@ import Link from "next/link";
 import React, { useState, useEffect, useContext } from "react";
 import SearchBarOnHeroSection from "./SearchBarOnHeroSection";
 import { ThemeContext } from "@/providers/colors/GlobalColors";
-import { AllMoviesContext } from "@/providers/data/AllMoviesData";
-import Logo from "../../../../public/logo.png"
+import Logo from "../../../../public/logo.png";
+import { useLenis } from "@studio-freight/react-lenis";
 
 const SecondaryNav = ({ onSearch }) => {
-  const { recentMovies,industries } = useContext(AllMoviesContext);
-
   const { user, logout } = useContext(AuthContext);
   const { colors } = useContext(ThemeContext);
 
   const [isSticky, setIsSticky] = useState(false);
-
-  // Extract unique values for movie filters
-  // const releaseYear = Array.from(
-  //   new Set(recentMovies.map((movie) => movie.releaseYear))
-  // ).sort((a, b) => b - a);
-  // const genres = Array.from(
-  //   new Set(recentMovies.flatMap((movie) => movie.genre))
-  // ).sort();
-  // const movieIndustries = Array.from(
-  //   new Set(industries.flatMap((movie) => movie.industryName))
-  // ).sort();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,6 +23,9 @@ const SecondaryNav = ({ onSearch }) => {
     };
   }, []);
 
+  // scroll
+  const lenis = useLenis();
+
   return (
     <div
       className={`navbar text-white py-2 transition-colors w-full ${
@@ -43,7 +33,7 @@ const SecondaryNav = ({ onSearch }) => {
       }`}
     >
       <div className="navbar-start">
-        <div className="dropdown">
+        <div className="dropdown md:hidden">
           <label tabIndex={0} className="btn btn-ghost">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -57,50 +47,18 @@ const SecondaryNav = ({ onSearch }) => {
                 strokeWidth="2"
                 d="M4 6h16M4 12h8m-8 6h16"
               />
-            </svg>
-          </label>
-          {/* <ul
-            tabIndex={0}
-            className="menu bg-gray-800 dropdown-content mt-3 z-[100] p-2 shadow w-52 h-[100vh] overflow-y-scroll"
-          >
-            <li>
-              <details close>
-                <summary>Industry</summary>
-                <ul>
-                  {movieIndustries.map((industry, index) => (
-                    <li key={index} className="capitalize">
-                      <a>{industry}</a>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            </li>
-            <li>
-              <details close>
-                <summary>Release Year</summary>
-                <ul>
-                  {releaseYear.map((year, index) => (
-                    <li key={index} className="capitalize">
-                      <a>{year}</a>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            </li>
-            <li>
-              <details close>
-                <summary>Genre</summary>
-                <ul>
-                  {genres.map((genre, index) => (
-                    <li key={index} className="capitalize">
-                      <a>{genre}</a>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            </li>
-          </ul> */}
-        </div>
+            </svg> </label>
+
+            <ul tabIndex={0} className="menu menu-sm dropdown-content rounded-sm z-[999] mt-3 w-52 p-2 shadow" style={{backgroundColor:colors.mo_secondary}}>
+          <li onClick={() => lenis.scrollTo("#bollywood_movie", { lerp: 0.1 })}>
+            <Link              
+              href="#bollywood_movie"
+            >
+              bollywood
+            </Link>
+          </li>
+        </ul>
+   </div>
         <Link href="/" className="btn btn-ghost normal-case text-xl">
           <Image src={Logo} width={40} height={40} alt="j4b movie" /> J4B Movies
         </Link>
@@ -112,6 +70,16 @@ const SecondaryNav = ({ onSearch }) => {
       </div>
 
       <div className="navbar-end">
+        <ul className="hidden md:block uppercase menu">
+          <li onClick={() => lenis.scrollTo("#bollywood_movie", { lerp: 0.1 })}>
+            <Link              
+              href="#bollywood_movie"
+            >
+              bollywood
+            </Link>
+          </li>
+        </ul>
+
         {user?.email ? (
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">

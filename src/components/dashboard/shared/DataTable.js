@@ -123,7 +123,7 @@ const DataTable = ({ data, columns, onEdit, onDelete }) => {
       </table>
 
       {/* Pagination Controls */}
-      <div className="flex justify-between items-center mt-4 space-x-2">
+      <div className="flex flex-col md:flex-row gap-3 justify-between items-center mt-4 space-x-2">
         <div>
           <label className="text-white">Items per page:</label>
           <input

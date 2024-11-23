@@ -9,6 +9,7 @@ import AuthProvider from "@/providers/firebase/AuthProvider";
 import Script from "next/script";
 import ThemeProvider from "@/providers/colors/GlobalColors";
 import AllMoviesProvider from "@/providers/data/AllMoviesData";
+import SmoothScrolling from "@/components/SmoothScrolling";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,11 +25,13 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <ReactQueryProviders>
             <AllMoviesProvider>
-              <body className={inter.className}>{children}</body>
+              <body className={inter.className}>
+                <SmoothScrolling>{children}</SmoothScrolling>
+              </body>
             </AllMoviesProvider>
           </ReactQueryProviders>
         </AuthProvider>
-        </ThemeProvider>
+      </ThemeProvider>
 
       {/* <Script
         type="text/javascript"
