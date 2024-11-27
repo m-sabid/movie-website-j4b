@@ -1,5 +1,6 @@
 import React from "react";
 import { FaFilter } from "react-icons/fa";
+import TypographyWrapper from "./TypographyWrapper";
 
 const MovieCategoryHeader = ({ title }) => {
   return (
