@@ -20,7 +20,7 @@ const IndividualIndustry = ({ industry }) => {
       }
     };
     fetchData();
-  }, [industry, page, fetchMoviesByIndustry]);
+  }, [industry, page]);
 
   // Handle page change (jump by 3 pages)
   const handlePageChange = (newPage) => {
