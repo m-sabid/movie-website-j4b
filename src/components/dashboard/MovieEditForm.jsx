@@ -6,13 +6,13 @@ import Swal from "sweetalert2";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ThemeContext } from "@/providers/colors/GlobalColors";
-
+import TypographyWrapper from "../shared/TypographyWrapper";
 
 const MovieEditForm = ({ moByID, allLanguage, allGenre, allIndustry }) => {
   const movie = moByID;
   const router = useRouter();
 
-  const {colors} = useContext(ThemeContext)
+  const { colors } = useContext(ThemeContext);
 
   const {
     register,
@@ -142,276 +142,285 @@ const MovieEditForm = ({ moByID, allLanguage, allGenre, allIndustry }) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="rounded-md w-full p-4"
-      style={{backgroundColor:colors.mo_primary}}
-    >
-      <div className="grid grid-cols-2 gap-4">
-        <div className="mb-4 col-span-2 md:col-span-1">
-          <label htmlFor="movieName" className="block text-white font-bold">
-            Movie Name
-          </label>
-          <input
-            type="text"
-            {...register("movieName")}
-            defaultValue={moByID.movieName}
-            placeholder="Movie Name"
-            className="input input-bordered input-accent w-full"
-          />
-        </div>
+    <TypographyWrapper>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="rounded-md w-full p-4"
+        style={{ backgroundColor: colors.mo_primary }}
+      >
+        <div className="grid grid-cols-2 gap-4">
+          <div className="mb-4 col-span-2 md:col-span-1">
+            <label htmlFor="movieName" className="block text-white font-bold">
+              Movie Name
+            </label>
+            <input
+              type="text"
+              {...register("movieName")}
+              defaultValue={moByID.movieName}
+              placeholder="Movie Name"
+              className="input input-bordered input-accent w-full"
+            />
+          </div>
 
-        <div className="mb-4 col-span-2 md:col-span-1">
-          <label htmlFor="directedBy" className="block text-white font-bold">
-            Directed by
-          </label>
-          <input
-            type="text"
-            {...register("directedBy")}
-            defaultValue={moByID.directedBy}
-            placeholder="Directed by"
-            className="input input-bordered input-accent w-full"
-          />
-        </div>
+          <div className="mb-4 col-span-2 md:col-span-1">
+            <label htmlFor="directedBy" className="block text-white font-bold">
+              Directed by
+            </label>
+            <input
+              type="text"
+              {...register("directedBy")}
+              defaultValue={moByID.directedBy}
+              placeholder="Directed by"
+              className="input input-bordered input-accent w-full"
+            />
+          </div>
 
-        <div className="mb-4 col-span-2 md:col-span-1">
-          <label htmlFor="releaseYear" className="block text-white font-bold">
-            Release Year
-          </label>
-          <select
-            {...register("releaseYear")}
-            className="input input-bordered w-full"
-            defaultValue={movie.releaseYear}
-          >
-            <option disabled value="">
-              Select the release year
-            </option>
-            {Array.from(
-              { length: 50 },
-              (_, i) => new Date().getFullYear() - i
-            ).map((year) => (
-              <option key={year} value={year}>
-                {year}
+          <div className="mb-4 col-span-2 md:col-span-1">
+            <label htmlFor="releaseYear" className="block text-white font-bold">
+              Release Year
+            </label>
+            <select
+              {...register("releaseYear")}
+              className="input input-bordered w-full"
+              defaultValue={movie.releaseYear}
+            >
+              <option disabled value="">
+                Select the release year
               </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="mb-4 col-span-2 md:col-span-1">
-          <label htmlFor="language" className="block text-white font-bold">
-            Language
-          </label>
-          <select
-            {...register("language")}
-            onChange={handleLanguageSelect}
-            className="input input-bordered w-full"
-            value={moByID.language}
-          >
-            <option disabled value="">
-              Select a language
-            </option>
-            {allLanguage?.map((language) => {
-              return (
-                <option key={language._id} value={language.languageName}>
-                  {language.languageName}
+              {Array.from(
+                { length: 50 },
+                (_, i) => new Date().getFullYear() - i
+              ).map((year) => (
+                <option key={year} value={year}>
+                  {year}
                 </option>
-              );
-            })}
-          </select>
-
-          <div className="mt-2">
-            {selectedLanguages?.map((language) => (
-              <div
-                key={language}
-                className="inline-flex items-center text-white px-3 py-1 rounded-full text-sm mr-2 mt-2"
-              style={{backgroundColor: colors.mo_badges_primary}}
-              >
-                {language}
-                <button
-                  type="button"
-                  className="ml-2"
-                  onClick={() => handleTagRemove(language)}
-                >
-                  &#10005;
-                </button>
-              </div>
-            ))}
+              ))}
+            </select>
           </div>
-        </div>
 
-        <div className="mb-4 col-span-2 md:col-span-1">
-          <label htmlFor="genre" className="block text-white font-bold">
-            Genre
-          </label>
-          <select
-            {...register("genre")}
-            onChange={handleGenreSelect}
-            className="input input-bordered w-full"
-            defaultValue=""
-          >
-            <option disabled value="">
-              Select a genre
-            </option>
-            {allGenre?.map((genre) => {
-              return (
-                <option key={genre._id} value={genre.genreName}>
-                  {genre.genreName}
-                </option>
-              );
-            })}
-          </select>
+          <div className="mb-4 col-span-2 md:col-span-1">
+            <label htmlFor="language" className="block text-white font-bold">
+              Language
+            </label>
+            <select
+              {...register("language")}
+              onChange={handleLanguageSelect}
+              className="input input-bordered w-full"
+              value={moByID.language}
+            >
+              <option disabled value="">
+                Select a language
+              </option>
+              {allLanguage?.map((language) => {
+                return (
+                  <option key={language._id} value={language.languageName}>
+                    {language.languageName}
+                  </option>
+                );
+              })}
+            </select>
 
-          <div className="mt-2">
-            {selectedGenres?.map((genre) => (
-              <div
-                key={genre}
-                className="inline-flex items-center text-white px-3 py-1 rounded-full text-sm mr-2 mt-2"
-                style={{backgroundColor: colors.mo_badges_primary}}
-              >
-                <span className="capitalize">{genre}</span>
-                <button
-                  type="button"
-                  className="ml-2"
-                  onClick={() => handleGenreRemove(genre)}
+            <div className="mt-2">
+              {selectedLanguages?.map((language) => (
+                <div
+                  key={language}
+                  className="inline-flex items-center text-white px-3 py-1 rounded-full text-sm mr-2 mt-2"
+                  style={{ backgroundColor: colors.mo_badges_primary }}
                 >
-                  &#10005;
-                </button>
-              </div>
-            ))}
+                  {language}
+                  <button
+                    type="button"
+                    className="ml-2"
+                    onClick={() => handleTagRemove(language)}
+                  >
+                    &#10005;
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="mb-4 col-span-2 md:col-span-1">
-          <label htmlFor="industry" className="block text-white font-bold">
-            Industry
-          </label>
-          <select
-            {...register("industry")}
-            className="input input-bordered w-full"
-            defaultValue={movie?.industry}
-          >
-            <option disabled value="">
-              Select an industry
-            </option>
-            {allIndustry?.map((industry) => {
-              return (
-                <option key={industry._id} value={industry.industryName}>
-                  {industry.industryName}
-                </option>
-              );
-            })}
-          </select>
-          <span>{movie?.industry}</span>
-        </div>
+          <div className="mb-4 col-span-2 md:col-span-1">
+            <label htmlFor="genre" className="block text-white font-bold">
+              Genre
+            </label>
+            <select
+              {...register("genre")}
+              onChange={handleGenreSelect}
+              className="input input-bordered w-full"
+              defaultValue=""
+            >
+              <option disabled value="">
+                Select a genre
+              </option>
+              {allGenre?.map((genre) => {
+                return (
+                  <option key={genre._id} value={genre.genreName}>
+                    {genre.genreName}
+                  </option>
+                );
+              })}
+            </select>
 
-        <div className="mb-4 col-span-2 md:col-span-1">
-          <label htmlFor="country" className="block text-white font-bold">
-            Country
-          </label>
-          <input
-            type="text"
-            {...register("country")}
-            defaultValue={moByID.country}
-            placeholder="Country"
-            className="input input-bordered input-accent w-full"
-          />
-        </div>
+            <div className="mt-2">
+              {selectedGenres?.map((genre) => (
+                <div
+                  key={genre}
+                  className="inline-flex items-center text-white px-3 py-1 rounded-full text-sm mr-2 mt-2"
+                  style={{ backgroundColor: colors.mo_badges_primary }}
+                >
+                  <span className="capitalize">{genre}</span>
+                  <button
+                    type="button"
+                    className="ml-2"
+                    onClick={() => handleGenreRemove(genre)}
+                  >
+                    &#10005;
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
 
-        <div className="mb-4 col-span-2 md:col-span-1">
-          <label htmlFor="starCast" className="block text-white font-bold">
-            Star Cast (Comma-separated)
-          </label>
-          <input
-            type="text"
-            {...register("starCast")}
-            defaultValue={moByID.starCast}
-            placeholder="Star Cast"
-            className="input input-bordered input-accent w-full"
-          />
-        </div>
+          <div className="mb-4 col-span-2 md:col-span-1">
+            <label htmlFor="industry" className="block text-white font-bold">
+              Industry
+            </label>
+            <select
+              {...register("industry")}
+              className="input input-bordered w-full"
+              defaultValue={movie?.industry}
+            >
+              <option disabled value="">
+                Select an industry
+              </option>
+              {allIndustry?.map((industry) => {
+                return (
+                  <option key={industry._id} value={industry.industryName}>
+                    {industry.industryName}
+                  </option>
+                );
+              })}
+            </select>
+            <span>{movie?.industry}</span>
+          </div>
 
-        <div className="mb-4 col-span-2 md:col-span-1">
-          <label htmlFor="imdbRating" className="block text-white font-bold">
-            IMDB Rating
-          </label>
-          <input
-            type="number"
-            step="0.1"
-            {...register("imdbRating")}
-            defaultValue={moByID.imdbRating}
-            placeholder="IMDB Rating"
-            className="input input-bordered input-accent w-full"
-          />
-        </div>
-
-        <div className="mb-4 col-span-2 md:col-span-1">
-          <label htmlFor="downloadLink" className="block text-white font-bold">
-            Download Link
-          </label>
-          <input
-            type="text"
-            {...register("downloadLink")}
-            defaultValue={moByID.downloadLink}
-            placeholder="Download Link"
-            className="input input-bordered input-accent w-full"
-          />
-        </div>
-
-        <div className="mb-4 col-span-2 md:col-span-1">
-          <div className="w-full h-[30vh] relative rounded-md overflow-hidden">
-            <Image
-              src={moByID.poster}
-              alt="Description of the image"
-              layout="fill"
-              objectFit="cover"
-              objectPosition="center"
+          <div className="mb-4 col-span-2 md:col-span-1">
+            <label htmlFor="country" className="block text-white font-bold">
+              Country
+            </label>
+            <input
+              type="text"
+              {...register("country")}
+              defaultValue={moByID.country}
+              placeholder="Country"
+              className="input input-bordered input-accent w-full"
             />
           </div>
-          <label htmlFor="poster" className="block text-white font-bold">
-            Poster
-          </label>
-          <input
-            type="file"
-            {...register("poster")}
-            className="file-input file-input-bordered file-input-accent w-full"
-          />
-        </div>
 
-        <div className="mb-4 col-span-2 md:col-span-1">
-          <div className="w-full h-[30vh] relative rounded-md overflow-hidden">
-            <Image
-              src={moByID.screenShort}
-              alt="Description of the image"
-              layout="fill"
-              objectFit="cover"
-              objectPosition="center"
+          <div className="mb-4 col-span-2 md:col-span-1">
+            <label htmlFor="starCast" className="block text-white font-bold">
+              Star Cast (Comma-separated)
+            </label>
+            <input
+              type="text"
+              {...register("starCast")}
+              defaultValue={moByID.starCast}
+              placeholder="Star Cast"
+              className="input input-bordered input-accent w-full"
             />
           </div>
-          <label htmlFor="screenShort" className="block text-white font-bold">
-            Screen Short
-          </label>
-          <input
-            type="file"
-            {...register("screenShort")}
-            className="file-input file-input-bordered file-input-accent w-full"
-          />
+
+          <div className="mb-4 col-span-2 md:col-span-1">
+            <label htmlFor="imdbRating" className="block text-white font-bold">
+              IMDB Rating
+            </label>
+            <input
+              type="number"
+              step="0.1"
+              {...register("imdbRating")}
+              defaultValue={moByID.imdbRating}
+              placeholder="IMDB Rating"
+              className="input input-bordered input-accent w-full"
+            />
+          </div>
+
+          <div className="mb-4 col-span-2 md:col-span-1">
+            <label
+              htmlFor="downloadLink"
+              className="block text-white font-bold"
+            >
+              Download Link
+            </label>
+            <input
+              type="text"
+              {...register("downloadLink")}
+              defaultValue={moByID.downloadLink}
+              placeholder="Download Link"
+              className="input input-bordered input-accent w-full"
+            />
+          </div>
+
+          <div className="mb-4 col-span-2 md:col-span-1">
+            <div className="w-full h-[30vh] relative rounded-md overflow-hidden">
+              <Image
+                src={moByID.poster}
+                alt="Description of the image"
+                layout="fill"
+                objectFit="cover"
+                objectPosition="center"
+              />
+            </div>
+            <label htmlFor="poster" className="block text-white font-bold">
+              Poster
+            </label>
+            <input
+              type="file"
+              {...register("poster")}
+              className="file-input file-input-bordered file-input-accent w-full"
+            />
+          </div>
+
+          <div className="mb-4 col-span-2 md:col-span-1">
+            <div className="w-full h-[30vh] relative rounded-md overflow-hidden">
+              <Image
+                src={moByID.screenShort}
+                alt="Description of the image"
+                layout="fill"
+                objectFit="cover"
+                objectPosition="center"
+              />
+            </div>
+            <label htmlFor="screenShort" className="block text-white font-bold">
+              Screen Short
+            </label>
+            <input
+              type="file"
+              {...register("screenShort")}
+              className="file-input file-input-bordered file-input-accent w-full"
+            />
+          </div>
+
+          <div className="mb-4 col-span-2 md:col-span-2">
+            <label htmlFor="plot" className="block text-white font-bold">
+              Plot
+            </label>
+            <textarea
+              {...register("plot")}
+              defaultValue={moByID.plot}
+              placeholder="Plot"
+              className="textarea textarea-accent w-full h-32"
+            />
+          </div>
         </div>
 
-        <div className="mb-4 col-span-2 md:col-span-2">
-          <label htmlFor="plot" className="block text-white font-bold">
-            Plot
-          </label>
-          <textarea
-            {...register("plot")}
-            defaultValue={moByID.plot}
-            placeholder="Plot"
-            className="textarea textarea-accent w-full h-32"
-          />
-        </div>
-      </div>
-
-      <input type="submit" value="Update" className="btn btn-primary w-full" />
-    </form>
+        <input
+          type="submit"
+          value="Update"
+          className="btn btn-primary w-full"
+        />
+      </form>
+    </TypographyWrapper>
   );
 };
 

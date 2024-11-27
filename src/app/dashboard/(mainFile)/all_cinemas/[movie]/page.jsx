@@ -1,6 +1,7 @@
 "use client";
 
 import MovieEditForm from "@/components/dashboard/MovieEditForm";
+import TypographyWrapper from "@/components/shared/TypographyWrapper";
 import base_url from "@/providers/links/BASE_URL";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -64,14 +65,14 @@ const Page = ({ params }) => {
   console.log(moByID, "moByID ______");
 
   return (
-    <div>
+    <TypographyWrapper>
       <MovieEditForm
         moByID={moByID}
         allLanguage={allLanguage}
         allGenre={allGenre}
         allIndustry={allIndustry}
       />
-    </div>
+    </TypographyWrapper>
   );
 };
 

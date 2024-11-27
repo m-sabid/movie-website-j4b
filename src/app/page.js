@@ -17,13 +17,15 @@ import ForYouSlider from "@/components/pages/HomePage/ForYouSlider";
 import HowToDownload from "@/components/pages/HomePage/HowToDownload";
 import MovieCart from "@/components/shared/MovieCart";
 import FilterMovie from "@/components/pages/HomePage/FilterMovie";
+import TypographyWrapper from "@/components/shared/TypographyWrapper";
+import Title from "@/components/shared/Title";
 
 export default function Home() {
   const { colors } = useContext(ThemeContext);
   const { industries, searchResults, searchLoading } =
     useContext(AllMoviesContext);
   return (
-    <>
+    <TypographyWrapper>
       <div className="min-h-screen max-w-full ">
         <MainNav />
         <HeroSection />
@@ -99,6 +101,6 @@ export default function Home() {
           </div>
         )}
       </div>
-    </>
+    </TypographyWrapper>
   );
 }

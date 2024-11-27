@@ -2,6 +2,7 @@
 
 import AnimatedSkeleton from "@/components/shared/AnimatedSkeleton";
 import NavWithoutSearch from "@/components/shared/NavWithoutSearch";
+import TypographyWrapper from "@/components/shared/TypographyWrapper";
 import { ThemeContext } from "@/providers/colors/GlobalColors";
 import base_url from "@/providers/links/BASE_URL";
 import axios from "axios";
@@ -57,7 +58,7 @@ const Page = ({ params }) => {
   }, [adCounter, params.movieByID]);
 
   return (
-    <div>
+    <TypographyWrapper>
       <NavWithoutSearch />
       <div
         className="min-h-[100vh] md:p-0 p-2"
@@ -208,7 +209,7 @@ const Page = ({ params }) => {
           )}
         </div>
       </div>
-    </div>
+    </TypographyWrapper>
   );
 };
 

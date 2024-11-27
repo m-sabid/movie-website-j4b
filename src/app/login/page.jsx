@@ -8,6 +8,7 @@ import { AuthContext } from "@/providers/firebase/AuthProvider";
 import Link from "next/link";
 import SecondaryNav from "@/components/pages/HomePage/SecondaryNav";
 import { ThemeContext } from "@/providers/colors/GlobalColors";
+import TypographyWrapper from "@/components/shared/TypographyWrapper";
 
 const Login = () => {
   const { colors } = useContext(ThemeContext);
@@ -65,7 +66,7 @@ const Login = () => {
   }
 
   return (
-    <>
+    <TypographyWrapper>
       <div className="relative min-h-[100vh] flex flex-col items-center justify-center">
         <div className="fixed top-0 w-full">
           <SecondaryNav />
@@ -162,7 +163,7 @@ const Login = () => {
           </form>
         </div>
       </div>
-    </>
+    </TypographyWrapper>
   );
 };
 

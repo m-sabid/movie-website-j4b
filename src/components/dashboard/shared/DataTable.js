@@ -6,10 +6,10 @@ import {
 } from "react-icons/fa";
 import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "@/providers/colors/GlobalColors";
+import TypographyWrapper from "@/components/shared/TypographyWrapper";
 
 const DataTable = ({ data, columns, onEdit, onDelete }) => {
-
-  const {colors} = useContext(ThemeContext)
+  const { colors } = useContext(ThemeContext);
 
   const [sortOrder, setSortOrder] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
@@ -54,117 +54,122 @@ const DataTable = ({ data, columns, onEdit, onDelete }) => {
   }, [data, sortOrder, currentPage, columns, itemsPerPage]);
 
   return (
-    <div className="overflow-x-auto">
-      <table className="table rounded-md text-white" style={{backgroundColor:colors.mo_primary}}>
-        <thead>
-          <tr className="text-white">
-            <th>SN</th>
-            {columns.map((col, index) => (
-              <th key={index} className="flex items-center">
-                {col.header}
-                {col.field && (
-                  <button
-                    onClick={() => toggleSortOrder(col.field)}
-                    className="ml-2 text-xl"
-                  >
-                    {sortOrder[col.field] === "asc" ? (
-                      <FaSortAlphaUpAlt />
-                    ) : (
-                      <FaSortAlphaDown />
-                    )}
-                  </button>
-                )}
-              </th>
-            ))}
-            <th>Edit</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedData && paginatedData.length > 0 ? (
-            paginatedData.map((item, index) => (
-              <tr key={item._id}>
-                <td className="text-md">
-                  {(currentPage - 1) * itemsPerPage + index + 1}
-                </td>
-                {columns.map((col, colIndex) => (
-                  <td key={colIndex} className="capitalize text-md">
-                    {item[col.field]}
+    <TypographyWrapper>
+      <div className="overflow-x-auto">
+        <table
+          className="table rounded-md text-white"
+          style={{ backgroundColor: colors.mo_primary }}
+        >
+          <thead>
+            <tr className="text-white">
+              <th>SN</th>
+              {columns.map((col, index) => (
+                <th key={index} className="flex items-center">
+                  {col.header}
+                  {col.field && (
+                    <button
+                      onClick={() => toggleSortOrder(col.field)}
+                      className="ml-2 text-xl"
+                    >
+                      {sortOrder[col.field] === "asc" ? (
+                        <FaSortAlphaUpAlt />
+                      ) : (
+                        <FaSortAlphaDown />
+                      )}
+                    </button>
+                  )}
+                </th>
+              ))}
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedData && paginatedData.length > 0 ? (
+              paginatedData.map((item, index) => (
+                <tr key={item._id}>
+                  <td className="text-md">
+                    {(currentPage - 1) * itemsPerPage + index + 1}
                   </td>
-                ))}
-                <td className="text-md cursor-pointer">
-                  <button
-                    className="py-2 px-4 rounded-md hover:bg-gray-600"
-                    onClick={() => onEdit(item._id)}
-                  style={{backgroundColor:colors.mo_db_primary}}
-                  >
-                    <FaEdit />
-                  </button>
-                </td>
-                <td className="text-md cursor-pointer">
-                  <button
-                    className="py-2 px-4 rounded-md hover:bg-gray-600"
-                    onClick={() => onDelete(item._id)}
-                  style={{backgroundColor:colors.mo_db_primary}}
-                  >
-                    <FaTrashAlt />
-                  </button>
+                  {columns.map((col, colIndex) => (
+                    <td key={colIndex} className="capitalize text-md">
+                      {item[col.field]}
+                    </td>
+                  ))}
+                  <td className="text-md cursor-pointer">
+                    <button
+                      className="py-2 px-4 rounded-md hover:bg-gray-600"
+                      onClick={() => onEdit(item._id)}
+                      style={{ backgroundColor: colors.mo_db_primary }}
+                    >
+                      <FaEdit />
+                    </button>
+                  </td>
+                  <td className="text-md cursor-pointer">
+                    <button
+                      className="py-2 px-4 rounded-md hover:bg-gray-600"
+                      onClick={() => onDelete(item._id)}
+                      style={{ backgroundColor: colors.mo_db_primary }}
+                    >
+                      <FaTrashAlt />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={columns.length + 3} className="text-center">
+                  <span className="loading loading-bars loading-lg"></span>
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={columns.length + 3} className="text-center">
-                <span className="loading loading-bars loading-lg"></span>
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
 
-      {/* Pagination Controls */}
-      <div className="flex flex-col md:flex-row gap-3 justify-between items-center mt-4 space-x-2">
-        <div>
-          <label className="text-white">Items per page:</label>
-          <input
-            type="number"
-            defaultValue={itemsPerPage}
-            onKeyDown={handleItemsPerPageSubmit}
-            onBlur={handleItemsPerPageSubmit} // Handle submit on blur as well
-            min="1"
-            className="ml-2 p-2 text-white rounded-md"
-            // Make sure the value can't be cleared by the user
-            onInput={(e) => e.preventDefault()}
-          />
-        </div>
+        {/* Pagination Controls */}
+        <div className="flex flex-col md:flex-row gap-3 justify-between items-center mt-4 space-x-2">
+          <div>
+            <label className="text-white">Items per page:</label>
+            <input
+              type="number"
+              defaultValue={itemsPerPage}
+              onKeyDown={handleItemsPerPageSubmit}
+              onBlur={handleItemsPerPageSubmit} // Handle submit on blur as well
+              min="1"
+              className="ml-2 p-2 text-white rounded-md"
+              // Make sure the value can't be cleared by the user
+              onInput={(e) => e.preventDefault()}
+            />
+          </div>
 
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={() =>
-              setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))
-            }
-            disabled={currentPage === 1}
-            className="bg-blue-500 py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-300 text-white font-semibold transition duration-200"
-          >
-            Previous
-          </button>
-          <span className="text-white">
-            Page {currentPage} of {Math.ceil(data.length / itemsPerPage)}
-          </span>
-          <button
-            onClick={() =>
-              setCurrentPage((prevPage) =>
-                Math.min(prevPage + 1, Math.ceil(data.length / itemsPerPage))
-              )
-            }
-            disabled={currentPage === Math.ceil(data.length / itemsPerPage)}
-            className="bg-blue-500 py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-300 text-white font-semibold transition duration-200"
-          >
-            Next
-          </button>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() =>
+                setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))
+              }
+              disabled={currentPage === 1}
+              className="bg-blue-500 py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-300 text-white font-semibold transition duration-200"
+            >
+              Previous
+            </button>
+            <span className="text-white">
+              Page {currentPage} of {Math.ceil(data.length / itemsPerPage)}
+            </span>
+            <button
+              onClick={() =>
+                setCurrentPage((prevPage) =>
+                  Math.min(prevPage + 1, Math.ceil(data.length / itemsPerPage))
+                )
+              }
+              disabled={currentPage === Math.ceil(data.length / itemsPerPage)}
+              className="bg-blue-500 py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-300 text-white font-semibold transition duration-200"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </TypographyWrapper>
   );
 };
 

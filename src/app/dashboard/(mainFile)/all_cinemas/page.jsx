@@ -7,9 +7,11 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import DashboardHeader from "@/components/dashboard/shared/DashboardHeader";
 import { ThemeContext } from "@/providers/colors/GlobalColors";
+import TypographyWrapper from "@/components/shared/TypographyWrapper";
+
 
 const AllCinemas = () => {
-  const { colors } = useContext(ThemeContext);
+  const { colors, typography } = useContext(ThemeContext);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [movieData, setMovieData] = useState([]);
@@ -127,7 +129,9 @@ const AllCinemas = () => {
     if (confirmationResult.isConfirmed) {
       try {
         await axios.delete(`${base_url}/movies/${movieId}`);
-        setMovieData((prevMovies) => prevMovies.filter((movie) => movie._id !== movieId));
+        setMovieData((prevMovies) =>
+          prevMovies.filter((movie) => movie._id !== movieId)
+        );
         setTotalMovies((prevTotal) => prevTotal - 1);
       } catch (error) {
         console.error("Error deleting movie:", error);
@@ -158,7 +162,7 @@ const AllCinemas = () => {
   const totalPages = Math.ceil(totalMovies / itemsPerPage);
 
   return (
-    <div>
+    <TypographyWrapper>
       <DashboardHeader title={"All Cinemas"} count={totalMovies} />
 
       {/* Search Bar */}
@@ -189,12 +193,21 @@ const AllCinemas = () => {
       {/* Filters */}
       <div className="flex flex-wrap justify-center mt-4 gap-4">
         {filterItems.map((filter) => (
-          <div key={filter.label} className="flex flex-col items-center w-full sm:w-auto">
+          <div
+            key={filter.label}
+            className="flex flex-col items-center w-full sm:w-auto"
+          >
             <label className="mb-1">{filter.label}</label>
             <select
               className="select select-bordered w-full max-w-xs"
               onChange={(e) => handleFilterChange(filter.label, e.target.value)}
-              value={filter.label === "Release Year" ? releaseYear : filter.label === "Genre" ? genre : industry}
+              value={
+                filter.label === "Release Year"
+                  ? releaseYear
+                  : filter.label === "Genre"
+                  ? genre
+                  : industry
+              }
             >
               <option value="">All {filter.label}</option>
               {filter.options.map((option, index) => (
@@ -256,7 +269,9 @@ const AllCinemas = () => {
               Page {currentPage} of {totalPages}
             </span>
             <button
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
               disabled={currentPage === totalPages}
               className="btn btn-sm btn-accent"
             >
@@ -265,7 +280,7 @@ const AllCinemas = () => {
           </nav>
         </div>
       )}
-    </div>
+    </TypographyWrapper>
   );
 };
 

@@ -1,5 +1,6 @@
 "use client";
 import MovieForm from "@/components/dashboard/MovieForm";
+import TypographyWrapper from "@/components/shared/TypographyWrapper";
 import base_url from "@/providers/links/BASE_URL";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -48,13 +49,13 @@ const ImportMovie = () => {
   }, []);
 
   return (
-    <>
+    <TypographyWrapper>
       <MovieForm
         allGenre={allGenre}
         allLanguage={allLanguage}
         allIndustry={allIndustry}
       />
-    </>
+    </TypographyWrapper>
   );
 };
 

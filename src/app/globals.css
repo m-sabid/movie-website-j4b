@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* *{
+  font-family: 'Courier New', Courier, monospace;
+} */
+
 /* Video play button style */
 .v-icon {
   color: #fff;

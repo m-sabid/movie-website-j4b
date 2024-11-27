@@ -11,6 +11,11 @@ import {
   FaIcons,
   FaWhmcs,
 } from "react-icons/fa";
+import TypographyWrapper from "../shared/TypographyWrapper";
+import Image from "next/image";
+import Logo from "../../../public/logo.png";
+
+
 
 const menus = [
   {
@@ -51,9 +56,9 @@ const menus = [
 ];
 
 const SidebarNav = ({ children }) => {
-  const { colors } = useContext(ThemeContext);
+  const { colors, siteInfo } = useContext(ThemeContext);
   return (
-    <div>
+    <TypographyWrapper>
       <div className="drawer lg:drawer-open ">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col">
@@ -89,7 +94,8 @@ const SidebarNav = ({ children }) => {
               </div>
               <div className="flex-1">
                 <Link href={"/"} className="btn btn-ghost normal-case text-xl">
-                  J4B Movies
+                <Image src={Logo} width={40} height={40} alt="j4b movie" />
+                {siteInfo?.siteName || ""}
                 </Link>
               </div>
               <div className="flex-none"></div>
@@ -111,7 +117,8 @@ const SidebarNav = ({ children }) => {
               href={"/"}
               className="text-2xl hidden lg:flex justify-center items-center"
             >
-              J4B Movies
+              <Image src={Logo} width={40} height={40} alt="j4b movie" />
+               {siteInfo?.siteName || ""}
             </Link>
             <div className="divider hidden lg:flex"></div>
             {/* Sidebar content here */}
@@ -129,7 +136,7 @@ const SidebarNav = ({ children }) => {
           </ul>
         </div>
       </div>
-    </div>
+    </TypographyWrapper>
   );
 };
 

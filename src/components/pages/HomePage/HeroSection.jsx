@@ -1,8 +1,9 @@
+import TypographyWrapper from "@/components/shared/TypographyWrapper";
 import React from "react";
 
 const HeroSection = () => {
   return (
-    <>
+    <TypographyWrapper>
       <div
         className="absolute inset-0 z-[-1]"
         style={{
@@ -16,7 +17,7 @@ const HeroSection = () => {
       >
         <div className="relative z-10 min-h-screen bg-black bg-opacity-50"></div>
       </div>
-    </>
+    </TypographyWrapper>
   );
 };
 

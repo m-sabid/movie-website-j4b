@@ -3,7 +3,7 @@ import { FaFilter } from "react-icons/fa";
 
 const MovieCategoryHeader = ({ title }) => {
   return (
-    <div>
+    <TypographyWrapper>
       <div className="flex mt-10 mb-5 px-10 justify-between items-center">
         <h1 className="text-white uppercase text-3xl font-bold">{title}</h1>
 
@@ -72,7 +72,7 @@ const MovieCategoryHeader = ({ title }) => {
         </div>
       </div>
       <div className="divider"></div>
-    </div>
+    </TypographyWrapper>
   );
 };
 

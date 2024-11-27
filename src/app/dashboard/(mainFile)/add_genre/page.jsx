@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import base_url from "@/providers/links/BASE_URL";
 import axios from "axios";
 import Swal from "sweetalert2";
+import TypographyWrapper from "@/components/shared/TypographyWrapper";
+
 
 const AddGenre = () => {
   const { register, reset, handleSubmit, errors } = useForm();
@@ -175,7 +177,7 @@ const AddGenre = () => {
   ];
 
   return (
-    <>
+    <TypographyWrapper>
       <DashboardHeader title={"All Genre"} count={totalGenre?.length} />
 
       <div className="flex my-5 justify-center">
@@ -222,7 +224,7 @@ const AddGenre = () => {
           />
         )}
       </dialog>
-    </>
+    </TypographyWrapper>
   );
 };
 

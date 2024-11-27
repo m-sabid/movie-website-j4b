@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { FaTelegram } from "react-icons/fa";
+import TypographyWrapper from "./TypographyWrapper";
 
 const JoinTelegram = () => {
   return (
-    <div>
+    <TypographyWrapper>
       <div className="flex flex-col justify-center items-center mb-10 text-white">
         <h4 className="text-xl bg-gray-100 backdrop-blur-lg bg-opacity-40 p-2 rounded-md m-2 font-serif">
           For any movie 👇 request
@@ -18,7 +19,7 @@ const JoinTelegram = () => {
           Join Telegram
         </Link>
       </div>
-    </div>
+    </TypographyWrapper>
   );
 };
 

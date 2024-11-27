@@ -5,6 +5,7 @@ import DashboardHeader from "@/components/dashboard/shared/DashboardHeader";
 import DataTable from "@/components/dashboard/shared/DataTable";
 import DynamicForm from "@/components/dashboard/shared/DynamicForm";
 import UpdateForm from "@/components/dashboard/shared/UpdateForm";
+import TypographyWrapper from "@/components/shared/TypographyWrapper";
 import base_url from "@/providers/links/BASE_URL";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -70,7 +71,9 @@ const AddIndustry = () => {
   };
 
   const editIndustry = (industryId) => {
-    const industryToEdit = totalIndustry.find((industry) => industry._id === industryId);
+    const industryToEdit = totalIndustry.find(
+      (industry) => industry._id === industryId
+    );
     setEditIndustryData(industryToEdit);
     window.my_edit_modal.showModal();
   };
@@ -129,7 +132,9 @@ const AddIndustry = () => {
 
     if (confirmationResult.isConfirmed) {
       try {
-        const response = await axios.delete(`${base_url}/industry/${industryId}`);
+        const response = await axios.delete(
+          `${base_url}/industry/${industryId}`
+        );
 
         if (response.data.message) {
           setTotalIndustry((prevIndustries) =>
@@ -167,7 +172,7 @@ const AddIndustry = () => {
   ];
 
   return (
-    <>
+    <TypographyWrapper>
       <DashboardHeader title={"All Industries"} count={totalIndustry?.length} />
 
       <div className="flex my-5 justify-center">
@@ -214,7 +219,7 @@ const AddIndustry = () => {
           />
         )}
       </dialog>
-    </>
+    </TypographyWrapper>
   );
 };
 

@@ -6,6 +6,7 @@ import MovieCart from "@/components/shared/MovieCart";
 import { ThemeContext } from "@/providers/colors/GlobalColors";
 import { FaArrowRotateLeft } from "react-icons/fa6";
 import AnimatedSkeleton from "@/components/shared/AnimatedSkeleton";
+import TypographyWrapper from "@/components/shared/TypographyWrapper";
 
 const FilterMovie = () => {
   const { colors } = useContext(ThemeContext);
@@ -174,10 +175,12 @@ const FilterMovie = () => {
   };
 
   return (
+    <TypographyWrapper>
+
     <div
       className="p-4 md:p-6 rounded-lg shadow-md flex flex-col gap-6"
       style={{ backgroundColor: colors.mo_secondary }}
-    >
+      >
       {/* Filter Options */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {filterItems.map((item) => (
@@ -188,7 +191,7 @@ const FilterMovie = () => {
               backgroundColor: colors[item.color],
               color: colors.mo_primaryText,
             }}
-          >
+            >
             <div className="flex items-center justify-center rounded-full p-2 mb-2">
               {item.icon}
             </div>
@@ -234,7 +237,7 @@ const FilterMovie = () => {
           style={{
             backgroundColor: colors.mo_primary,
           }}
-        >
+          >
           Apply Filters
         </button>
       </div>
@@ -263,10 +266,10 @@ const FilterMovie = () => {
                   disabled={pagination.currentPage <= 1}
                   className={`px-4 py-2 rounded-md font-semibold ${
                     pagination.currentPage <= 1
-                      ? "bg-gray-400 cursor-not-allowed"
+                    ? "bg-gray-400 cursor-not-allowed"
                       : "bg-blue-500 text-white hover:bg-blue-700"
                   }`}
-                >
+                  >
                   Previous
                 </button>
                 {generatePagination()}
@@ -277,8 +280,8 @@ const FilterMovie = () => {
                     pagination.currentPage >= pagination.totalPages
                       ? "bg-gray-400 cursor-not-allowed"
                       : "bg-blue-500 text-white hover:bg-blue-700"
-                  }`}
-                >
+                    }`}
+                    >
                   Next
                 </button>
               </div>
@@ -287,6 +290,7 @@ const FilterMovie = () => {
         </>
       )}
     </div>
+          </TypographyWrapper>
   );
 };
 

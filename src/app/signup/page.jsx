@@ -12,6 +12,7 @@ import Link from "next/link";
 import SecondaryNav from "@/components/pages/HomePage/SecondaryNav";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import TypographyWrapper from "@/components/shared/TypographyWrapper";
 
 const Page = () => {
   const [passwordError, setPasswordError] = useState("");
@@ -85,6 +86,7 @@ const Page = () => {
   };
 
   return (
+    <TypographyWrapper>
     <div className="relative min-h-[100vh] flex flex-col items-center justify-center">
       <div className="fixed top-0 w-full z-50">
         <SecondaryNav />
@@ -98,7 +100,7 @@ const Page = () => {
           backgroundAttachment: "fixed",
           minHeight: "100vh",
         }}
-      >
+        >
         <div className="fixed z-10 min-h-screen w-full bg-black bg-opacity-70"></div>
       </div>
 
@@ -148,7 +150,7 @@ const Page = () => {
               type="file"
               {...register("profile")}
               className="file-input file-input-bordered file-input-accent w-full"
-            />
+              />
           </div>
 
           {/* Password */}
@@ -167,7 +169,7 @@ const Page = () => {
                 type="button"
                 className="absolute top-1/2 right-2 transform -translate-y-1/2"
                 onClick={togglePasswordVisibility}
-              >
+                >
                 {showPassword ? (
                   <BsEyeSlashFill className="text-gray-500" />
                 ) : (
@@ -185,7 +187,7 @@ const Page = () => {
             <label
               htmlFor="confirmPassword"
               className="block text-white font-bold"
-            >
+              >
               Confirm Password
             </label>
             <div className="relative bg-white rounded-lg">
@@ -221,7 +223,7 @@ const Page = () => {
               type="submit"
               value="Submit"
               className="btn btn-primary w-full"
-            />
+              />
           </div>
 
           {/* Google Signup */}
@@ -231,7 +233,7 @@ const Page = () => {
               type="button"
               className="bg-red-500 text-white rounded py-2 px-4 flex items-center justify-center gap-4 hover:bg-red-600 mt-2"
               onClick={handleGoogleSignup}
-            >
+              >
               <FaGoogle /> Sign Up with Google
             </button>
             <div className="my-4">
@@ -244,6 +246,7 @@ const Page = () => {
         </form>
       </div>
     </div>
+              </TypographyWrapper>
   );
 };
 

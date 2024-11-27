@@ -5,6 +5,7 @@ import DashboardHeader from "@/components/dashboard/shared/DashboardHeader";
 import DataTable from "@/components/dashboard/shared/DataTable";
 import DynamicForm from "@/components/dashboard/shared/DynamicForm";
 import UpdateForm from "@/components/dashboard/shared/UpdateForm";
+import TypographyWrapper from "@/components/shared/TypographyWrapper";
 import base_url from "@/providers/links/BASE_URL";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -161,7 +162,7 @@ const AddLanguage = () => {
   ];
 
   return (
-    <>
+    <TypographyWrapper>
       <DashboardHeader title="All Languages" count={languages?.length} />
 
       <div className="flex my-5 justify-center">
@@ -206,7 +207,7 @@ const AddLanguage = () => {
           />
         )}
       </dialog>
-    </>
+    </TypographyWrapper>
   );
 };
 

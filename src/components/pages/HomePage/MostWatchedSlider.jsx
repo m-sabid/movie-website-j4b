@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import Image from "next/image";
-import { AllMoviesContext, useAllMoviesContext } from "@/providers/data/AllMoviesData";
+import { AllMoviesContext } from "@/providers/data/AllMoviesData";
 import { FiPlayCircle } from "react-icons/fi";
 import Link from "next/link";
 
@@ -17,7 +17,10 @@ const MostWatchedSlider = () => {
   const randomMovies = shuffleArray(mostWatched).slice(0, 5);
 
   return (
-    <div className="swiper-container relative" style={{ width: "100%", height: "100%" }}>
+    <div
+      className="swiper-container relative"
+      style={{ width: "100%", height: "100%" }}
+    >
       <div
         className="absolute top-0 left-0 w-full text-white text-2xl font-bold p-2 z-10"
         style={{ background: "rgba(0, 0, 0, 0.5)" }}
