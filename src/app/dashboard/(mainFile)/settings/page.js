@@ -136,6 +136,13 @@ const SettingsPage = () => {
       setUpdatedTypography(typography);
       setSiteName("My Website"); // Reset siteName to default
 
+
+      setSiteInfo((prevInfo) => ({
+        ...prevInfo,
+        siteName:"My Website",
+      }));
+
+
       Swal.fire({
         title: "Settings Reset",
         text: "Your settings have been reset to default.",
