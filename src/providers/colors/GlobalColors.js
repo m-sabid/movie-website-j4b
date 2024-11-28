@@ -37,7 +37,7 @@ const ThemeProvider = ({ children }) => {
   useEffect(() => {
     const fetchTheme = async () => {
       try {
-        const response = await axios.get(`${base_url}/api/global-settings`);
+        const response = await axios.get(`${base_url}/global-settings`);
         const themeData = response.data;
 
         console.log("Fetched Theme Data:", themeData); // Debugging log

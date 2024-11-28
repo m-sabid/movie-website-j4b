@@ -69,33 +69,34 @@ const SettingsPage = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const finalColors = { ...defaultColors, ...updatedColors };
     const finalTypography = { ...typography, ...updatedTypography };
-
+  
     const payload = {
       colors: finalColors,
       typography: finalTypography,
       siteName, // Include siteName in the payload
     };
-
+  
     try {
-      await axios.put(`${base_url}/api/global-settings`, payload, {
+      await axios.patch(`${base_url}/global-settings/update`, payload, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-
+  
+      // Update state with the final settings
       setColors(finalColors);
       setTypography(finalTypography);
-     
-        // Update siteInfo while preserving other properties
-    setSiteInfo((prevInfo) => ({
-      ...prevInfo,
-      siteName,
-    }));
-
-
+  
+      // Update siteInfo while preserving other properties
+      setSiteInfo((prevInfo) => ({
+        ...prevInfo,
+        siteName,
+      }));
+  
+      // Success notification
       Swal.fire({
         title: "Settings Updated",
         text: "Your settings have been successfully updated!",
@@ -107,6 +108,8 @@ const SettingsPage = () => {
       });
     } catch (error) {
       console.error("Error updating settings:", error);
+  
+      // Error notification
       Swal.fire({
         title: "Error",
         text: "Failed to update settings. Please try again.",
@@ -118,12 +121,13 @@ const SettingsPage = () => {
       });
     }
   };
+  
 
   // Handle reset to default
   const handleReset = async () => {
     try {
       const response = await axios.post(
-        `${base_url}/api/reset-global-settings`
+        `${base_url}/global-settings/reset`
       );
       const { colors, typography } = response.data;
       setColors(colors);
