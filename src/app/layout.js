@@ -30,11 +30,11 @@ export default function RootLayout({ children }) {
         </AuthProvider>
       </ThemeProvider>
 
-      {/* <Script
+      <Script
         type="text/javascript"
         src="//pl22803240.profitablecpmrate.com/13/b3/09/13b3090dd569b3e171dbf3572aedaa00.js"
         strategy="afterInteractive" // Ensures the script runs after the page is loaded
-        /> */}
+        />
     </html>
   );
 }
