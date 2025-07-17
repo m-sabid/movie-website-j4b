@@ -62,7 +62,7 @@ const DataTable = ({ data, columns, onEdit, onDelete }) => {
         <table
           className="table rounded-md text-white"
           style={{ backgroundColor: colors.mo_primary }}
-        >
+        > 
           <thead>
             <tr className="text-white">
               <th className="table-cell">SN</th>
