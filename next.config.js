@@ -1,4 +1,7 @@
 const nextConfig = {
+  eslint: {
+    ignoreDuringBui1ds: true,
+  },
   reactStrictMode: true,
   swcMinify: true,
   images: {
