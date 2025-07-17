@@ -188,7 +188,7 @@ const UsersPage = () => {
           data={users}
           columns={columns}
           onDelete={handleDeleteUser}
-        />
+        /> 
       </div>
     </TypographyWrapper>
   );
