@@ -1,6 +1,6 @@
 const nextConfig = {
   eslint: {
-    ignoreDuringBui1ds: true,
+    ignoreDuringBuilds: true,
   },
   reactStrictMode: true,
   swcMinify: true,
