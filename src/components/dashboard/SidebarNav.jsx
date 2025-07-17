@@ -9,6 +9,7 @@ import {
   FaHome,
   FaHospital,
   FaIcons,
+  FaUser,
   FaWhmcs,
 } from "react-icons/fa";
 import TypographyWrapper from "../shared/TypographyWrapper";
@@ -22,6 +23,11 @@ const menus = [
     name: "Home",
     path: "/dashboard/home",
     icon: <FaHome className="text-white" />,
+  },
+  {
+    name: "Users",
+    path: "/dashboard/users",
+    icon: <FaUser className="text-white" />,
   },
   {
     name: "Add cinemas",

@@ -64,10 +64,11 @@ const AuthProvider = ({ children }) => {
         const token = data.token;
         const decodedToken = jwtDecode(token);
 
-        // Store token and decoded role in localStorage and cookies
+        // Store token, user ID, and decoded role in localStorage and cookies
         localStorage.setItem("token", token);
         localStorage.setItem("tokenExpiration", decodedToken.exp);
         Cookies.set("token", token); // Store token in cookies
+        Cookies.set("userId", decodedToken.userId); // Store user ID in cookies
         Cookies.set("userRole", decodedToken.role); // Store user role in cookies
 
         setUser(decodedToken);
@@ -157,8 +158,6 @@ const AuthProvider = ({ children }) => {
       setTimeout(() => {
         logout();
       }, timeLeft);
-    } else {
-      logout(); // log out if token has expired
     }
 
     // Check for role-based access (example)

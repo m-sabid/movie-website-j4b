@@ -1,8 +1,10 @@
+"use client"
+
 import SidebarNav from "@/components/dashboard/SidebarNav";
 import { Inter } from "next/font/google";
-// import ReactQueryProviders from "@/providers/ReactQuerySetup/ReactQueryProviders";
-// import AllMoviesProvider from "@/providers/data/AllMoviesData";
-// import SidebarNav from "@/components/dashboard/SidebarNav";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,6 +14,15 @@ export const metadata = {
 };
 
 export default function DashboardLayout({ children }) {
+  const router = useRouter();
+
+  useEffect(() => {
+    const userRole = Cookies.get("userRole");
+    if (userRole !== "admin") {
+      router.push("/");
+    }
+  }, [router]);
+
   return (
     <html lang="en">
       {/* <ReactQueryProviders>

@@ -43,9 +43,12 @@ const DataTable = ({ data, columns, onEdit, onDelete }) => {
     const sortedData = [...data].sort((a, b) => {
       const field = columns[0].field;
       const order = sortOrder[field] || "asc"; // Default to ascending
+      const valA = String(a[field] || '');
+      const valB = String(b[field] || '');
+
       return order === "asc"
-        ? a[field].localeCompare(b[field])
-        : b[field].localeCompare(a[field]);
+        ? valA.localeCompare(valB)
+        : valB.localeCompare(valA);
     });
 
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -62,9 +65,9 @@ const DataTable = ({ data, columns, onEdit, onDelete }) => {
         >
           <thead>
             <tr className="text-white">
-              <th>SN</th>
+              <th className="table-cell">SN</th>
               {columns.map((col, index) => (
-                <th key={index} className="flex items-center">
+                <th key={index} className="table-cell">
                   {col.header}
                   {col.field && (
                     <button
@@ -80,40 +83,44 @@ const DataTable = ({ data, columns, onEdit, onDelete }) => {
                   )}
                 </th>
               ))}
-              <th>Edit</th>
-              <th>Delete</th>
+              {onEdit && <th className="table-cell">Edit</th>}
+              {onDelete && <th className="table-cell">Delete</th>}
             </tr>
           </thead>
           <tbody>
             {paginatedData && paginatedData.length > 0 ? (
               paginatedData.map((item, index) => (
                 <tr key={item._id}>
-                  <td className="text-md">
+                  <td className="text-md table-cell">
                     {(currentPage - 1) * itemsPerPage + index + 1}
                   </td>
                   {columns.map((col, colIndex) => (
-                    <td key={colIndex} className="capitalize text-md">
-                      {item[col.field]}
+                    <td key={colIndex} className="capitalize text-md table-cell">
+                      {col.render ? col.render(item) : item[col.field]}
                     </td>
                   ))}
-                  <td className="text-md cursor-pointer">
-                    <button
-                      className="py-2 px-4 rounded-md hover:bg-gray-600"
-                      onClick={() => onEdit(item._id)}
-                      style={{ backgroundColor: colors.mo_db_primary }}
-                    >
-                      <FaEdit />
-                    </button>
-                  </td>
-                  <td className="text-md cursor-pointer">
-                    <button
-                      className="py-2 px-4 rounded-md hover:bg-gray-600"
-                      onClick={() => onDelete(item._id)}
-                      style={{ backgroundColor: colors.mo_db_primary }}
-                    >
-                      <FaTrashAlt />
-                    </button>
-                  </td>
+                  {onEdit && (
+                    <td className="text-md cursor-pointer table-cell">
+                      <button
+                        className="py-2 px-4 rounded-md hover:bg-gray-600"
+                        onClick={() => onEdit(item._id)}
+                        style={{ backgroundColor: colors.mo_db_primary }}
+                      >
+                        <FaEdit />
+                      </button>
+                    </td>
+                  )}
+                  {onDelete && (
+                    <td className="text-md cursor-pointer table-cell">
+                      <button
+                        className="py-2 px-4 rounded-md hover:bg-gray-600"
+                        onClick={() => onDelete(item._id)}
+                        style={{ backgroundColor: colors.mo_db_primary }}
+                      >
+                        <FaTrashAlt />
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))
             ) : (
