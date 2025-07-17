@@ -27,7 +27,7 @@ const AuthProvider = ({ children }) => {
   const createUser = async (email, password, displayName) => {
     setLoading(true);
     try {
-      const response = await fetch(`${base_url}/api/auth/register`, {
+      const response = await fetch(`${base_url}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, displayName }),
@@ -54,7 +54,7 @@ const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setLoading(true);
     try {
-      const response = await fetch(`${base_url}/api/auth/login`, {
+      const response = await fetch(`${base_url}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -89,7 +89,7 @@ const AuthProvider = ({ children }) => {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
   
-      const response = await fetch(`${base_url}/api/auth/googleLogin`, {
+      const response = await fetch(`${base_url}/auth/googleLogin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
