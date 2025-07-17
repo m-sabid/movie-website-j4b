@@ -31,7 +31,7 @@ const UsersPage = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch(`${base_url}/api/users`); // Fetch all users for client-side pagination
+        const response = await fetch(`${base_url}/users`); // Fetch all users for client-side pagination
         if (response.ok) {
           const data = await response.json();
           setUsers(data.users.map(user => ({ ...user, displayName: user.displayName || user.name })));
@@ -65,7 +65,7 @@ const UsersPage = () => {
     }
 
     try {
-      const response = await fetch(`${base_url}/api/users/${userId}/role`, {
+      const response = await fetch(`${base_url}/users/${userId}/role`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -142,7 +142,7 @@ const UsersPage = () => {
     }
 
     try {
-      const response = await fetch(`${base_url}/api/users/${userId}`, {
+      const response = await fetch(`${base_url}/users/${userId}`, {
         method: 'DELETE',
       });
 
