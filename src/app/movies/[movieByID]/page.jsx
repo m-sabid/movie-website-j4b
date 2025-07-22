@@ -35,7 +35,7 @@ const Page = ({ params }) => {
       const script = document.createElement("script");
       script.type = "text/javascript";
       script.src =
-        "//pl24956270.profitablecpmrate.com/1c/f8/0e/1cf80e212b0d05010f6799de00162585.js";
+        "//pl27235723.profitableratecpm.com/ce/21/0e/ce210e7298d04450381d78f4dd234b05.js";
       document.body.appendChild(script);
 
       // Cleanup: Remove the script when the component is unmounted
@@ -175,7 +175,7 @@ const Page = ({ params }) => {
                         if (!hasClickedBefore) {
                           // If not clicked before, open the ad link in a new tab
                           window.open(
-                            "https://www.profitablecpmrate.com/wvas51y8ux?key=7ad6354dcd2ff79e0080feadcb8fb636",
+                            "https://www.profitableratecpm.com/rfk1qdah?key=c0e2521534bec44cf8ba248bdccabdde",
                             "_blank"
                           );
 
