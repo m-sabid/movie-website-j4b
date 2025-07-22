@@ -32,9 +32,9 @@ export default function RootLayout({ children }) {
 
       <Script
         type="text/javascript"
-        src="//pl22803240.profitablecpmrate.com/13/b3/09/13b3090dd569b3e171dbf3572aedaa00.js"
+        src="//pl27235690.profitableratecpm.com/8b/71/81/8b7181e9817cee231dc0d75e42008e72.js"
         strategy="afterInteractive" // Ensures the script runs after the page is loaded
         />
-    </html>
+ </html>
   );
 }
